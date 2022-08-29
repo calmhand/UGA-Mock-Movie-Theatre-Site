@@ -6,10 +6,13 @@ ___
 
 ## Contacts
 
-Ryan:
-Zeke:
-Jaya:
-Johnny:
+Ryan: rysherk@gmail.com
+
+Zeke: zshoemaker5311@gmail.com
+
+Jaya: jayasimhakurri@gmail.com
+
+Johnny: jmg49760@uga.edu
 
 ___
 
