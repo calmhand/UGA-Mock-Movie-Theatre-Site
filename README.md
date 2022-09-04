@@ -1,6 +1,6 @@
 # SE4050 Cinema Web App
 
-Next Deliverable: D1 - User Stories Document Due: Sep 5 by Midnight
+Next Deliverable: D1 - User Stories Document Due: Sep 9 by Midnight
 
 ___
 
