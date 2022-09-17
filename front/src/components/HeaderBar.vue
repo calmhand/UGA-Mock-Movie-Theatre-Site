@@ -1,0 +1,51 @@
+<template>
+    <div class="nav-bar" id="nav-bar">
+        <div id="nav-content">
+            <!-- Right Side -->
+            <router-link id="nav-element" to="/">Home</router-link>
+            <router-link id="nav-element" to="/about">Movies</router-link>
+            <router-link id="nav-element" to="/test">Showtimes</router-link>
+            <!-- Left Side -->
+            <router-link id="nav-element" style="float:right;" to="/">Checkout</router-link>
+            <router-link id="nav-element" style="float:right;" to="/">Account</router-link>
+        </div>
+    </div>
+  <!-- <router-view/> -->
+</template>
+
+<script>
+export default {
+    name: "HeaderBar",
+}
+</script>
+
+<style scoped>
+    .nav-bar {
+        height: 50px;
+        text-align: left;
+        padding: 0;
+        background-image: url("@/assets/header-icon.png");
+        background-size: 50px;
+        background-repeat: no-repeat;
+        background-position-x: center;
+        background-color: black;
+        opacity: 0.9;
+        backdrop-filter: blur(10px);
+    }
+
+    #nav-content {
+        padding: 10px 0;
+    }
+
+    #nav-element {
+        padding: 0 15px;
+        text-decoration: none;
+        color: white;
+        font-size: 20px;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    #nav-element:hover {
+        opacity: 0.5;
+    }
+</style>
