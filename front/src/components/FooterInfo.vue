@@ -18,6 +18,7 @@ export default {
         height: 50px;
         background-color: black;
         font-size: 20px;
+        opacity: 0.9;
     }
 
     #footer-content {

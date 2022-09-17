@@ -1,3 +1,4 @@
+<!-- TODO Connect to spring -->
 <template>
   <HeaderBar/>
   <router-view/>
@@ -22,6 +23,7 @@
   text-align: center;
   color: #b3b3b3;
   background-color: white;
+  height: 100vh;
 }
 
 nav {

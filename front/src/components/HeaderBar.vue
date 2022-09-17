@@ -6,8 +6,9 @@
             <router-link id="nav-element" to="/about">Movies</router-link>
             <router-link id="nav-element" to="/test">Showtimes</router-link>
             <!-- Left Side -->
-            <router-link id="nav-element" style="float:right;" to="/">Checkout</router-link>
-            <router-link id="nav-element" style="float:right;" to="/">Account</router-link>
+            <router-link id="nav-element" style="float:right;" to="/settings">Checkout</router-link>
+            <router-link v-if=this.$loginStatus id="nav-element" style="float:right;" to="/settings">Account</router-link>
+            <router-link v-else id="nav-element" style="float:right;" to="/login">Login</router-link>
         </div>
     </div>
   <!-- <router-view/> -->
