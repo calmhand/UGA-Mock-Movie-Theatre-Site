@@ -1,7 +1,7 @@
 <!-- TODO Connect to spring -->
 <template>
   <HeaderBar/>
-  <router-view/>
+  <router-view id="main-window"/>
   <FooterInfo/>
 </template>
 

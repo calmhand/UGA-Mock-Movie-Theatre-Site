@@ -26,6 +26,11 @@ const routes = [
     component: () => import("@/components/Settings/LoginPage.vue")
   },
   {
+    path: "/login/create",
+    name: "createAccount",
+    component: () => import("@/components/Settings/CreateAccount.vue")
+  },
+  {
     path: "/settings",
     name: "settings",
     component: () => import("@/views/SettingsView.vue")
@@ -34,7 +39,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes 
 })
 
 export default router
