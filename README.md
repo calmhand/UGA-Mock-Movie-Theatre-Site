@@ -28,10 +28,10 @@ ___
 
 Database: mySQL
 
-Server: tba
+Server: XAMPP/Tomcat, Spring Boot
 
-Front-End: VueJS (Possibly)
+Front-End: VueJS
 
-Languages in use: Java?, Javascript, HTML, CSS, mySQL
+Languages in use: Java, Javascript, HTML, CSS, mySQL
 
 ___
