@@ -8,9 +8,11 @@
 
         <label for="password">Password</label><br>
         <input name="password" type="password" id="pass-input"><br>
+        <!-- TODO: Don't implement yet. Just send to a Customer's profile. -->
+        <button type="button" id="login-button" @click="goToProfile()">Login</button><br><br>
         
         New to the site? <router-link to="/login/create">Create an Account!</router-link><br><br>
-        <a href="">Admin Login</a> <!-- TODO: DECIDE TO KEEP OR REMOVE -->
+        <router-link to="/login/admin">Admin Login</router-link> <!-- TODO: DECIDE TO KEEP OR REMOVE -->
       </form>
     </div>
   </div>
@@ -18,22 +20,34 @@
 
 <script>
 export default {
-
+  name: "LoginPage",
+  methods: {
+    goToProfile() {
+      this.$router.push({name: 'UserProfile', params: {userId: 123}})
+    }
+  },
 }
 </script>
 
 <style scoped>
   .login-container {
-    height: 100%;
     background-color:black;
   }
 
   .form-container {
+    height: 100%;
     margin: 0 auto;
+    border: solid 2px green;
+    display: flex;
+    align-items: center;
   }
   
   form {
-    padding: 30% 0;
+    border: solid 1px white;
+    width: 400px;
+    margin: 10px auto;
+    padding: 40px;
+
   }
 
   input {
@@ -46,5 +60,13 @@ export default {
   
   label {
     font-size: 30px;
+  }
+
+  button {
+    width: 150px;
+    height: 45px;
+    border: solid 4px white;
+    border-radius: 10px;
+    margin: 15px;
   }
 </style>

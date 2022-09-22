@@ -1,45 +1,32 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomePage from '../views/HomePage.vue'
+
+/** Importing routes from external src to save space. */
+import loginPaths from '@/router/LoginRoutes.js'
+import userPaths from '@/router/UserRoutes.js'
+import adminPaths from '@/router/AdminRoutes.js'
+import moviePaths from '@/router/MovieRoutes.js'
+
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomePage
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  {
-    path: '/test',
-    name: 'test',
-    component: () => import("../views/TestView.vue")
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: () => import("@/components/Settings/LoginPage.vue")
-  },
-  {
-    path: "/login/create",
-    name: "createAccount",
-    component: () => import("@/components/Settings/CreateAccount.vue")
-  },
-  {
-    path: "/settings",
-    name: "settings",
-    component: () => import("@/views/SettingsView.vue")
+  { // Home
+    path: '/home',
+    name: 'HomePage', 
+    component: () => import("@/views/HomePage.vue")
+  }, // Imported Paths
+  ...loginPaths,
+  ...userPaths,
+  ...adminPaths,
+  ...moviePaths,
+  { // Catch non-existent paths.
+    path: '/:catchAll(.*)',
+    name: 'ErrorPage',
+    component: () => import('@/views/ErrorPage.vue')
   }
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes 
+  routes
 })
 
 export default router

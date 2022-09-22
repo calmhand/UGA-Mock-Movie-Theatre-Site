@@ -2,21 +2,22 @@
     <div class="nav-bar" id="nav-bar">
         <div id="nav-content">
             <!-- Right Side -->
-            <router-link id="nav-element" to="/">Home</router-link>
-            <router-link id="nav-element" to="/about">Movies</router-link>
-            <router-link id="nav-element" to="/test">Showtimes</router-link>
+            <router-link id="nav-element" to="/home">Home</router-link>
+            <router-link id="nav-element" to="/movies/list">Movies</router-link>
+
             <!-- Left Side -->
-            <router-link id="nav-element" style="float:right;" to="/settings">Checkout</router-link>
-            <router-link v-if=this.$loginStatus id="nav-element" style="float:right;" to="/settings">Account</router-link>
-            <router-link v-else id="nav-element" style="float:right;" to="/login">Login</router-link>
+            <router-link id="nav-element" style="float:right;" to="/test">Showtimes</router-link>
+
+            <!-- <router-link v-if=loginState id="nav-element" style="float:right;" to="/settings">Account</router-link> -->
+            <router-link id="nav-element" style="float:right;" to="/login">Account</router-link>  <!-- TODO: Make site automatically update header based on user's state. -->
         </div>
     </div>
-  <!-- <router-view/> -->
 </template>
 
 <script>
 export default {
     name: "HeaderBar",
+    props: ['']
 }
 </script>
 

@@ -1,28 +1,43 @@
 <template>
   <div class="homepage">
-    <!-- scrollable display for movies? -->
-    <section></section>
+    <input><router-link to="/movies/list">Search</router-link>
 
-    <!-- Scrollable? Currently Showing Movies -->
-    <div></div>
+    <!-- scrollable display for movie trailers? -->
+    <div>
+      Trailers<br>
+      [trailers go here]
+    </div>
+
+    <!-- Scrollable? Upcoming movies -->
+    <div>
+      Upcoming Movies<br>
+      <button @click="openMovieDetails()">put movie obj here</button>
+    </div>
     
-    <!-- Scrollable? Trailers for popular showings. -->
-    <div></div>
+    <!-- Scrollable? Movies currently showing. -->
+    <div>
+      Movies Showing Now<br>
+      <button @click="openMovieDetails()">put movie obj here</button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HomeView',
+  name: 'HomePage',
   components: {
+  },
+  methods: {
+    openMovieDetails() {
+      this.$router.push({name:'MovieDetails', params: {movieName: 'Polar Express'}})
+    }
   }
 }
 </script>
 
 <style scoped>
   .homepage {
-    background-color: rgb(107, 207, 112);
+    background-color: rgb(255, 255, 255);
   }
-
 
 </style>

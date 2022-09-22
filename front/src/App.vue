@@ -1,6 +1,6 @@
 <!-- TODO Connect to spring -->
 <template>
-  <HeaderBar/>
+  <HeaderBar :loginState="this.loginStatus"/>
   <router-view id="main-window"/>
   <FooterInfo/>
 </template>
@@ -16,6 +16,11 @@
 </script>
 
 <style>
+@font-face {
+  font-family: robo;
+  src: url(@/assets/Roboto_Condensed/RobotoCondensed-Regular.ttf);
+}
+
 #app {
   font-family: robo;
   -webkit-font-smoothing: antialiased;
@@ -30,17 +35,16 @@ nav {
   padding: 30px;
 }
 
-nav a {
+a {
   font-weight: bold;
   color: #2c3e50;
 }
 
-nav a.router-link-exact-active {
+a.router-link-exact-active {
   color: #42b983;
 }
 
-@font-face {
-  font-family: robo;
-  src: url(@/assets/Roboto_Condensed/RobotoCondensed-Regular.ttf);
+#main-window {
+  height: 100%;
 }
 </style>
