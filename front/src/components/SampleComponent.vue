@@ -1,5 +1,5 @@
 <template>
-  ERROR: PATH DOESN'T EXIST YET
+  <div></div>
 </template>
 
 <script>
@@ -8,6 +8,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

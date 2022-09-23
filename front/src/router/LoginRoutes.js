@@ -11,9 +11,14 @@ const loginPaths = [
     },
     {
         path: "/login/create",
-        name: "createAccount",
+        name: "CreateAccount",
         component: () => import("@/views/Login/CreateAccount.vue")
     },
+    {
+        path: "/login/confirmation",
+        name: "ConfirmAccount",
+        component: () => import('@/views/Login/ConfirmAccount.vue')
+    }
 ]
 
 export default loginPaths 

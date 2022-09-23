@@ -4,6 +4,7 @@
         Username: lorem <br>
         Email: Ipsum <br>
         Id: {{userId}}<br>
+        Address: 104 Caldwell Hall, Athens, GA, 30602<br>
         <button @click="displayOrders()">Orders</button><br>
         <button>Change Password</button>
         <button>Change Email</button><br>
@@ -15,7 +16,7 @@
 <script>
 export default {
     name: "UserProfile",
-    props: ['userId'],
+    props: ['userId', 'email', 'username', 'address'],
     methods: {
         displayOrders() {
             this.$router.push({name: 'UserOrders', params: {userId: this.userId}})
@@ -27,7 +28,6 @@ export default {
 
 <style scoped>
     .profile_page_container {
-        background-color: black;
-        height: 100%;
+        height: 100vh;
     }
 </style>

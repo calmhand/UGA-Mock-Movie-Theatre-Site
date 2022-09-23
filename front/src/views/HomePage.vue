@@ -4,40 +4,41 @@
 
     <!-- scrollable display for movie trailers? -->
     <div>
-      Trailers<br>
-      [trailers go here]
+      <span>Trailers</span><br>
+      <TrailerCarousel />
     </div>
 
     <!-- Scrollable? Upcoming movies -->
-    <div>
-      Upcoming Movies<br>
-      <button @click="openMovieDetails()">put movie obj here</button>
-    </div>
+    <span>Upcoming Movies</span><br>
+    <UpcomingShows />
     
     <!-- Scrollable? Movies currently showing. -->
     <div>
-      Movies Showing Now<br>
-      <button @click="openMovieDetails()">put movie obj here</button>
+      <span>Now Playing</span><br>
+      <CurrentShows />
     </div>
   </div>
 </template>
 
 <script>
+import TrailerCarousel from '@/components/HomeComponents/TrailerCarousel.vue'
+import UpcomingShows from '@/components/HomeComponents/UpcomingShows.vue'
+import CurrentShows from '@/components/HomeComponents/CurrentShows.vue'
+
 export default {
   name: 'HomePage',
   components: {
+    TrailerCarousel, UpcomingShows, CurrentShows
   },
   methods: {
-    openMovieDetails() {
-      this.$router.push({name:'MovieDetails', params: {movieName: 'Polar Express'}})
-    }
+
   }
 }
 </script>
 
 <style scoped>
   .homepage {
-    background-color: rgb(255, 255, 255);
+    margin: 10px; 
   }
 
 </style>

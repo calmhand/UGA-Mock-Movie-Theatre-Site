@@ -1,8 +1,10 @@
 <!-- TODO Connect to spring -->
 <template>
-  <HeaderBar :loginState="this.loginStatus"/>
-  <router-view id="main-window"/>
-  <FooterInfo/>
+  <div id="main-window">
+    <HeaderBar />
+    <router-view />
+    <FooterInfo/>
+  </div>
 </template>
 
 <script>
@@ -27,8 +29,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #b3b3b3;
-  background-color: white;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 nav {
@@ -46,5 +47,6 @@ a.router-link-exact-active {
 
 #main-window {
   height: 100%;
+  background-image: linear-gradient(160deg, blue, red);
 }
 </style>

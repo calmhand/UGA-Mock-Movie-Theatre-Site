@@ -4,10 +4,10 @@
       <form>
         <br>
         <label for="email">Email</label><br>
-        <input name="email" type="email" id="email-input"><br>
+        <input name="email" type="email" id="email-input" placeholder="lorem@ipsum.com"><br>
 
         <label for="password">Password</label><br>
-        <input name="password" type="password" id="pass-input"><br>
+        <input name="password" type="password" id="pass-input" placeholder="******"><br>
         <!-- TODO: Don't implement yet. Just send to a Customer's profile. -->
         <button type="button" id="login-button" @click="goToProfile()">Login</button><br><br>
         
@@ -31,11 +31,11 @@ export default {
 
 <style scoped>
   .login-container {
-    background-color:black;
+    height: 100vh;
   }
 
   .form-container {
-    height: 100%;
+
     margin: 0 auto;
     border: solid 2px green;
     display: flex;

@@ -10,6 +10,7 @@
 
             <!-- <router-link v-if=loginState id="nav-element" style="float:right;" to="/settings">Account</router-link> -->
             <router-link id="nav-element" style="float:right;" to="/login">Account</router-link>  <!-- TODO: Make site automatically update header based on user's state. -->
+            <a href=""></a>
         </div>
     </div>
 </template>

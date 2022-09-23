@@ -1,6 +1,6 @@
 <template>
-  <div>
-    ADMINN HOME
+  <div id="admin-home-container">
+    ADMIN HOME
   </div>
 </template>
 
@@ -10,6 +10,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  #admin-home-container {
+    height: 100vh;
+  }
 </style>

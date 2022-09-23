@@ -2,27 +2,30 @@
   <div class="create_container">
     <div class="create_form_container">
         <form id="create-account-form">
-            <!-- TODO: Add placeholders for demonstration. -->
+            <!-- TODO: Remove placeholders when implementing. -->
             <label>Username</label>
-            <input type="text"/><br>
+            <input type="text" placeholder="lorem"/><br>
 
             <label>Email</label>
-            <input type="email"/><br>
+            <input type="email" placeholder="lorem@ipsum.com"/><br>
 
             <label>Password</label>
-            <input type="password"/><br>
+            <input type="password" placeholder="***"/><br>
 
             <label>Re-enter Password</label>
-            <input type="password"/><br>
+            <input type="password" placeholder="***"/><br>
 
             <label>Street Address</label>
-            <input type="text"/>
+            <input type="text" placeholder="104 Caldwell Hall"/>
 
             <label>Zipcode</label>
-            <input type="number"/>
+            <input type="number" placeholder="30602"/><br>
+
+            <label>City</label>
+            <input type="text" placeholder="Athens"/>
 
             <label>State</label>
-            <select>
+            <select >
                 <option value="AL">AL</option>
                 <option value="AK">AK</option>
                 <option value="AR">AR</option>
@@ -77,7 +80,7 @@
             </select>
             <br>
 
-            <input value="Create Account" type="submit"/>
+            <router-link to="/login/confirmation">Create Account</router-link>
         </form>
     </div>
   </div>
@@ -85,14 +88,16 @@
 
 <script>
 export default {
-
+    name: "CreateAccount",
+    methods: {
+        
+    }
 }
 </script>
 
 <style scoped>
     .create_container {
-        height: 100%;
-        background-color: black;
+        height: 100vh;
     }
 
     .create_form_container {
@@ -112,7 +117,7 @@ export default {
 
     input {
         width: 200px;
-        height: 25px;
+        height: 50px;
         border: solid 4px white;
         border-radius: 10px;
         margin: 15px;
