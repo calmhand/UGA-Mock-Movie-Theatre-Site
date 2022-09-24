@@ -1,37 +1,34 @@
 <template>
-  <div id="film-container">
-    <img id="poster-image" :src="require(`@/assets/temp_assets/${poster}`)"/>
-    {{title}}
-    {{runtime}} | {{genre}}
-    {{release_date}}
-    {{rating}}
+  <div>
+    <div id="film-poster-container">
+      <img id="poster-image" :src="poster"/>
+    </div>
+    {{title}} | {{genre}} <br>
+    Rating: {{rating}} <br>
+    Release: {{release}}
   </div>
 </template>
 
 <script>
+
+
 export default {
-    props: {
-        title: String,
-        genre: String,
-        poster: String,
-        runtime: String,
-        release_date: String,
-        rating: Number
-    }
+  name: "MoviePoster",
+  props: ['title', `poster`, `genre`, `release`, `rating`]
 }
 </script>
 
 <style scoped>
-  #film-container {
+  #film-poster-container {
     height: 250px;
     width: 150px;
-    background-color: white;
-    border: solid 2px grey;
-    margin: 5px 15px;
+    margin: 5px 30px;
     color: black;
   }
 
   #poster-image {
-    width: 140px;
+    width: 150px;
+    height: 250px;
+    border: solid 2px black;
   }
 </style>
