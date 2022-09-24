@@ -1,16 +1,91 @@
 <template>
-  <div>
-    movie deets go here
+  <div id="movie-details-container">
+    <img src="@/assets/temp_assets/pearl-poster.jpg">
+    <section id="movie-info">
+      <h1>Pearl (2022)</h1>
+      <h3>Director: Ti West</h3>
+      <h5>Actors: David Corenswet; Mia Goth; Emma Jenkins-Purro</h5>
+      <p>
+        Trapped on her family's isolated farm, Pearl must tend to her ailing father 
+        under the bitter and overbearing watch of her devout mother. Lusting for a 
+        glamorous life like she's seen in the movies, Pearl finds her ambitions, 
+        temptations, and repressions all colliding in this origin story of X's 
+        iconic villain.
+      </p>
+    </section>
+    <section id="ticket-selector-container">
+      <div id="ticket-selectors">
+        <!-- TODO: Turn into component? -->
+        <form>
+          <h1>Tickets</h1>
+          <label>Child</label><br>
+          <input id="ticket-input" name="child-ticket" type="number" placeholder="0"><br>
+
+          <label>Adult</label><br>
+          <input id="ticket-input" name="adult-ticket" type="number" placeholder="3"><br>
+
+          <label>Senior</label><br>
+          <input id="ticket-input" name="senior-ticket" type="number" placeholder="0"><br>
+
+          <!-- TODO: Turn into component? -->
+          <h1>Showtimes</h1>
+          <div style="display: flex; flex-wrap:wrap; justify-content: center;">
+            <ShowtimeButton id="showtime-button" :time="`10:00`"/>
+            <ShowtimeButton :time="`10:30`"/>
+            <ShowtimeButton :time="`11:00`"/>
+            <ShowtimeButton :time="`11:30`"/>
+            <ShowtimeButton :time="`12:00`"/>
+          </div>
+        </form>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import ShowtimeButton from '@/components/MovieComponents/ShowtimeButton.vue';
 export default {
     name: "MovieDetails",
-    props: ["movieName"],
+    props: ["movieId"],
+    components: {ShowtimeButton}
 }
 </script>
 
-<style>
+<style scoped>
+  #movie-details-container {
+    height: 100vh;
+    padding: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 
+  #movie-info {
+    margin: 0 20px;
+    width: 575px;
+  }
+
+  #ticket-selectors {
+    border: solid black 1px;
+    height: 550px;
+    width: 350px;
+  }
+
+  #ticket-input {
+    width: 45px;
+  }
+
+  #showtime-button {
+    animation: highlight 1s infinite; /* TODO: Delete after demo*/
+  }
+
+  p {
+    font-size: 35px;
+  }
+
+  img {
+    border: solid 10px black;
+    height: 550px;
+    width: 350px;
+  }
 </style>

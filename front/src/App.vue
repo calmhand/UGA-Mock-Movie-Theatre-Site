@@ -50,6 +50,7 @@ a.router-link-exact-active {
   background-image: linear-gradient(160deg, blue, red);
 }
 
+/* TODO: Fade in/out animation for demo. Delete when not needed. */
 @keyframes highlight {
     0% {
       opacity: 1.0;

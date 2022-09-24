@@ -5,7 +5,7 @@ const moviePaths = [
         component: () => import("@/views/Movies/MoviesPage.vue")
     },
     {
-        path: "/movies/:movieName/info",
+        path: "/movies/:movieId/info",
         name: "MovieDetails",
         component: () => import("@/views/Movies/MovieDetails.vue"),
         props: true

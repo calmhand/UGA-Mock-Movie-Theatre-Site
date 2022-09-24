@@ -30,6 +30,7 @@
       :genre="`Horror`"
       rating="R"
       release="09/16"
+      @click="seeMovieDetails('Pearl')"
     />
 
     <MoviePoster 
@@ -48,8 +49,9 @@ export default {
     name: "MoviePage",
     components: {MoviePoster},
     methods: {
-        seeMovieDetails() {
-            console.log('got');
+        seeMovieDetails(id) {
+            console.log(id);
+            this.$router.push({name: 'MovieDetails', params:{movieId:`${id}`}})
         }
     }
 }
@@ -62,7 +64,7 @@ export default {
   }
 
   #pearl-poster {
-    animation: highlight 1s infinite;
+    animation: highlight 1s infinite; /* TODO: Delete after demo*/
   }
 
 </style>
