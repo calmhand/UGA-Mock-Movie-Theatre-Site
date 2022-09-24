@@ -5,7 +5,7 @@
         Email: Ipsum <br>
         Id: {{userId}}<br>
         Address: 104 Caldwell Hall, Athens, GA, 30602<br>
-        <button @click="displayOrders()">Orders</button><br>
+        <button id="orders-button" @click="displayOrders()">Orders</button><br>
         <button>Change Password</button>
         <button>Change Email</button><br>
         <input type="checkbox" checked> Allow Promotions
@@ -29,5 +29,9 @@ export default {
 <style scoped>
     .profile_page_container {
         height: 100vh;
+    }
+
+    #orders-button {
+        animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
     }
 </style>

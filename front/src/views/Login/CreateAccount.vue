@@ -80,7 +80,7 @@
             </select>
             <br>
 
-            <router-link to="/login/confirmation">Create Account</router-link>
+            <router-link id="create-account-link" to="/login/confirmation">Create Account</router-link>
         </form>
     </div>
   </div>
@@ -105,9 +105,19 @@ export default {
     }
 
     #create-account-form {
-        border: 1px solid green;
         margin: 10px;
         text-align: left;
+    }
+
+    #create-account-link {
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+        background-color: black;
+        border: solid 2px white;
+        border-radius: 20px;
+        padding: 10px;
+        animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
     }
 
     label {

@@ -58,5 +58,4 @@ export default {
         flex-wrap: wrap;
         padding: 10px;
     }
-
 </style>

@@ -49,4 +49,16 @@ a.router-link-exact-active {
   height: 100%;
   background-image: linear-gradient(160deg, blue, red);
 }
+
+@keyframes highlight {
+    0% {
+      opacity: 1.0;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1.0;
+    }
+}
 </style>

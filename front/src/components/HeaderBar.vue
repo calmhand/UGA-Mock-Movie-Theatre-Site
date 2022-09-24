@@ -6,10 +6,10 @@
             <router-link id="nav-element" to="/movies/list">Movies</router-link>
 
             <!-- Left Side -->
-            <router-link id="nav-element" style="float:right;" to="/test">Showtimes</router-link>
+            <!-- <router-link id="nav-element" style="float:right;" to="/test">Showtimes</router-link> -->
 
             <!-- <router-link v-if=loginState id="nav-element" style="float:right;" to="/settings">Account</router-link> -->
-            <router-link id="nav-element" style="float:right;" to="/login">Account</router-link>  <!-- TODO: Make site automatically update header based on user's state. -->
+            <router-link id="nav-element" style="float:right;" to="/login">Login</router-link>  <!-- TODO: Make site automatically update header based on user's state. -->
             <a href=""></a>
         </div>
     </div>
@@ -46,6 +46,7 @@ export default {
         color: white;
         font-size: 20px;
         transition: opacity 0.2s ease-in-out;
+        animation: highlight 1s infinite;
     }
 
     #nav-element:hover {

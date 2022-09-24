@@ -11,7 +11,9 @@
         <!-- TODO: Don't implement yet. Just send to a Customer's profile. -->
         <button type="button" id="login-button" @click="goToProfile()">Login</button><br><br>
         
-        New to the site? <router-link to="/login/create">Create an Account!</router-link><br><br>
+        New to the site?<br>
+        <router-link to="/login/create">Create an Account!</router-link><br><br>
+        Need Executive Privledges?<br>
         <router-link to="/login/admin">Admin Login</router-link> <!-- TODO: DECIDE TO KEEP OR REMOVE -->
       </form>
     </div>
@@ -35,11 +37,16 @@ export default {
   }
 
   .form-container {
-
     margin: 0 auto;
     border: solid 2px green;
     display: flex;
     align-items: center;
+  }
+
+  a {
+    text-decoration: none;
+    font-size: 20px;
+    animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
   }
   
   form {
@@ -47,7 +54,6 @@ export default {
     width: 400px;
     margin: 10px auto;
     padding: 40px;
-
   }
 
   input {
@@ -68,5 +74,6 @@ export default {
     border: solid 4px white;
     border-radius: 10px;
     margin: 15px;
+    animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
   }
 </style>

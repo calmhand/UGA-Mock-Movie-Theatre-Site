@@ -30,5 +30,11 @@ export default {
     width: 150px;
     height: 250px;
     border: solid 2px black;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  #poster-image:hover {
+    cursor: pointer;
+    opacity: 0.6;
   }
 </style>
