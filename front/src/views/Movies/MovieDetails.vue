@@ -17,15 +17,23 @@
       <div id="ticket-selectors">
         <!-- TODO: Turn into component? -->
         <form>
-          <h1>Tickets</h1>
-          <label>Child</label><br>
-          <input id="ticket-input" name="child-ticket" type="number" placeholder="0"><br>
+          <h1 style="margin: 0;">Tickets</h1>
+          <div style="display: flex; flex-wrap:wrap; justify-content: center;">
+            <div style="margin: 10px">
+              <label>Child</label><br>
+              <input id="ticket-input" name="child-ticket" type="number" placeholder="0"><br>
+            </div>
 
-          <label>Adult</label><br>
-          <input id="ticket-input" name="adult-ticket" type="number" placeholder="3"><br>
+            <div style="margin: 10px">
+              <label>Adult</label><br>
+              <input id="ticket-input" name="adult-ticket" type="number" placeholder="3"><br>
+            </div>
 
-          <label>Senior</label><br>
-          <input id="ticket-input" name="senior-ticket" type="number" placeholder="0"><br>
+            <div style="margin: 10px">
+              <label>Senior</label><br>
+              <input id="ticket-input" name="senior-ticket" type="number" placeholder="0"><br>
+            </div>
+          </div>
 
           <!-- TODO: Turn into component? -->
           <h1>Showtimes</h1>
