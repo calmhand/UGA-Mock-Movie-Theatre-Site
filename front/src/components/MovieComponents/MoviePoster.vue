@@ -1,6 +1,6 @@
 <template>
   <div id="film-container">
-    <img :src="poster">
+    <img id="poster-image" :src="require(`@/assets/temp_assets/${poster}`)"/>
     {{title}}
     {{runtime}} | {{genre}}
     {{release_date}}
@@ -27,6 +27,11 @@ export default {
     width: 150px;
     background-color: white;
     border: solid 2px grey;
-    margin: 0 15px;
+    margin: 5px 15px;
+    color: black;
+  }
+
+  #poster-image {
+    width: 140px;
   }
 </style>

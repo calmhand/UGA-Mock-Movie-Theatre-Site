@@ -5,8 +5,6 @@
     <MoviePoster />
     <MoviePoster />
     <MoviePoster />
-    <MoviePoster />
-    <MoviePoster />
   </div>
 </template>
 

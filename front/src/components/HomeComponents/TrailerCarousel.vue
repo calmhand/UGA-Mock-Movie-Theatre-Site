@@ -3,15 +3,15 @@
         <div class="carousel-inner">
             <!-- TODO: Create an array of Trailer objects nested in 'active item' divs -->
             <div class="carousel-item active">
-                <MovieTrailer :title="`God of War`" :trailer="`https://www.youtube.com/embed/hfJ4Km46A-0`" />
+                <MovieTrailer :title="`The Inspection`" :trailer="`https://www.youtube.com/embed/wSeprzQM6gk`" />
             </div>
 
             <div class="carousel-item">
-                <MovieTrailer :title="`Elden Ring`" :trailer="`https://www.youtube.com/embed/e5wwSxl0atc`" />
+                <MovieTrailer :title="`Halloween Ends`" :trailer="`https://www.youtube.com/embed/i_mAWKyfj6c`" />
             </div>
 
             <div class="carousel-item">
-                <MovieTrailer :title="`Pokemon Pearl`" :trailer="`https://www.youtube.com/embed/9-qGKAdbVtw`" />
+                <MovieTrailer :title="`Amsterdam`" :trailer="`https://www.youtube.com/embed/GLs2xxM0e78`" />
             </div>
         </div>
         

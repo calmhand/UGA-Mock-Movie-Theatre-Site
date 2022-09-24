@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <span>{{title}}</span><br>
-    <iframe height="260px" width="530px" :src="trailer" encrypted-media picture-in-picture allowfullscreen></iframe>
+  <div  id="trailer-container">
+    <iframe height="300px" width="530px" :src="trailer" encrypted-media picture-in-picture allowfullscreen></iframe><br>
+    <span>{{title}}</span>
   </div>
 </template>
 
@@ -14,6 +14,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  #trailer-container {
+    margin: 10px 0;
+  }
 </style>

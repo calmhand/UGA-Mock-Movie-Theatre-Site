@@ -1,7 +1,7 @@
 <template>
     <footer class="footer-bar">
         <div id="footer-content">
-            <a id="footer-links" href="https://www.github.com/calmhand/SE4050-project">Github Repo</a>
+            <a id="footer-links" href="https://www.github.com/calmhand/SE4050-project" target="_blank">Github Repo</a>
             2022 &copy; Team 3B
         </div>
     </footer>

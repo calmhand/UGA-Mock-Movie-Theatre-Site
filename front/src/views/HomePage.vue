@@ -1,20 +1,22 @@
 <template>
   <div class="homepage">
-    <input><router-link to="/movies/list">Search</router-link>
+    <div id="search-container">
+      <input placeholder="The Inspection"><router-link id="search-button" to="/movies/list">Search</router-link>
+    </div>
 
     <!-- scrollable display for movie trailers? -->
     <div>
-      <span>Trailers</span><br>
+      <h1>TRAILERS</h1><br>
       <TrailerCarousel />
     </div>
 
     <!-- Scrollable? Upcoming movies -->
-    <span>Upcoming Movies</span><br>
+    <h1>UPCOMING MOVIES</h1><br>
     <UpcomingShows />
     
     <!-- Scrollable? Movies currently showing. -->
     <div>
-      <span>Now Playing</span><br>
+      <h1>NOW PLAYING</h1><br>
       <CurrentShows />
     </div>
   </div>
@@ -41,4 +43,15 @@ export default {
     margin: 10px; 
   }
 
+  h1 {
+    margin: 0;
+    color: white;
+    text-decoration: underline;
+  }
+
+  #search-button {
+    text-decoration: none;
+    color: white;
+    margin: 0 10px;
+  }
 </style>

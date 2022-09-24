@@ -1,12 +1,11 @@
 <template>
   <div id="upcoming-shows-container">
+    <MoviePoster poster="inspection_poster.jpg"/>
     <MoviePoster />
     <MoviePoster />
     <MoviePoster />
     <MoviePoster />
-    <MoviePoster />
-    <MoviePoster />
-    <MoviePoster />
+
   </div>
 </template>
 
