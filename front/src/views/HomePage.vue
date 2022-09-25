@@ -1,7 +1,7 @@
 <template>
   <div class="homepage">
     <div id="search-container">
-      <input placeholder="The Inspection"><router-link id="search-button" to="/movies/list">Search</router-link>
+      <input placeholder="Pearl"><router-link id="search-button" to="/movies/list">Search</router-link>
     </div>
 
     <!-- scrollable display for movie trailers? -->

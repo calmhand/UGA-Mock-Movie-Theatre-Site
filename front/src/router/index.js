@@ -5,7 +5,7 @@ import loginPaths from '@/router/LoginRoutes.js'
 import userPaths from '@/router/UserRoutes.js'
 import adminPaths from '@/router/AdminRoutes.js'
 import moviePaths from '@/router/MovieRoutes.js'
-
+import checkoutPaths from '@/router/CheckoutRoutes.js'
 
 const routes = [
   { // Home
@@ -17,6 +17,7 @@ const routes = [
   ...userPaths,
   ...adminPaths,
   ...moviePaths,
+  ...checkoutPaths,
   { // Catch non-existent paths.
     path: '/:catchAll(.*)',
     name: 'ErrorPage',

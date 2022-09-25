@@ -38,7 +38,7 @@
           <!-- TODO: Turn into component? -->
           <h1>Showtimes</h1>
           <div style="display: flex; flex-wrap:wrap; justify-content: center;">
-            <ShowtimeButton id="showtime-button" :time="`10:00`"/>
+            <router-link to="/checkout/seating"><ShowtimeButton id="showtime-button" :time="`10:00`"/></router-link>
             <ShowtimeButton :time="`10:30`"/>
             <ShowtimeButton :time="`11:00`"/>
             <ShowtimeButton :time="`11:30`"/>
