@@ -61,6 +61,7 @@ export default {
   #movies-container {
     height: 100vh;
     display: flex;
+    flex-wrap: wrap;
   }
 
   #pearl-poster {

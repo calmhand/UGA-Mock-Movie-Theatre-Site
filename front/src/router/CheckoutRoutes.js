@@ -9,6 +9,11 @@ const checkoutPaths = [
         name: 'AddressBilling',
         component: () => import('@/views/Checkout/AddressBilling.vue')  
     },
+    {
+        path: '/checkout/order-confirmed',
+        name: 'OrderConfirmed',
+        component: () => import('@/views/Checkout/OrderConfirmed.vue')
+    },
 ]
 
 export default checkoutPaths
