@@ -70,7 +70,7 @@ margin: 2% 10% 10% 10%;
 }
 
 #admin-console-container {
-    height: 200vh;
+    min-height: 100vh;
     width: 100vW;
 }
 

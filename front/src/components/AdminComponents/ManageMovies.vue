@@ -1,7 +1,16 @@
 <template>
   <div class="manage-movies-container">
     <div id="allmovies-container">
-      <h1>Movies</h1>
+
+    <div id="movieSearchBar">
+      <form id="movieSearch">
+        <label id="movieSearchLabel" for="movies">Movies</label>
+        <input type="search" id="query" name="q" placeholder="Search Movie">
+        <button id="searchButton">Search</button>
+      </form>
+    </div>
+
+      
       <table>
         <tr>
           <th>Movie name</th>
@@ -78,6 +87,13 @@
         </div>
         <div class="input-tab">
           <input class="input-field" type="text" name="producer">
+        </div>
+
+        <div class="labels">
+          <label for="releaseDate">Release Date</label>
+        </div>
+        <div class="input-tab">
+          <input class="input-field" type="date" name="releaseDate">
         </div>
 
         <div class="labels">
@@ -187,17 +203,17 @@
         </div>
 
         <div class="labels">
-          <label>Date</label>
+          <label for="showDate">Show Date</label>
         </div>
         <div class="input-tab">
           <input class="input-field" type="date">
         </div>
 
         <div class="labels">
-          <label>Time</label>
+          <label for="showTime">Show Time</label>
         </div>
         <div class="input-tab">
-          <input class="input-field" type="time">
+          <input class="input-field" type="time" name="showTime">
         </div>
         <div class="submission">
           <button type="submit" @click="saveshow()">Save</button>
@@ -221,7 +237,7 @@ export default {
       document.getElementById("add-movie-form").style.display = "none";
       //clear form
     },
-    saveMovie(){
+    saveMovie() {
       document.getElementById("add-movie-form").style.display = "none";
       //do something
     },
@@ -232,7 +248,7 @@ export default {
       document.getElementById("add-show-form").style.display = "none";
       //clear form
     },
-    saveShow(){
+    saveShow() {
       document.getElementById("add-show-form").style.display = "none";
       //do something
     },
@@ -304,11 +320,11 @@ export default {
   font-size: 15px;
 }
 
-#synopsis{
+#synopsis {
   height: 100px;
 }
 
-button{
+button {
   margin: 5px;
   background-color: #e67e22;
   border-radius: 4px;
@@ -320,7 +336,16 @@ button{
   border: 1px solid;
 }
 
-.submission{
+#searchButton{
+  all: initial;
+  height: 30px;
+  background-color: #e67e22;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.submission {
   margin: 10px 0px 0px 60px;
 }
 
@@ -331,6 +356,7 @@ button:hover {
 h1 {
   text-align: left;
   font-size: 25px;
+  width: 100px;
 }
 
 table {
@@ -349,5 +375,15 @@ th {
 
 tr {
   background-color: white;
+}
+
+#movieSearchBar{
+  float: left;
+  margin-bottom: 5px;
+}
+
+#movieSearchLabel{
+  font-size: 25px;
+  margin-right:875px;
 }
 </style>
