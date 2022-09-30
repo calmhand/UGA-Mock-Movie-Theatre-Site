@@ -1,6 +1,6 @@
 <template>
   <div id="admin-home-container">
-    ADMIN HOME
+    Not using this using AdminConsole
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 const adminPaths = [
     {
-        path: "/admin/home",
-        name: "AdminHome",
-        component: () => import("@/views/Settings/AdminHome.vue")
+        path: "/admin/console",
+        name: "AdminConsole",
+        component: () => import("@/views/Settings/AdminConsole.vue")
     },
 ]
 
