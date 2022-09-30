@@ -18,6 +18,9 @@
         <!-- TODO: Turn into component? -->
         <form>
           <h1 style="margin: 0;">Tickets</h1>
+          Child: $8.30<br>
+          Adult: $11.47<br>
+          Senior: $9.30
           <div style="display: flex; flex-wrap:wrap; justify-content: center;">
             <div style="margin: 10px">
               <label>Child</label><br>

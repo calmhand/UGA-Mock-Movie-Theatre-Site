@@ -24,13 +24,16 @@
       release="09/23"
     />
 
-    <MoviePoster 
-      :title="`Pearl`" 
-      :poster="require(`@/assets/temp_assets/pearl-poster.jpg`)"
-      :genre="`Horror`"
-      rating="R"
-      release="09/16"
-    />
+    <router-link to="/movies/pearl/info">
+      <MoviePoster 
+        :title="`Pearl`" 
+        :poster="require(`@/assets/temp_assets/pearl-poster.jpg`)"
+        :genre="`Horror`"
+        rating="R"
+        release="09/16"
+        style="animation: highlight 1s infinite; /* TODO: Delete after demo*/"
+      />
+    </router-link>
 
     <MoviePoster 
       :title="`The Woman King`" 

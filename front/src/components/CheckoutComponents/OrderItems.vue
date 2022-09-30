@@ -19,6 +19,7 @@
         <span>Order Total: $36.77</span><br>
         <router-link to="/checkout/order-confirmed"><button form="checkout-form">Order</button></router-link>
         <br>
+        <router-link to="/movies/pearl/info">Update</router-link><br>
         <router-link to="/home">Cancel</router-link>
     </div>
   </div>
