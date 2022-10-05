@@ -6,7 +6,7 @@
 
     <!-- scrollable display for movie trailers? -->
     <div>
-      <h1>TRAILERS</h1><br>
+      <h1 id="trailer-heading">TRAILERS</h1><br>
       <TrailerCarousel />
     </div>
 
@@ -47,6 +47,14 @@ export default {
     margin: 0;
     color: white;
     text-decoration: underline;
+  }
+
+  #trailer-heading{
+    margin-left: 15%;
+  }
+
+  #search-container{
+    float: right;
   }
 
   #search-button {

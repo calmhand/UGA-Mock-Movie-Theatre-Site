@@ -7,6 +7,7 @@
           <th>Promotion name</th>
           <th>Discount</th>
           <th>Promotion Code</th>
+          <th>Is Active</th>
           <th>Sent to Users</th>
           <th>Options</th>
         </tr>
@@ -15,8 +16,10 @@
           <td>10%</td>
           <td>HOMECOMING10</td>
           <td>True</td>
+          <td>True</td>
           <td><button>Send to Users</button>
-            <button>Delete</button>
+            <button>Suspend</button>
+            <button>Activate</button>
           </td>
         </tr>
         <tr>
@@ -24,8 +27,10 @@
           <td>20%</td>
           <td>SANTA20</td>
           <td>False</td>
+          <td>False</td>
           <td><button>Send to Users</button>
-            <button>Delete</button>
+            <button>Suspend</button>
+            <button>Activate</button>
           </td>
         </tr>
       </table>
@@ -33,34 +38,40 @@
     <br /><br />
     <div id="addpromo-container">
       <button @click="openAddPromoForm()">Add Promo</button>
-      <form id="add-promo-form">
-        <div class="labels">
-          <label for="promotionName">Promotion Name</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="text" name="promotionName">
-        </div>
+      <div id="addpromo-form-container">
+        <form id="add-promo-form">
+          <div class="labels">
+            <label for="promotionName">Promotion Name</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="text" name="promotionName">
+          </div>
 
-        <div class="labels">
-          <label for="discount">Discount</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="text" name="discount">
-        </div>
+          <div class="labels">
+            <label for="discount">Discount</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="text" name="discount">
+          </div>
 
-        <div class="labels">
-          <label for="promotionCode">Promotion Code</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="text" name="promotionCode">
-        </div>
+          <div class="labels">
+            <label for="promotionCode">Promotion Code</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="text" name="promotionCode">
+          </div>
 
-        <div class="submission">
+          <!-- <div class="submission">
           <button type="submit" @click="savePromo()">Save</button>
           <button @click="closeAddPromoForm()">Cancel</button>
+        </div> -->
+        <!-- added outside </form> as submit is messing up url path-->
+        </form>
+        <div class="submission">
+          <button @click="savePromo()">Save</button>
+          <button @click="closeAddPromoForm()">Cancel</button>
         </div>
-
-      </form>
+      </div>
     </div>
 
   </div>
@@ -72,13 +83,14 @@ export default {
   props: [''],
   methods: {
     openAddPromoForm() {
-      document.getElementById("add-promo-form").style.display = "block";
+      document.getElementById("addpromo-form-container").style.display = "block";
     },
     closeAddPromoForm() {
-      document.getElementById("add-promo-form").style.display = "none";
+      document.getElementById("addpromo-form-container").style.display = "none";
     },
     savePromo() {
       // save
+      this.closeAddPromoForm();
     },
     loadPromotions() {
       // api to call all promotions and load the table
@@ -95,6 +107,9 @@ export default {
   margin: 0 auto;
   width: 100%;
   padding: 10px;
+}
+
+#addpromo-form-container {
   display: none;
 }
 

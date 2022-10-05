@@ -15,7 +15,8 @@
                     <td>jay@gmail.com</td>
                     <td>active</td>
                     <td>customer</td>
-                    <td><button>Suspend</button>
+                    <td><button>Bookings</button>
+                        <button>Suspend</button>
                         <button>Activate</button>
                         <button>Make Admin</button>
                     </td>
@@ -25,7 +26,8 @@
                     <td>Jayasimha@gmail.com</td>
                     <td>active</td>
                     <td>admin</td>
-                    <td><button>Suspend</button>
+                    <td><button>Bookings</button>
+                        <button>Suspend</button>
                         <button>Activate</button>
                         <button>Make Admin</button>
                     </td>

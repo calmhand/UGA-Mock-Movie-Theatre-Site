@@ -2,15 +2,15 @@
   <div class="manage-movies-container">
     <div id="allmovies-container">
 
-    <div id="movieSearchBar">
-      <form id="movieSearch">
-        <label id="movieSearchLabel" for="movies">Movies</label>
-        <input type="search" id="query" name="q" placeholder="Search Movie">
-        <button id="searchButton">Search</button>
-      </form>
-    </div>
+      <div id="movieSearchBar">
+        <form id="movieSearch">
+          <label id="movieSearchLabel" for="movies">Movies</label>
+          <input type="search" id="query" name="q" placeholder="Search Movie">
+          <button id="searchButton">Search</button>
+        </form>
+      </div>
 
-      
+
       <table>
         <tr>
           <th>Movie name</th>
@@ -45,90 +45,95 @@
     </div>
     <div id="addmovie-container">
       <button @click="openAddMovieForm()">Add Movie</button>
-      <form id="add-movie-form">
+      <div id="addmovie-form-container">
+        <form id="add-movie-form">
 
-        <div class="labels">
-          <label for="movie">Movie Name</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="text" name="movie">
-        </div>
+          <div class="labels">
+            <label for="movie">Movie Name</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="text" name="movie">
+          </div>
 
-        <div class="labels">
-          <label for="cast">Cast</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="text" name="cast">
-        </div>
+          <div class="labels">
+            <label for="cast">Cast</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="text" name="cast">
+          </div>
 
-        <div class="labels">
-          <label for="dropdownGenre">Genre</label>
-        </div>
-        <div class="input-tab">
-          <select id="dropdown" name="dropdownGenre">
-            <option disabled value selected>Select a Genre</option>
-            <option value="Action">Action</option>
-            <option value="Comedy">Comedy</option>
-            <option value="Thriller">Thriller</option>
-            <option value="Horror">Horror</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+          <div class="labels">
+            <label for="dropdownGenre">Genre</label>
+          </div>
+          <div class="input-tab">
+            <select id="dropdown" name="dropdownGenre">
+              <option disabled value selected>Select a Genre</option>
+              <option value="Action">Action</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Horror">Horror</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
-        <div class="labels">
-          <label for="director">Director</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="text" name="director">
-        </div>
+          <div class="labels">
+            <label for="director">Director</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="text" name="director">
+          </div>
 
-        <div class="labels">
-          <label for="producer">Producer</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="text" name="producer">
-        </div>
+          <div class="labels">
+            <label for="producer">Producer</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="text" name="producer">
+          </div>
 
-        <div class="labels">
-          <label for="releaseDate">Release Date</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="date" name="releaseDate">
-        </div>
+          <div class="labels">
+            <label for="releaseDate">Release Date</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="date" name="releaseDate">
+          </div>
 
-        <div class="labels">
-          <label for="synopsis">Synopsis</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" id="synopsis" type="text" name="synopsis">
-        </div>
+          <div class="labels">
+            <label for="synopsis">Synopsis</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" id="synopsis" type="text" name="synopsis">
+          </div>
 
-        <div class="labels">
-          <label for="trailer">Trailer URL</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="text" name="trailer">
-        </div>
+          <div class="labels">
+            <label for="trailer">Trailer URL</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="text" name="trailer">
+          </div>
 
-        <div class="labels">
-          <label for="dropdownRating">Movie Rating</label>
-        </div>
-        <div class="input-tab">
-          <select id="dropdown" name="dropdownRating">
-            <option disabled value selected>Select Rating</option>
-            <option value="g">G</option>
-            <option value="pg">PG</option>
-            <option value="pg13">PG-13</option>
-            <option value="r">R</option>
-          </select>
-        </div>
-
+          <div class="labels">
+            <label for="dropdownRating">Movie Rating</label>
+          </div>
+          <div class="input-tab">
+            <select id="dropdown" name="dropdownRating">
+              <option disabled value selected>Select Rating</option>
+              <option value="g">G</option>
+              <option value="pg">PG</option>
+              <option value="pg13">PG-13</option>
+              <option value="r">R</option>
+            </select>
+          </div>
+          <!-- <div class="submission">
+            <button type="submit" @click="saveMovie()">Save</button>
+            <button @click="closeAddMovieForm()">Cancel</button>
+          </div> -->
+          <!-- added outside </form> as submit is messing up url path-->
+        </form>
         <div class="submission">
-          <button type="submit" @click="saveMovie()">Save</button>
+          <button @click="saveMovie()">Save</button>
           <button @click="closeAddMovieForm()">Cancel</button>
         </div>
-
-      </form>
+      </div>
     </div>
 
     <div id="allshows-container">
@@ -169,58 +174,64 @@
     </div>
     <div id="addshow-container">
       <button @click="openAddShowForm()">Add Show</button>
-      <form id="add-show-form">
-        <div class="labels">
-          <label for="dropdownMovieName">Movie Name</label>
-        </div>
-        <div class="input-tab">
-          <select id="dropdown" name="dropdownMovieName">
-            <option disabled value selected>Select a Movie</option>
-            <option value="Top Gun">Top Gun</option>
-            <option value="Bullet Train">Bullet Train</option>
-          </select>
-        </div>
+      <div id="addshow-form-container">
+        <form id="add-show-form">
+          <div class="labels">
+            <label for="dropdownMovieName">Movie Name</label>
+          </div>
+          <div class="input-tab">
+            <select id="dropdown" name="dropdownMovieName">
+              <option disabled value selected>Select a Movie</option>
+              <option value="Top Gun">Top Gun</option>
+              <option value="Bullet Train">Bullet Train</option>
+            </select>
+          </div>
 
-        <div class="labels">
-          <label for="hall">Hall</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="number" name="hall">
-        </div>
+          <div class="labels">
+            <label for="hall">Hall</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="number" name="hall">
+          </div>
 
-        <div class="labels">
-          <label for="price">price</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="number" name="price">
-        </div>
+          <div class="labels">
+            <label for="price">price</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="number" name="price">
+          </div>
 
-        <div class="labels">
-          <label for="bookingFee">Booking Fee</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="number" name="bookingFee">
-        </div>
+          <div class="labels">
+            <label for="bookingFee">Booking Fee</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="number" name="bookingFee">
+          </div>
 
-        <div class="labels">
-          <label for="showDate">Show Date</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="date">
-        </div>
+          <div class="labels">
+            <label for="showDate">Show Date</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="date">
+          </div>
 
-        <div class="labels">
-          <label for="showTime">Show Time</label>
-        </div>
-        <div class="input-tab">
-          <input class="input-field" type="time" name="showTime">
-        </div>
-        <div class="submission">
+          <div class="labels">
+            <label for="showTime">Show Time</label>
+          </div>
+          <div class="input-tab">
+            <input class="input-field" type="time" name="showTime">
+          </div>
+          <!-- <div class="submission">
           <button type="submit" @click="saveshow()">Save</button>
           <button @click="closeAddShowForm()">Cancel</button>
+        </div> -->
+          <!-- added outside </form> as submit is messing up url path-->
+        </form>
+        <div class="submission">
+          <button @click="saveshow()">Save</button>
+          <button @click="closeAddShowForm()">Cancel</button>
         </div>
-      </form>
-
+      </div>
     </div>
   </div>
 </template>
@@ -231,26 +242,26 @@ export default {
   props: [''],
   methods: {
     openAddMovieForm() {
-      document.getElementById("add-movie-form").style.display = "block";
+      document.getElementById("addmovie-form-container").style.display = "block";
     },
     closeAddMovieForm() {
-      document.getElementById("add-movie-form").style.display = "none";
+      document.getElementById("addmovie-form-container").style.display = "none";
       //clear form
     },
     saveMovie() {
-      document.getElementById("add-movie-form").style.display = "none";
       //do something
+      this.closeAddMovieForm();
     },
     openAddShowForm() {
-      document.getElementById("add-show-form").style.display = "block";
+      document.getElementById("addshow-form-container").style.display = "block";
     },
     closeAddShowForm() {
-      document.getElementById("add-show-form").style.display = "none";
+      document.getElementById("addshow-form-container").style.display = "none";
       //clear form
     },
     saveShow() {
-      document.getElementById("add-show-form").style.display = "none";
       //do something
+      this.closeAddShowForm();
     },
     loadMovies() {
       // api to call all movies and load the table
@@ -269,6 +280,9 @@ export default {
   margin: 0 auto;
   width: 100%;
   padding: 10px;
+}
+
+#addmovie-form-container {
   display: none;
 }
 
@@ -276,6 +290,9 @@ export default {
   margin: 0 auto;
   width: 100%;
   padding: 10px;
+}
+
+#addshow-form-container {
   display: none;
 }
 
@@ -336,7 +353,7 @@ button {
   border: 1px solid;
 }
 
-#searchButton{
+#searchButton {
   all: initial;
   height: 30px;
   background-color: #e67e22;
@@ -377,13 +394,13 @@ tr {
   background-color: white;
 }
 
-#movieSearchBar{
+#movieSearchBar {
   float: left;
   margin-bottom: 5px;
 }
 
-#movieSearchLabel{
+#movieSearchLabel {
   font-size: 25px;
-  margin-right:875px;
+  margin-right: 875px;
 }
 </style>

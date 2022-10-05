@@ -15,8 +15,9 @@
 
         <h5>Total</h5>
         <span>Ticket Sum: $34.42</span>
+        <span>Booking Fee: $0.30</span>
         <span>Tax: $2.35</span>
-        <span>Order Total: $36.77</span><br>
+        <span>Order Total: $37.07</span><br>
         <router-link to="/checkout/order-confirmed"><button form="checkout-form">Order</button></router-link>
         <br>
         <router-link to="/movies/pearl/info">Update</router-link><br>
