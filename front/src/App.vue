@@ -47,19 +47,6 @@ a.router-link-exact-active {
 
 #main-window {
   height: 100%;
-  background-image: linear-gradient(160deg, blue, red);
-}
-
-/* TODO: Fade in/out animation for demo. Delete when not needed. */
-@keyframes highlight {
-    0% {
-      opacity: 1.0;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 1.0;
-    }
+  background-image: linear-gradient(160deg, rgb(85, 85, 232), red);
 }
 </style>

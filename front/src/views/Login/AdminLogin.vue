@@ -45,7 +45,7 @@ export default {
   a {
     text-decoration: none;
     font-size: 20px;
-    animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
+
   }
   
   form {
@@ -73,6 +73,6 @@ export default {
     border: solid 4px white;
     border-radius: 10px;
     margin: 15px;
-    animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
+
   }
 </style>

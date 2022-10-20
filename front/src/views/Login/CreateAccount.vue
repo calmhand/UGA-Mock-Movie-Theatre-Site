@@ -117,7 +117,6 @@ export default {
         border: solid 2px white;
         border-radius: 20px;
         padding: 10px;
-        animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
     }
 
     label {

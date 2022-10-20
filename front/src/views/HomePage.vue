@@ -1,12 +1,7 @@
 <template>
   <div class="homepage">
-    <div id="search-container">
-      <input placeholder="Pearl"><router-link id="search-button" to="/movies/list">Search</router-link>
-    </div>
-
     <!-- scrollable display for movie trailers? -->
-    <div>
-      <h1>TRAILERS</h1><br>
+    <div id="trailer-container">
       <TrailerCarousel />
     </div>
 
@@ -40,7 +35,8 @@ export default {
 
 <style scoped>
   .homepage {
-    margin: 10px; 
+    display: flex;
+    flex-direction: column;
   }
 
   h1 {
@@ -49,9 +45,8 @@ export default {
     text-decoration: underline;
   }
 
-  #search-button {
-    text-decoration: none;
-    color: white;
-    margin: 0 10px;
+  #trailer-container {
+    height: 350px;
   }
+
 </style>

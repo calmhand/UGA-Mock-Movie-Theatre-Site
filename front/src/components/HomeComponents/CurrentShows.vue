@@ -31,7 +31,6 @@
         :genre="`Horror`"
         rating="R"
         release="09/16"
-        style="animation: highlight 1s infinite; /* TODO: Delete after demo*/"
       />
     </router-link>
 

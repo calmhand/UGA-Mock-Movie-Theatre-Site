@@ -32,6 +32,6 @@ export default {
     }
 
     #orders-button {
-        animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
+
     }
 </style>
