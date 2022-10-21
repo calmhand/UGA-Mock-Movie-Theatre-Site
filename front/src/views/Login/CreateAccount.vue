@@ -139,7 +139,13 @@
                     <label for="state">State</label>
                 </div>
             </div>
-            <router-link id="create-account-btn" to="/login/confirmation">Create Account</router-link>
+            <br><hr>
+            <div id="row-promo">
+                <div id="col">
+                    <label for="promo"><input id="promo" type="checkbox"/>Sign-up for promotions?</label>
+                </div>
+                <router-link id="create-account-btn" to="/login/confirmation">Create Account</router-link>
+            </div>
         </form>
         <div id="movie-image"></div>
     </div>
@@ -218,6 +224,13 @@ export default {
         align-items: center;
     }
 
+    #row-promo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: right;
+    }
+
     #col {
         display: flex;
         flex-direction: column;
@@ -255,6 +268,12 @@ export default {
         outline: none;
         color: white;
         transition: border-color 0.2s ease-in-out;
+    }
+
+    #promo {
+        height: 15px;
+        width: 15px;
+        margin: 0 15px;
     }
 
     input:required {

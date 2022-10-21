@@ -18,6 +18,14 @@
 </script>
 
 <style>
+/* SITE WIDE COLORS 
+  BLACK COFFEE - #3C3744 - BACKGROUND (GRADIENT)
+  DUKE BLUE - #090C9B = BACKGROUND (GRADIENT)
+  TRUE BLUE - #3088BE - LINKS
+  LIGHT STEEL BLUE - #B4C5E4 - ETC
+  IVORY - #FBFFF1 = REGULAR TEXT, BUTTONS
+*/
+
 @font-face {
   font-family: robo;
   src: url(@/assets/Roboto_Condensed/RobotoCondensed-Regular.ttf);
@@ -28,8 +36,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: white;
-  /* height: 100vh; */
+  color: #FBFFF1;
 }
 
 nav {
@@ -38,7 +45,7 @@ nav {
 
 a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #3066BE;
 }
 
 a.router-link-exact-active {
@@ -47,6 +54,6 @@ a.router-link-exact-active {
 
 #main-window {
   height: 100%;
-  background-image: linear-gradient(160deg, rgb(85, 85, 232), rgb(0, 0, 0));
+  background-image: linear-gradient(160deg, #090C9B, #3C3744);
 }
 </style>

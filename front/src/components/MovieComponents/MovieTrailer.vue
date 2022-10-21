@@ -1,12 +1,11 @@
 <template>
   <div  id="trailer-container">
     <img v-show="show" id="trailer-background" class="w-100" :src="this.imageURL">
-      <!-- TODO: Make the trailer a modal -->
       <div id="trailer-info">
         <span style="font-size: 10px;">FEATURE FILM</span>
         <span id="trailer-title">
           <strong>{{this.title}} &nbsp;</strong>
-          <button style="background-color: black; border-color: black;" type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="`#trailerModal` + this.trailerNum">
+          <button id="trailer-btn" type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="`#trailerModal` + this.trailerNum">
             <i class="fa-solid fa-play" style="font-size: 15px; opacity: 0.9;">&nbsp; Trailer</i>
           </button>
         </span>
@@ -51,7 +50,7 @@ export default {
           this.show = true
           // console.log(this.imageURL)
           // console.log(movieData);
-        })
+        }).catch((res)=>{console.log(res);})
 
         // Create Trailer Link
         await fetch('https://api.themoviedb.org/3/movie/'+ this.movieID + '/videos?api_key=f3ac6beeff1af51dfca6c7f4e3d29fae')
@@ -64,7 +63,7 @@ export default {
               break
             }
           }
-        })
+        }).catch((res)=>{console.log(res);})
       }
     },
     beforeMount() {
@@ -77,7 +76,7 @@ export default {
   #trailer-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: center;    
   }
 
   #trailer-info {
@@ -102,7 +101,13 @@ export default {
   #trailer-background {
     position: absolute;
     z-index: 0;
-    filter: blur(7px);
+    filter: blur(5px) opacity(50%);
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  #trailer-btn {
+    background-color: rgba(0, 0, 0, 1); 
+    border-color: rgba(0, 0, 0, 1);
   }
 
   article {
