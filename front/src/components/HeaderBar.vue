@@ -48,8 +48,8 @@ export default {
     .nav-bar {
         height: 50px;
         text-align: left;
-        padding: 0;
-        background-image: url("@/assets/header-icon.png");
+        padding: 0;;
+        /* background-image: url("@/assets/header-icon.png"); */
         background-size: 50px;
         background-repeat: no-repeat;
         background-position-x: center;

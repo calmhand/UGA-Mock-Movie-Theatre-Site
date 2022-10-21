@@ -28,7 +28,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #b3b3b3;
+  color: white;
   /* height: 100vh; */
 }
 
@@ -47,6 +47,6 @@ a.router-link-exact-active {
 
 #main-window {
   height: 100%;
-  background-image: linear-gradient(160deg, rgb(85, 85, 232), red);
+  background-image: linear-gradient(160deg, rgb(85, 85, 232), rgb(0, 0, 0));
 }
 </style>

@@ -6,8 +6,8 @@
         <span style="font-size: 10px;">FEATURE FILM</span>
         <span id="trailer-title">
           <strong>{{this.title}} &nbsp;</strong>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="`#trailerModal` + this.trailerNum">
-            <i class="fa-solid fa-play" style="font-size: 15px; opacity: 0.9;">Trailer</i>
+          <button style="background-color: black; border-color: black;" type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="`#trailerModal` + this.trailerNum">
+            <i class="fa-solid fa-play" style="font-size: 15px; opacity: 0.9;">&nbsp; Trailer</i>
           </button>
         </span>
         <article>{{this.description}}</article>
@@ -43,7 +43,7 @@ export default {
         await fetch('https://api.themoviedb.org/3/movie/upcoming?api_key=f3ac6beeff1af51dfca6c7f4e3d29fae')
         .then((res) => res.json())
         .then((data) => {
-          let movieData = data.results[this.trailerNum]
+          var movieData = data.results[this.trailerNum]
           this.description = movieData.overview
           this.movieID = movieData.id
           this.title = movieData.title
@@ -57,7 +57,7 @@ export default {
         await fetch('https://api.themoviedb.org/3/movie/'+ this.movieID + '/videos?api_key=f3ac6beeff1af51dfca6c7f4e3d29fae')
         .then((vid_res) => vid_res.json())
         .then((vid_data) => {
-          let movieVids = vid_data.results
+          var movieVids = vid_data.results
           for (let i = 0; i < movieVids.length; i++) {
             if (movieVids[i].name.includes('Trailer')) {
               this.trailerLink += 'https://www.youtube.com/embed/' + movieVids[i].key
