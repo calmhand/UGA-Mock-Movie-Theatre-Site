@@ -10,6 +10,7 @@ import checkoutPaths from '@/router/CheckoutRoutes.js'
 const routes = [
   { // Home
     path: '/home',
+    alias: '/',
     name: 'HomePage', 
     component: () => import("@/views/HomePage.vue")
   }, // Imported Paths

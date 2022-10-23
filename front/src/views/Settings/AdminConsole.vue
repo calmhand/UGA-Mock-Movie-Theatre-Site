@@ -84,8 +84,6 @@ div.admin-btn-group {
     color: #b3b3b3;
     padding: 10px 24px;
     cursor: pointer;
-    animation: highlight 1s infinite;
-    /* TODO: DELETE AFTER DEMO */
 
     /*float: right;  Float the buttons side by side */
 }

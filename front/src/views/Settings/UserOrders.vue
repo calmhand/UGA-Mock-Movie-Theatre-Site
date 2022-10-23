@@ -39,7 +39,7 @@ export default {
   }
 
   #checkout-button {
-    animation: highlight 1s infinite; /* TODO: DELETE AFTER DEMO */
+
   }
 
   button {
