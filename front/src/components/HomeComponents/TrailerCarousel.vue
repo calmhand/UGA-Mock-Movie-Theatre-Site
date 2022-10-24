@@ -1,7 +1,7 @@
 <template>
-    <div id="trailer-carousel" class="carousel slide" data-interval="false">
+    <!-- TODO: Create an array of Trailer objects nested in 'active item' divs -->
+    <!-- <div id="trailer-carousel" class="carousel slide" data-interval="false">
         <div class="carousel-inner">
-            <!-- TODO: Create an array of Trailer objects nested in 'active item' divs -->
             <div class="carousel-item active">
                 <MovieTrailer :title="`The Inspection`" :trailer="`https://www.youtube.com/embed/wSeprzQM6gk`" />
             </div>
@@ -24,17 +24,40 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
-    </div> 
+    </div>  -->
+    <div id="temp-carousel" class="carousel slide" data-bs-ride="true">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#temp-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#temp-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#temp-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            
+            <div class="carousel-item active">
+                <MovieTrailer :trailerNum="0" />
+            </div>
+            <div class="carousel-item">
+                <MovieTrailer :trailerNum="1" />
+            </div>
+            <div class="carousel-item">
+                <MovieTrailer :trailerNum="2" />
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import MovieTrailer from '@/components/MovieComponents/MovieTrailer.vue'
 
 export default {
+    // eslint-disable-next-line
     components: {MovieTrailer}
 }
 </script>
 
 <style scoped>
-    
+    #temp-carousel {
+        height: 100%;
+        width: 100%;
+    }
 </style>

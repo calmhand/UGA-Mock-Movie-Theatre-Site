@@ -64,8 +64,4 @@ export default {
     flex-wrap: wrap;
   }
 
-  #pearl-poster {
-    animation: highlight 1s infinite; /* TODO: Delete after demo*/
-  }
-
 </style>

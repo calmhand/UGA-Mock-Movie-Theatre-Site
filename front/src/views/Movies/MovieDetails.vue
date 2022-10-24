@@ -87,7 +87,7 @@ export default {
   }
 
   #showtime-button {
-    animation: highlight 1s infinite; /* TODO: Delete after demo*/
+
   }
 
   p {

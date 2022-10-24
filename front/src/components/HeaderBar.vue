@@ -2,15 +2,19 @@
     <div class="nav-bar" id="nav-bar">
         <div id="nav-content">
             <!-- Right Side -->
-            <router-link id="nav-element" to="/home">Home</router-link>
-            <router-link id="nav-element" to="/movies/list">Movies</router-link>
+            <!-- Home -->
+            <router-link id="nav-element" to="/home"><i class="fa-solid fa-house"></i></router-link>
+            
+            <!-- Shows -->
+            <router-link id="nav-element" to="/movies/list"><i class="fa-solid fa-ticket"></i></router-link>
 
-            <!-- Left Side -->
-            <!-- <router-link id="nav-element" style="float:right;" to="/test">Showtimes</router-link> -->
+            <!-- Left Side --> <!-- TODO: Make site automatically update header based on user's state? -->
+            <!-- Login/Account -->
+            <router-link id="nav-element" style="float:right;" to="/login"><i class="fa-regular fa-user"></i></router-link>
+            <!-- Search -->
+            <router-link id="nav-element" style="float:right;" to="/home"><i @click="search()" class="fa-solid fa-magnifying-glass"></i></router-link>
+            <input id="search-input" style="float:right;" placeholder="Search" v-on:focusout="closeSearch()">
 
-            <!-- <router-link v-if=loginState id="nav-element" style="float:right;" to="/settings">Account</router-link> -->
-            <router-link id="nav-element" style="float:right;" to="/login">Login</router-link>  <!-- TODO: Make site automatically update header based on user's state. -->
-            <a href=""></a>
         </div>
     </div>
 </template>
@@ -18,7 +22,25 @@
 <script>
 export default {
     name: "HeaderBar",
-    props: ['']
+    props: [''],
+    methods: {
+        search() {
+            let searchBar = document.querySelector('#search-input')
+            if (searchBar.style.opacity == '1') {
+                // TODO: Implement Search Function
+                console.log('initiate search');
+            } else {
+                searchBar.style.opacity = '1'
+                searchBar.style.pointerEvents = 'auto'
+            }
+        },
+        closeSearch() {
+            let searchBar = document.querySelector('#search-input')
+            // Input auto closes when not in focus.
+            searchBar.style.opacity = '0'
+            searchBar.style.pointerEvents = 'none'
+        }
+    }
 }
 </script>
 
@@ -26,13 +48,12 @@ export default {
     .nav-bar {
         height: 50px;
         text-align: left;
-        padding: 0;
-        background-image: url("@/assets/header-icon.png");
+        padding: 0;;
+        /* background-image: url("@/assets/header-icon.png"); */
         background-size: 50px;
         background-repeat: no-repeat;
         background-position-x: center;
-        background-color: black;
-        opacity: 0.9;
+        background-color: #302b3795;
         backdrop-filter: blur(10px);
     }
 
@@ -42,14 +63,27 @@ export default {
 
     #nav-element {
         padding: 0 15px;
+        margin: 0 15px;
         text-decoration: none;
-        color: white;
+        color: #FBFFF1;
         font-size: 20px;
         transition: opacity 0.2s ease-in-out;
-        animation: highlight 1s infinite;
     }
 
     #nav-element:hover {
         opacity: 0.5;
+    }
+
+    #search-input {
+        border: none;
+        outline: none;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+
+        margin: 0 15px;
+        background-color: transparent;
+        border-bottom: 2px solid #FBFFF1;
+        color: #FBFFF1;
     }
 </style>
