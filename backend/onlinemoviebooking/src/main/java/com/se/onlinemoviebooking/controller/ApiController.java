@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
+
 
 @Controller
 public class ApiController {
@@ -40,9 +42,7 @@ public class ApiController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value="/user/register")
 	@ResponseBody
-	public JSONObject getTopMutualFunds(HttpServletRequest request,@RequestBody JSONObject payload) {
-		//register user and send acknowledgement and confirmation mail details
-		//payload contains details 
-		return  new JSONObject();
+	public JSONObject registerUser(HttpServletRequest request,@RequestBody JSONObject payload) {
+		return  ApplicationAPIHandler.registerUser(payload);
 	}
 }
