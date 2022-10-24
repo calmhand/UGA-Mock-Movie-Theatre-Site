@@ -1,5 +1,9 @@
 package com.se.onlinemoviebooking.application.dto;
 
-public class CustomerDTO implements UserDTO{
+public class CustomerDTO extends UserDTO{
+	
+	
+	public CustomerDTO() {
+    }
 
 }
