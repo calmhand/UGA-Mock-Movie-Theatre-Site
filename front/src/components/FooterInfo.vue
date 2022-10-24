@@ -18,7 +18,7 @@ export default {
 <style>
     .footer-bar {
         height: 50px;
-        background-color: black;
+        background-color: #302b3795;
         font-size: 20px;
         opacity: 0.9;
     }
@@ -30,6 +30,6 @@ export default {
     #footer-links {
         padding: 0 10px;
         text-decoration: none;
-        color: white;
+        color: #FBFFF1;
     }
 </style>

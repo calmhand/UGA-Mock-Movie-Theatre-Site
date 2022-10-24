@@ -19,13 +19,14 @@
                 </div>
             </div>
 
-            <div id="row">
+            <!-- TODO: Implement later. -->
+            <!-- <div id="row">
                 <i class="fa-solid fa-at"></i>
                 <div id="col">
                     <input id="userName" type="text"/>
                     <label for="userName">Username</label>
                 </div>
-            </div>
+            </div> -->
 
             <div id="row">
                 <i class="fa-solid fa-mobile-screen"></i>
@@ -208,8 +209,8 @@ export default {
         text-decoration: none;
         font-size: 20px;
         text-align: center;
-        color: white;
-        border: solid 2px white;
+        color: #FBFFF1;
+        border: solid 2px #FBFFF1;
         border-radius: 20px;
         transition: opacity 0.2s ease-in-out;
     }
@@ -224,17 +225,17 @@ export default {
         align-items: center;
     }
 
+    #col {
+        display: flex;
+        flex-direction: column;
+        margin: 0 15px;
+    }
+
     #row-promo {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: right;
-    }
-
-    #col {
-        display: flex;
-        flex-direction: column;
-        margin: 0 15px;
     }
 
     h3 {
@@ -255,7 +256,7 @@ export default {
     label {
         font-size: 20px;
         padding-right: 10px;
-        color: white;
+        color: #FBFFF1;
     }
 
     input {
@@ -264,20 +265,20 @@ export default {
         background-color: transparent;
         font-size: 25px;
         border: none;
-        border-bottom: solid 4px white;
+        border-bottom: solid 4px #FBFFF1;
         outline: none;
-        color: white;
+        color: #FBFFF1;
         transition: border-color 0.2s ease-in-out;
     }
 
     #promo {
         height: 15px;
-        width: 15px;
-        margin: 0 15px;
+        width: 50px;
+        border: solid 3px #FBFFF1;
     }
 
     input:required {
-        border-bottom: solid 4px white;
+        border-bottom: solid 4px #FBFFF1;
     }
 
     input:invalid:focus {
@@ -287,9 +288,9 @@ export default {
     select {
         width: 150px;
         height: 50px;
-        color: white;
+        color: #FBFFF1;
         background-color: transparent;
         border: none;
-        border-bottom: solid 4px white;
+        border-bottom: solid 4px #FBFFF1;
     }
 </style>

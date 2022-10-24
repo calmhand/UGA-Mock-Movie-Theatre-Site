@@ -1,6 +1,6 @@
 <template>
-  <div  id="trailer-container">
-    <img v-show="show" id="trailer-background" class="w-100" :src="this.imageURL">
+  <div id="trailer-container">
+      <img v-show="show" id="trailer-background" class="w-100" :src="this.imageURL">
       <div id="trailer-info">
         <span style="font-size: 10px;">FEATURE FILM</span>
         <span id="trailer-title">
@@ -11,7 +11,7 @@
         </span>
         <article>{{this.description}}</article>
       </div>
-      <img v-show="show" id="trailer-poster" :src="this.imageURL">
+      <div id="poster-container"><img v-show="show" id="trailer-poster" :src="this.imageURL"></div>
     </div>
     <TrailerModal :link="this.trailerLink" :trailerId="this.trailerNum"/>
 </template>
@@ -76,7 +76,7 @@ export default {
   #trailer-container {
     display: flex;
     flex-direction: row;
-    align-items: center;    
+    align-items: center;
   }
 
   #trailer-info {
@@ -88,7 +88,7 @@ export default {
   }
 
   #trailer-title {
-    color: white;
+    color: #FBFFF1;
     font-size: 4rem;
     margin: 0;
   }
@@ -98,11 +98,16 @@ export default {
     z-index: 1;
   }
 
+  #poster-container {
+    z-index: 1;
+    
+  }
+
   #trailer-background {
     position: absolute;
     z-index: 0;
     filter: blur(5px) opacity(50%);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #3C3744;
   }
 
   #trailer-btn {
@@ -111,7 +116,7 @@ export default {
   }
 
   article {
-    color: white;
+    color: #FBFFF1;
     font-size: 20px;
   }
 </style>

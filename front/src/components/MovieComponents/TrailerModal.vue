@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO: Stop video playback when modal is closed. -->
     <div class="modal fade" :id="`trailerModal` + this.trailerId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -25,6 +26,6 @@ export default {
 
 <style scoped>
     .modal-content {
-        background-color: black;
+        background-color: #3C3744;
     }
 </style>

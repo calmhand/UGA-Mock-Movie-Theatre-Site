@@ -53,8 +53,7 @@ export default {
         background-size: 50px;
         background-repeat: no-repeat;
         background-position-x: center;
-        background-color: black;
-        opacity: 0.9;
+        background-color: #302b3795;
         backdrop-filter: blur(10px);
     }
 
@@ -66,7 +65,7 @@ export default {
         padding: 0 15px;
         margin: 0 15px;
         text-decoration: none;
-        color: white;
+        color: #FBFFF1;
         font-size: 20px;
         transition: opacity 0.2s ease-in-out;
     }
@@ -84,7 +83,7 @@ export default {
 
         margin: 0 15px;
         background-color: transparent;
-        border-bottom: 2px solid white;
-        color: white;
+        border-bottom: 2px solid #FBFFF1;
+        color: #FBFFF1;
     }
 </style>

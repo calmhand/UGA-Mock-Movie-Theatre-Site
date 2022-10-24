@@ -25,24 +25,25 @@
           <!-- TODO: Make reset password a modal? -->
           <h3 style="text-align: center;"><i class="fa-solid fa-lock"></i>Forgot Password?</h3>
           <hr>
-          <a href=""><h3 style="text-align: center;">Reset Password</h3></a>
+          <ForgotPassword/>
 
           <h3 style="text-align: center;"><i class="fa-solid fa-circle-question"></i>New User?</h3>
           <hr>
           <router-link to="/login/create"><h3 style="text-align: center;">Create Account</h3></router-link>
 
-          <h3 style="text-align: center;"><i class="fa-solid fa-user-gear"></i>Need Admin Access?</h3>
+          <h3 style="text-align: center;"><i class="fa-solid fa-user-gear"></i>Returning Admin?</h3>
           <hr>
           <router-link to="/login/admin"><h3 style="text-align: center;">Admin Login</h3></router-link> <!-- TODO: DECIDE TO KEEP OR REMOVE -->
         </div>
     </div>
-
   </div>
 </template>
 
 <script>
+import ForgotPassword from '@/components/LoginComponents/ForgotPassword.vue'
 export default {
   name: "LoginPage",
+  components: {ForgotPassword},
   methods: {
     goToProfile() {
       this.$router.push({name: 'UserProfile', params: {userId: 123}})
