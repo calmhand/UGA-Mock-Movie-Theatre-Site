@@ -2,24 +2,22 @@ package com.se.onlinemoviebooking.application.dto;
 
 import org.json.simple.JSONObject;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public class UserDTO implements SimpleDTO {
-	
+
 	private Integer userID;
-    private String firstName;
-    private String lastName;
-    private String number;
-    private String email;
-    private String password;
-    private Boolean isSubscribed;
-    private AddressDTO address;
-    private Status status;
-    
-    public UserDTO() {
-    }
-    
-    public UserDTO(JSONObject json) {
-    	
-    }
+	private String firstName;
+	private String lastName;
+	private String number;
+	private String email;
+	private String password;
+	private Boolean isSubscribed;
+	private AddressDTO address;
+	private Status status;
+
+	public UserDTO() {
+	}
 
 	public Integer getUserID() {
 		return userID;
@@ -88,10 +86,32 @@ public class UserDTO implements SimpleDTO {
 	public void setAddress(AddressDTO address) {
 		this.address = address;
 	}
-	
+
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-    
+	
+	public String toJSONString() {
+		try {
+			return dtoMapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			return "";
+		}
+	}
+
+	public static UserDTO getObject(String jsonstr) {
+		try {
+			return dtoMapper.readValue(jsonstr, UserDTO.class);
+		} catch (JsonProcessingException e) {
+
+			return new UserDTO();
+		}
+	}
+
+	public static UserDTO getObject(JSONObject json) {
+
+		return getObject(json.toJSONString());
+
+	}
 
 }

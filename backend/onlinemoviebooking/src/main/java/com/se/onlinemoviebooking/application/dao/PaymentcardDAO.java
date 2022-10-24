@@ -2,6 +2,10 @@ package com.se.onlinemoviebooking.application.dao;
 
 import javax.persistence.*;
 
+import org.json.simple.JSONObject;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 
 @Entity
 @Table(name="paymentcard")
@@ -14,6 +18,18 @@ public class PaymentcardDAO implements SimpleDAO{
     @Column(name = "cardid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cardID;
+	
+	@Column(name = "userid")
+    private String userID;
+	
+	@Column(name = "cardnumber")
+	private String cardNumber;
+	
+	@Column(name = "cardexpiry")
+	private String cardExpiry;
+	
+	@Column(name = "billingaddress")
+    private String billingAddress;
 	
 	public Integer getCardID() {
 		return cardID;
@@ -54,18 +70,29 @@ public class PaymentcardDAO implements SimpleDAO{
 	public void setBillingAddress(String billingAddress) {
 		this.billingAddress = billingAddress;
 	}
+	
+	public String toJSONString() {
+		try {
+			return daoMapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			return "";
+		}
+	}
 
-	@Column(name = "userid")
-    private String userID;
-	
-	@Column(name = "cardnumber")
-	private String cardNumber;
-	
-	@Column(name = "cardexpiry")
-	private String cardExpiry;
-	
-	@Column(name = "billingaddress")
-    private String billingAddress;
+	public static PaymentcardDAO getObject(String jsonstr) {
+		try {
+			return daoMapper.readValue(jsonstr, PaymentcardDAO.class);
+		} catch (JsonProcessingException e) {
+
+			return new PaymentcardDAO();
+		}
+	}
+
+	public static PaymentcardDAO getObject(JSONObject json) {
+
+		return getObject(json.toJSONString());
+
+	}
 	
 	
 

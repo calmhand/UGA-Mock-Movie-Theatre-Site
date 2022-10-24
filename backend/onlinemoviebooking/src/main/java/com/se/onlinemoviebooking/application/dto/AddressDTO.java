@@ -1,6 +1,10 @@
 package com.se.onlinemoviebooking.application.dto;
 
-public class AddressDTO {
+import org.json.simple.JSONObject;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+public class AddressDTO implements SimpleDTO{
 
 	private String street;
 	private String apt;
@@ -50,5 +54,29 @@ public class AddressDTO {
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
+	
+	public String toJSONString() {
+		try {
+			return dtoMapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			return "";
+		}
+	}
+	
+	public static AddressDTO getObject(String jsonstr) {
+		try {
+			return dtoMapper.readValue(jsonstr, AddressDTO.class);
+		} catch (JsonProcessingException e) {
+
+			return new AddressDTO();
+		}
+	}
+
+	public static AddressDTO getObject(JSONObject json) {
+
+		return getObject(json.toJSONString());
+
+	}
+
 
 }
