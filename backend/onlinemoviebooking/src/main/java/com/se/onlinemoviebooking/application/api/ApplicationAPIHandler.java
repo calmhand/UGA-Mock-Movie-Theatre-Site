@@ -10,6 +10,9 @@ import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
 public class ApplicationAPIHandler {
+	
+	
+	/*Registration*/
 
 	public static JSONObject registerUser(UserService userService, JSONObject payload) {
 		// to-do verify details and save
@@ -41,4 +44,15 @@ public class ApplicationAPIHandler {
 		resp.put(ApplicationStringConstants.PROCESS, ApplicationStringConstants.FAILURE);
 		return resp;
 	}
+	
+	
+	/*login*/
+	
+	/*logout*/
+	
+	/*update profile*/
+	
+	/*add payment card*/
+	
+	/*forgot password*/
 }

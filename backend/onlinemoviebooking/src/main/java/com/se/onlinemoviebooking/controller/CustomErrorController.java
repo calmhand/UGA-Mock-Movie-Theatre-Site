@@ -12,6 +12,6 @@ public class CustomErrorController implements ErrorController {
 	@RequestMapping("/error")
 	@ResponseBody
 	public String getErrorPath() {
-		return "<center><h1>Something went wrong Jay</h1></center>";
+		return "<center><h1>Something went wrong</h1></center>";
 	}	
 }
