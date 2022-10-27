@@ -2,27 +2,30 @@
   <div class="login-container">
 
     <div id="form-container">
-      <form>
+      <form :onsubmit="this.loginUser">
         <h3><i class="fa-solid fa-user"></i> Login</h3>
         <hr>
         <div id="col">
-          <input name="loginEmail" type="email" id="email-input" required>
+          <input name="loginEmail" type="email" id="loginEmail" required>
           <label for="loginEmail"><i class="fa-solid fa-envelope"></i>Email</label>
         </div>
         <div id="col">
-          <input name="loginPassword" type="password" id="pass-input" required>
+          <input name="loginPassword" type="password" id="loginPassword" required>
           <label for="loginPassword"><i class="fa-solid fa-key"></i>Password</label>
         </div>
-        <!-- TODO: Don't implement yet. Just send to a Customer's profile. -->
+        <!-- TODO: Delete after login is implemented. -->
         <button type="button" id="login-button" @click="goToProfile()">
           <i class="fa-solid fa-right-to-bracket"></i>
         </button>
+        <!-- TODO: Implement Login -->
+        <!-- <button type="submit" id="create-acc-btn">
+          <i class="fa-solid fa-right-to-bracket"></i>TESTING
+        </button> -->
       </form>
     </div>
 
     <div id="opt-container">
         <div>
-          <!-- TODO: Make reset password a modal? -->
           <h3 style="text-align: center;"><i class="fa-solid fa-lock"></i>Forgot Password?</h3>
           <hr>
           <ForgotPassword/>
@@ -33,7 +36,7 @@
 
           <h3 style="text-align: center;"><i class="fa-solid fa-user-gear"></i>Returning Admin?</h3>
           <hr>
-          <router-link to="/login/admin"><h3 style="text-align: center;">Admin Login</h3></router-link> <!-- TODO: DECIDE TO KEEP OR REMOVE -->
+          <router-link to="/login/admin"><h3 style="text-align: center;">Admin Login</h3></router-link>
         </div>
     </div>
   </div>
@@ -47,7 +50,23 @@ export default {
   methods: {
     goToProfile() {
       this.$router.push({name: 'UserProfile', params: {userId: 123}})
-    }
+    },
+    parseLoginForm() {
+      let email = document.querySelector("#loginEmail").value
+      let pass = document.querySelector("#loginPass").value
+
+      let loginPayload = {
+        "email" : email,
+        "password" : pass
+      }
+      this.loginUser(loginPayload)
+    },
+    loginUser(payload) {
+      // fetch here. 
+      // upon success: change site state, append store with user creds, push user to profile via router.
+      // this.$store.state.currentState = 1
+      console.log(payload);
+    },
   },
 }
 </script>

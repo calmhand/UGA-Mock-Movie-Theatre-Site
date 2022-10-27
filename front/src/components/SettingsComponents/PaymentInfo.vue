@@ -67,6 +67,7 @@
           <div id="row">
 
           </div>
+          <!-- TODO: Implement saveCard method. -->
         <button>Save Card</button>
       </form>
     </div>
@@ -76,6 +77,33 @@
 <script>
 export default {
   name: 'PaymentInfo',
+  methods: {
+    saveCard() {
+      let cardNum = document.querySelector("#cardNum")
+      let expirationMonth = document.querySelector("#expireMM")
+      let expirationYear = document.querySelector("#expireYY")
+      let ccNum = document.querySelector("#ccNum")
+      // let fullName = document.querySelector("#fullName")
+
+      let cardPayload = {
+        "cardnumber" : cardNum,
+        "ccnumber" : ccNum,
+        "cardexpiry" : expirationMonth + "/" + expirationYear,
+      }
+
+      fetch("", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardPayload)
+      })
+      .then((res) => res.json())
+      .then((result) => {console.log("success:" + result);})
+      .catch((err) => {console.log("Err: " + err);})
+    }
+  }
 }
 </script>
 

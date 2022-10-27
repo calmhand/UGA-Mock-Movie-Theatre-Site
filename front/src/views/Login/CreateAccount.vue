@@ -1,21 +1,22 @@
 <template>
   <div class="create_container">
     <div class="create_form_container">
-        <form id="create-account-form">
+        <form id="create-account-form" :onsubmit="this.registerUser">
             <!-- TODO: Create validation checks for passwords. -->
             <h3>Personal Details</h3>
             <hr>
 
+            <!-- First/Last Names -->
             <div id="row">
                 <i class="fa-regular fa-user"></i>
                 <div id="col">
-                    <input id="firstName" type="text" required/>
-                    <label for="firstName">First Name</label>
+                    <input id="regiFirst" type="text" required/>
+                    <label for="regiFirst">First Name</label>
                 </div>
 
                 <div id="col">
-                    <input id="lastName" type="text" required/>
-                    <label for="lastName">Last Name</label>
+                    <input id="regiLast" type="text" required/>
+                    <label for="regiLast">Last Name</label>
                 </div>
             </div>
 
@@ -31,59 +32,71 @@
             <div id="row">
                 <i class="fa-solid fa-mobile-screen"></i>
                 <div id="col">
-                    <input id="phone" type="tel" maxlength="10" required/>
-                    <label for="phone">Phone Number</label>
+                    <input id="regiPhone" type="tel" maxlength="10" required/>
+                    <label for="regiPhone">Phone Number</label>
                 </div>
             </div>
 
             <h3>Account Details</h3>
             <hr>
 
+            <!-- Email Row -->
             <div id="row">
                 <i class="fa-regular fa-envelope"></i>
                 <div id="col">
-                    <input id="email" type="email" required/>
-                    <label for="email">Email</label>
+                    <input id="regiEmail" type="email" required/>
+                    <label for="regiEmail">Email</label>
                 </div>
 
                 <div id="col">
-                    <input id="email" type="email" required/>
-                    <label for="email">Confirm Email</label>
+                    <input id="confirmRegiEmail" type="email" required/>
+                    <label for="confirmRegiEmail">Confirm Email</label>
                 </div>
             </div>
-
+            
+            <!-- Password Row -->
             <div id="row">
                 <i class="fa-solid fa-key"></i>
                 <div id="col">
-                    <input id="password" type="password" required/>
-                    <label for="password">Password</label>
+                    <input id="regiPass" type="password" required/>
+                    <label for="regiPass">Password</label>
                 </div>
 
                 <div id="col">
-                    <input id="confirmPass" type="password" required/>
-                    <label for="confirmPass">Confirm Password</label>
+                    <input id="confirmRegiPass" type="password" required/>
+                    <label for="confirmRegiPass">Confirm Password</label>
                 </div>
             </div>
 
+            <!-- Street Row -->
             <div id="row">
                 <i class="fa-regular fa-map"></i>
                 <div id="col">
-                    <input id="address" type="text"/>
-                    <label for="address">Street Address</label>
+                    <input id="regiAddress" type="text"/>
+                    <label for="regiAddress">Street Address</label>
                 </div>
 
                 <div id="col">
-                    <input id="zip" type="text" maxlength="5"/>
-                    <label for="zip">Zipcode</label>
+                    <input id="regiApt" type="text" style="width: 75px;"/>
+                    <label for="regiApt">Apt Num.</label>
+                </div>
+            </div>
+
+            <!-- Zip/City/State Row -->
+            <div id="row">
+                <i class="fa-solid fa-location-dot"></i>
+                <div id="col">
+                    <input id="regiZip" type="text" maxlength="5"/>
+                    <label for="regiZip">Zipcode</label>
                 </div>
 
                 <div id="col">
-                    <input id="city" type="text"/>
-                    <label for="city">City</label>
+                    <input id="regiCity" type="text"/>
+                    <label for="regiCity">City</label>
                 </div>
 
                 <div id="col">
-                    <select id="state">
+                    <select id="regiState">
                         <option value="" disabled selected>Select your state</option>
                         <option value="AL">AL</option>
                         <option value="AK">AK</option>
@@ -137,15 +150,16 @@
                         <option value="WV">WV</option>
                         <option value="WY">WY</option>
                     </select>
-                    <label for="state">State</label>
+                    <label for="regiState">State</label>
                 </div>
             </div>
             <br><hr>
             <div id="row-promo">
                 <div id="col">
-                    <label for="promo"><input id="promo" type="checkbox"/>Sign-up for promotions?</label>
+                    <label for="isSubscribed"><input id="isSubscribed" type="checkbox" checked="checked"/>Sign-up for promotions?</label>
                 </div>
-                <router-link id="create-account-btn" to="/login/confirmation">Create Account</router-link>
+                <router-link id="create-account-btn" to="/login/confirmation">Next Step</router-link>
+                <button id="create-account-btn" type="submit">Create Account</button>
             </div>
         </form>
         <div id="movie-image"></div>
@@ -157,7 +171,56 @@
 export default {
     name: "CreateAccount",
     methods: {
-        
+        async sendPayload(payload) {
+            await fetch("http://127.0.0.1:8084/user/register", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+            })
+            .then((res) => res.json())
+            .then((result) => {
+                this.$router.push({path : "/login/confirmation"})
+                console.log('success: ', result);
+            })
+            .catch((err) => console.log('err: ', err))
+        },
+        registerUser() {
+            let fname = document.querySelector('#regiFirst').value
+            let lname = document.querySelector('#regiLast').value
+            let phone = document.querySelector('#regiPhone').value
+            let email = document.querySelector('#regiEmail').value
+            let pass = document.querySelector('#regiPass').value
+            let street = document.querySelector('#regiAddress').value
+            let apt = document.querySelector('#regiApt').value
+            let zip = document.querySelector('#regiZip').value
+            let city = document.querySelector('#regiCity').value
+            let state = document.querySelector('#regiState').value
+            let isSubbed = document.querySelector('#isSubscribed').checked
+
+            let payload = {
+                "firstName" : fname,
+                "lastName" : lname,
+                "number" : phone,
+                "email" : email,
+                "password" : pass,
+                "isSubscribed" : isSubbed,
+                "address" : {
+                    "street" : street,
+                    "apt" : apt,
+                    "city" : city,
+                    "state" : state,
+                    "zipcode" : zip
+                },
+                "status" : "ACTIVE",
+                "userType" : "CUSTOMER"
+            }
+            this.sendPayload(payload)
+            
+            // change route to email confirmation.
+        }
     }
 }
 </script>
@@ -174,7 +237,7 @@ export default {
     }
 
     .create_container {
-        height: 100vh;
+        height: 120vh;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -207,11 +270,13 @@ export default {
         margin: 10px 0;
         width: 175px;
         text-decoration: none;
+        background-color: transparent;
         font-size: 20px;
         text-align: center;
         color: #FBFFF1;
         border: solid 2px #FBFFF1;
         border-radius: 20px;
+        cursor: pointer;
         transition: opacity 0.2s ease-in-out;
     }
 
@@ -263,7 +328,7 @@ export default {
         width: 200px;
         height: 50px;
         background-color: transparent;
-        font-size: 25px;
+        font-size: 17px;
         border: none;
         border-bottom: solid 4px #FBFFF1;
         outline: none;
@@ -271,7 +336,7 @@ export default {
         transition: border-color 0.2s ease-in-out;
     }
 
-    #promo {
+    #isSubscribed {
         height: 15px;
         width: 50px;
         border: solid 3px #FBFFF1;

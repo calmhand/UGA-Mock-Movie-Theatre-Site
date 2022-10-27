@@ -7,11 +7,16 @@
       </div>
       <form>
         <div id="row">
-          <i class="fa-regular fa-map"></i>
-          <div id="col">
-              <input id="address" type="text"/>
-              <label for="address">Street Address</label>
-          </div>
+            <i class="fa-regular fa-map"></i>
+            <div id="col">
+                <input id="address" type="text"/>
+                <label for="address">Street Address</label>
+            </div>
+
+            <div id="col">
+                <input id="regiApt" type="text" style="width: 75px;"/>
+                <label for="regiApt">Apt Num.</label>
+            </div>
         </div>
 
         <div id="row">
@@ -86,6 +91,7 @@
               <label for="state">State</label>
           </div>
         </div>
+        <!-- TODO: Implement changeAddress Method -->
         <button>Save Changes</button>
       </form>
     </div>
@@ -95,6 +101,15 @@
 <script>
 export default {
   name: 'AddressInfo',
+  methods: {
+    changeAddress() {
+        // let street = document.querySelector('#regiAddress').value
+        // let apt = document.querySelector('#regiApt').value
+        // let zip = document.querySelector('#regiZip').value
+        // let city = document.querySelector('#regiCity').value
+        // let state = document.querySelector('#regiState').value
+    }
+  }
 }
 </script>
 

@@ -1,24 +1,23 @@
 package com.se.onlinemoviebooking.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
+@RequestMapping("/messages")
 public class ApiController {	
 	
-	
-	@RequestMapping("/")
 	@ResponseBody
     public String home(){
         return "working";
     }
 	
-	@RequestMapping("/hello")
-	@ResponseBody
-    public String hello(){
-        return "<center><h1>Hello Jay</h1></center>";
+	@GetMapping("/hello")
+    public String hello() {
+        return "hello";
     }
 	
 	

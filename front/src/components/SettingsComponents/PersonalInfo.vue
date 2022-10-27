@@ -10,17 +10,19 @@
           <div id="row">
             <i class="fa-regular fa-user"></i>
             <div id="col">
-              <input id="firstName" type="text" required/>
-              <label for="firstName">First Name</label>
+              <input id="newfName" type="text" required/>
+              <label for="newfName">First Name</label>
             </div>
 
             <div id="col">
-              <input id="lastName" type="text" required/>
-              <label for="lastName">Last Name</label>
+              <input id="newlName" type="text" required/>
+              <label for="newlName">Last Name</label>
             </div>
+            <!-- TODO: Link changeName method -->
             <button>Save Changes</button>
           </div>
         </form>
+
         <!-- change password form -->
         <form>
           <div id="row">
@@ -34,6 +36,7 @@
                     <input id="newPass" type="password" required/>
                     <label for="newPass">New Password</label>
                 </div>
+                <!-- TODO: Link changePass method -->
                 <button>Change Password</button>
             </div>
         </form>
@@ -43,7 +46,23 @@
 
 <script>
 export default {
-    name: 'PersonalInfo'
+    name: 'PersonalInfo',
+    methods: {
+      changeName() {
+        // using fetch, post to api
+        let newFirst = document.querySelector("#newfName").value
+        let newLast = document.querySelector("#newlName").value
+        // eslint-disable-next-line
+        let newNamePayload = {
+          "firstName" : newFirst,
+          "lastName" : newLast,
+        }
+      },
+      changePass() {
+        // let currentPass = document.querySelector("#currentPass")
+        // let newPass = document.querySelector("#newPass")
+      }
+    }
 }
 </script>
 

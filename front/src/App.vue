@@ -1,6 +1,7 @@
 <!-- TODO Connect to spring -->
 <template>
   <div id="main-window">
+    <!-- <button @click="test()">test</button> -->
     <HeaderBar />
     <router-view />
     <FooterInfo/>
@@ -14,6 +15,18 @@
   export default {
     name: "App",
     components: {FooterInfo, HeaderBar},
+    methods: {
+      test() {
+        // this.$store.commit("updateState", "ADMIN")
+        this.$store.commit("updateState", "CUSTOMER")
+        console.log(this.$store.state.currentState);
+      }
+    },
+    data() {
+      return {
+        
+      }
+    },
   }
 </script>
 

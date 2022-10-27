@@ -8,7 +8,7 @@ import com.se.onlinemoviebooking.application.dao.UserDAO;
 
 public interface UserRepository extends JpaRepository<UserDAO,Long>{
 	
-	@Query("SELECT u FROM user u WHERE u.email = ?1")
+	@Query("SELECT u FROM user u WHERE u.email = 1")
     public UserDAO findByEmail(String email);
 
 }

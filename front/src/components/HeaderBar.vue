@@ -8,9 +8,12 @@
             <!-- Shows -->
             <router-link id="nav-element" to="/movies/list"><i class="fa-solid fa-ticket"></i></router-link>
 
-            <!-- Left Side --> <!-- TODO: Make site automatically update header based on user's state? -->
+            <a v-show="isLoggedIn()" @click="logOut()" id="nav-element" style="float:right;"><i class="fa-solid fa-right-from-bracket"></i></a>
+
             <!-- Login/Account -->
             <router-link id="nav-element" style="float:right;" to="/login"><i class="fa-regular fa-user"></i></router-link>
+            <!-- <a id="nav-element" style="float:right;"><i class="fa-regular fa-user"></i></a> -->
+
             <!-- Search -->
             <router-link id="nav-element" style="float:right;" to="/home"><i @click="search()" class="fa-solid fa-magnifying-glass"></i></router-link>
             <input id="search-input" style="float:right;" placeholder="Search" v-on:focusout="closeSearch()">
@@ -24,6 +27,27 @@ export default {
     name: "HeaderBar",
     props: [''],
     methods: {
+        logOut() {
+            this.$store.state.currentState = 0
+        },
+        isLoggedIn() {
+            if (this.$store.state.currentState == 1 || this.$store.state.currentState == 2) {
+                return true
+            } else {
+                return false
+            }
+        },
+        sendUser() {
+            if (this.$store.state.currentState == 0) {
+                this.$router.push({path: '/login'})
+            } else if (this.$store.state.currentState == 1) {
+                // TODO: Send to user's profile. get user id from JWT token.
+                this.$router.push({path: ''})
+            } else if (this.$store.state.currentState == 2) {
+                // TODO: Send to admin profile. get user id from JWT token.
+                this.$router.push({path: ''})
+            }
+        },
         search() {
             let searchBar = document.querySelector('#search-input')
             if (searchBar.style.opacity == '1') {
@@ -68,6 +92,7 @@ export default {
         color: #FBFFF1;
         font-size: 20px;
         transition: opacity 0.2s ease-in-out;
+        cursor: pointer;
     }
 
     #nav-element:hover {
