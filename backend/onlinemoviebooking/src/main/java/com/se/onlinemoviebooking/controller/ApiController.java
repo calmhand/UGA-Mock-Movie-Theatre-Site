@@ -68,7 +68,7 @@ public class ApiController {
 	 front end redirect to login page  if process success else something went wrong
 	 
 	 * */
-	@PostMapping(value = "/resetpassword")
+	@PostMapping(value = "/emailresetpassword")
 	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
 	public JSONObject resetPassword(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {
