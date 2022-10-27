@@ -1,6 +1,5 @@
 package com.se.onlinemoviebooking.application.services;
 
-import org.springframework.stereotype.Component;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -11,7 +10,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.util.Base64;
 
-@Component
+
 public class EncryptionService implements AttributeConverter<String, String> {
 
     private static final String ESS = "ESS";

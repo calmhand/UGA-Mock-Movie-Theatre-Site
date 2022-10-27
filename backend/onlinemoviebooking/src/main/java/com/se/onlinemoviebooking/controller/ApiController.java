@@ -28,7 +28,8 @@ public class ApiController {
 	public String home() {
 		return "working";
 	}
-
+	
+	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@GetMapping("/hello")
 	@ResponseBody
 	public String hello() {
@@ -45,7 +46,7 @@ public class ApiController {
 	 
 	 
 	 frontend if process success redirects to reset password form with fields email,code,new password
-	 else if process success else something went wrong
+	 else if process failure something went wrong
 	 
 	 * */
 	@PostMapping(value = "/forgotpassword")
