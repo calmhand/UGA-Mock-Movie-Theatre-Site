@@ -24,7 +24,7 @@ public class DefaultUserService implements UserService {
 		return populateUserData(userRepository.save(userRow));
 	}
 
-	private UserDAO populateUserEntity(UserDTO userDTO) {
+	public static UserDAO populateUserEntity(UserDTO userDTO) {
 		UserDAO userDAO = new UserDAO();
 		
 		userDAO.setFirstName(userDTO.getFirstName());
@@ -41,9 +41,10 @@ public class DefaultUserService implements UserService {
 		return userDAO;
 	}
 
-	private UserDTO populateUserData(final UserDAO userDAO) {
+	public static UserDTO populateUserData(final UserDAO userDAO) {
 		UserDTO userDTO = userDAO.getUserType().equals(UserType.ADMIN.name())? new AdminDTO() : new CustomerDTO();
 		
+		userDTO.setUserID(userDAO.getUserID());
 		userDTO.setFirstName(userDAO.getFirstName());
 		userDTO.setLastName(userDAO.getLastName());
 		userDTO.setNumber(userDAO.getNumber());
