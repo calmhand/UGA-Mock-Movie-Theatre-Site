@@ -2,7 +2,7 @@ package com.se.onlinemoviebooking.application.dto;
 
 public enum UserType {
 
-	CUSTOMER(1,"CUSTOMER"),ADMIN(2,"ADMIN");
+	CUSTOMER(1,"CUSTOMER"),ADMIN(2,"ADMIN"),GUEST(3,"GUEST");
 	
 	private int id;
 	private String name;
@@ -26,8 +26,10 @@ public enum UserType {
 			return UserType.CUSTOMER;
 		case "ADMIN":
 			return UserType.ADMIN;
+		case "GUEST":
+			return UserType.GUEST;
 		default:
-			return UserType.CUSTOMER;
+			return UserType.GUEST;
 		}
 	}
 
@@ -37,8 +39,10 @@ public enum UserType {
 			return UserType.CUSTOMER;
 		case 2:
 			return UserType.ADMIN;
+		case 3:
+			return UserType.GUEST;
 		default:
-			return UserType.CUSTOMER;
+			return UserType.GUEST;
 		}
 	}
 }

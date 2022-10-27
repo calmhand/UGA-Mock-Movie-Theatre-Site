@@ -44,6 +44,7 @@ public class DefaultUserService implements UserService {
 	public static UserDTO populateUserData(final UserDAO userDAO) {
 		UserDTO userDTO = userDAO.getUserType().equals(UserType.ADMIN.name())? new AdminDTO() : new CustomerDTO();
 		
+		userDTO.setUserID(userDAO.getUserID());
 		userDTO.setFirstName(userDAO.getFirstName());
 		userDTO.setLastName(userDAO.getLastName());
 		userDTO.setNumber(userDAO.getNumber());

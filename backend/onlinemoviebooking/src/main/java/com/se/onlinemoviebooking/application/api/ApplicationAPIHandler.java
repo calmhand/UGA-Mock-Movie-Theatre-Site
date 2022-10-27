@@ -3,20 +3,22 @@ package com.se.onlinemoviebooking.application.api;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.CustomerDTO;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
-public class ApplicationAPIHandler {
-	
+public class ApplicationAPIHandler {	
 	
 	/*Registration*/
 
-	public static JSONObject registerUser(UserService userService, JSONObject payload) {
+	public static JSONObject registerUser(UserService userService, JSONObject payload, PasswordEncoder encoder) {
 		// to-do verify details and save
 		CustomerDTO customerDTO = CustomerDTO.getObject(payload);
+		customerDTO.setPassword(encoder.encode(customerDTO.getPassword()));
 		UserDTO saveduser = userService.saveUser(customerDTO);
 		JSONParser parser = new JSONParser();
 		JSONObject json;

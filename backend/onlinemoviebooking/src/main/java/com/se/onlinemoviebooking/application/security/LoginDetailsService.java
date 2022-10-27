@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.se.onlinemoviebooking.application.dao.UserDAO;
 import com.se.onlinemoviebooking.application.database.repository.UserRepository;
 import com.se.onlinemoviebooking.application.database.service.DefaultUserService;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 
+@Service
 public class LoginDetailsService implements UserDetailsService {
 
 	@Autowired
