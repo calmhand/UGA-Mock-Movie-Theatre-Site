@@ -4,9 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,27 +16,56 @@ import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
-
-	@Bean
-	public PasswordEncoder passwordEncoder1() {
-		return new BCryptPasswordEncoder();
-	}
 
 	@Resource(name = "userService")
 	private UserService userService;
-
-	@PostMapping(value = "/auth/register")
-	public JSONObject registerUser(HttpServletRequest request, @RequestBody JSONObject payload) {
-		return ApplicationAPIHandler.registerUser(userService, payload, passwordEncoder1());
-	}
-
+	
+	
+	/*same parameters as register except password,userid,email(field should be blocked by frontend also ),
+	even sent this wont update
+	
+	response is UserDTO parameters with no password and "process": "success"
+	*/
 	@PutMapping(value = "/{userid}/updateprofile")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	public JSONObject updateUserProfile(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {
 		// to-do
-		return ApplicationAPIHandler.updateUserProfile(userService, payload);
+		return ApplicationAPIHandler.updateUserProfile(userid, userService, payload);
 	}
+
+	/*email,password,newPassword*/
+	/*response is UserDTO parameters with no password and "process": "success"*/
+	@PutMapping(value = "/{userid}/resetpassword")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
+	public JSONObject updateUserPassword(HttpServletRequest request, @RequestBody JSONObject payload,
+			@PathVariable Integer userid) {
+		// to-do
+		return ApplicationAPIHandler.updateUserPassword(userid, userService, payload);
+	}
+	
+	
+	/*paraments are same as in PaymentcardDTO except cardId*/
+	/*response is json with "process": "success", PaymentcardDTO fields, no cardId*/
+	@PostMapping(value = "/{userid}/addpayment")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
+	public JSONObject addUserPayment(HttpServletRequest request, @RequestBody JSONObject payload,
+			@PathVariable Integer userid) {
+		// to-do
+		return ApplicationAPIHandler.addUserPayment(userid, userService, payload);
+	}
+	
+	
+	//user clicks link from his email
+	@PutMapping(value = "/{userid}/confirmemail")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
+	public JSONObject confirmEmail(HttpServletRequest request, @RequestBody JSONObject payload,
+			@PathVariable Integer userid) {
+		// to-do
+		return ApplicationAPIHandler.updateUserPassword(userid, userService, payload);
+	}
+		
 
 }
