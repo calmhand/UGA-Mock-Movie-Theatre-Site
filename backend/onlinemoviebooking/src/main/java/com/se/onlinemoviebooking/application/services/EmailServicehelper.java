@@ -10,9 +10,9 @@ public class EmailServicehelper {
 	//EMC_userid , RPW_userid
 	public static boolean sendRegisterEmailConfirmation(UserDTO user) {
 		String sub ="Email Confirmation";
-		String body = "Dear [[name]],\\r\\n"+ 
-		"Please click the link below to verify your registration:\\r\\n"+ 
-				"\"[[URL]]\""+ "Thank you,\\r\\n"+ "b3onlinemoviebooking";
+		String body = "Dear [[name]], \n"+ 
+		"Please click the link below to verify your registration:\n"+ 
+				"\"[[URL]]\"\n"+ "Thank you,\n"+ "b3onlinemoviebooking";
 		
 		String verifykey = "EMC_"+user.getUserID();
 		String verifyURL = "http://localhost:8084/api/onlinemoviebooking/"
@@ -29,16 +29,30 @@ public class EmailServicehelper {
 	}
 	
 	public static boolean sendPasswordResetCode(UserDTO user) {
-		String sub ="Email Confirmation";
+		String sub ="Password Reset Code";
 		
 		
 		String verifykey = "RPW_"+user.getUserID();
 		
 		String code = ApplicationUtilities.generateTokenAndUpdateCache(verifykey);
 		
-		String body = "Dear [[name]],<br>"+ 
-		"Please use the below code for reset password<br>"+ 
-		code+ "<br>Thank you,<br>"+ "b3onlinemoviebooking";
+		String body = "Dear [[name]],\n"+ 
+		"Please use the below code for reset password\n"+ 
+		code+ "\nThank you,\n"+ "b3onlinemoviebooking";
+		
+		body = body.replace("[[name]]", user.getLastName());
+		
+		EmailService.getInstance().sendEmail(sub, body, user.getEmail());
+		
+		return true;
+	}
+	
+	public static boolean sendAccountUdatedEmail(UserDTO user) {
+		String sub ="Security Alert Account Updated";
+		
+		
+		String body = "Dear [[name]] \n"+ 
+		"Your Account has been updated \n"+ "Thank you,\n"+ "b3onlinemoviebooking";
 		
 		body = body.replace("[[name]]", user.getLastName());
 		

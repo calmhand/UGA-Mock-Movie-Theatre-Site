@@ -70,7 +70,7 @@ public class ApplicationAPIHandler {
 				json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 				return failureResponse(json);
 			}
-
+			EmailServicehelper.sendAccountUdatedEmail(updated);
 			return successResponse(json);
 		}
 
