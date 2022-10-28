@@ -27,6 +27,7 @@ import com.se.onlinemoviebooking.application.dto.AddressDTO;
 import com.se.onlinemoviebooking.application.dto.CustomerDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
+import com.se.onlinemoviebooking.application.dto.UserType;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
 @RunWith(SpringRunner.class)
@@ -54,9 +55,10 @@ class OnlinemoviebookingApplicationTests {
 		user.setAddress(add);
 		user.setUserID(123);
 		user.setStatus(Status.ACTIVE);
-		user.setEmail("myemail@gmail.com");
 		user.setFirstName("jay");
-		//user.setLastName("kurri");
+		user.setLastName("kurri");
+		user.setEmail("kurri@gmail");
+		user.setUserType(UserType.ADMIN);
 		user.setIsSubscribed(false);
 		user.setNumber("999999");
 		user.setPassword("mypassword");
@@ -74,6 +76,9 @@ class OnlinemoviebookingApplicationTests {
 			json = new JSONObject();
 		}
 		json.remove("lastName");
+		json.remove("email");
+		json.remove("userID");
+		
 		
 		
 		System.out.println(json);

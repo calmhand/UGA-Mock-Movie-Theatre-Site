@@ -20,6 +20,7 @@ import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
+import com.se.onlinemoviebooking.application.dto.UserDTO;
 
 @RestController
 @RequestMapping("/api/user")
@@ -46,7 +47,7 @@ public class UserController {
 
 	@PutMapping(value = "/{userid}/updateprofile")
 	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
-	public JSONObject updateUserProfile(HttpServletRequest request, @RequestBody JSONObject payload,
+	public JSONObject updateUserProfile(HttpServletRequest request, @RequestBody UserDTO payload,
 			@PathVariable Integer userid) {
 		return ApplicationAPIHandler.updateUserProfile(userid, userService, payload);
 	}

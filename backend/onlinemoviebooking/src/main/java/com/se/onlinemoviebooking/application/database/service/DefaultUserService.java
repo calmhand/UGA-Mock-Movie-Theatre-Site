@@ -82,28 +82,30 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
-	public UserDTO updateUserDTObyId(Integer userid, UserDTO userdto) {
+	public UserDTO updateUserDTObyId(Integer userid, UserDTO payload) {
 		UserDAO userRow = userRepository.findByuserid(userid);
-
+		
+		
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUserID(userRow.getUserID());
-		userDTO.setFirstName(userdto.getFirstName() == null ? userRow.getFirstName() : userdto.getFirstName());
-		userDTO.setLastName(userdto.getLastName() == null ? userRow.getLastName() : userdto.getLastName());
-		userDTO.setNumber(userdto.getNumber() == null ? userRow.getNumber() : userdto.getNumber());
+		userDTO.setFirstName(payload.getFirstName() == null ? userRow.getFirstName() : payload.getFirstName());
+		userDTO.setLastName(payload.getLastName() == null ? userRow.getLastName() : payload.getLastName());
+		userDTO.setNumber(payload.getNumber() == null ? userRow.getNumber() : payload.getNumber());
 		userDTO.setEmail(userRow.getEmail());
 		// userDTO.setPassword(userDAO.getPassword()); //to-do encryption , should we
 		// send to front end
 		userDTO.setIsSubscribed(
-				userdto.getIsSubscribed() == null ? userRow.getIsSubscribed() : userdto.getIsSubscribed());
+				payload.getIsSubscribed() == null ? userRow.getIsSubscribed() : payload.getIsSubscribed());
 		userDTO.setAddress(
-				userdto.getAddress() == null ? AddressDTO.getObject(userRow.getAddress()) : userdto.getAddress());
-		userDTO.setUserType(userdto.getUserType() == null ? UserType.getUserTypeByName(userRow.getUserType())
-				: userdto.getUserType());
+				payload.getAddress() == null ? AddressDTO.getObject(userRow.getAddress()) : payload.getAddress());
+		userDTO.setUserType(payload.getUserType() == null ? UserType.getUserTypeByName(userRow.getUserType())
+				: payload.getUserType());
 		userDTO.setStatus(
-				userdto.getStatus() == null ? Status.getStatusByID(userRow.getStatusID()) : userdto.getStatus());
-
+				payload.getStatus() == null ? Status.getStatusByID(userRow.getStatusID()) : payload.getStatus());
+		
+		
 		int up = userRepository.updateUserDAO(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getNumber(),
-				userDTO.getIsSubscribed(), userDTO.toJSONString(), userDTO.getUserType().getName(),
+				userDTO.getIsSubscribed(), userDTO.getAddress().toJSONString(), userDTO.getUserType().getName(),
 				userDTO.getStatus().getID(), userid);
 		if(up>0) {
 			return userDTO;

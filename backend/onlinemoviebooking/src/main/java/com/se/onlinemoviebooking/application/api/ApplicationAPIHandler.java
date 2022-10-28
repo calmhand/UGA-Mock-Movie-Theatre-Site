@@ -57,11 +57,9 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 
-	public static JSONObject updateUserProfile(Integer userID, UserService userService, JSONObject payload) {
+	public static JSONObject updateUserProfile(Integer userID, UserService userService, UserDTO payload) {
 
-		UserDTO user = UserDTO.getObject(payload);
-
-		UserDTO updated = userService.updateUserDTObyId(userID, user);
+		UserDTO updated = userService.updateUserDTObyId(userID, payload);
 
 		JSONObject json = new JSONObject();
 		if (updated.getUserID() != null) {

@@ -19,6 +19,7 @@ import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
+import com.se.onlinemoviebooking.application.dto.UserDTO;
 
 @RestController
 @RequestMapping("/api/test")
@@ -44,7 +45,7 @@ public class UserTestController {
 	 */
 
 	@PutMapping(value = "/{userid}/updateprofile")
-	public JSONObject updateUserProfile(HttpServletRequest request, @RequestBody JSONObject payload,
+	public JSONObject updateUserProfile(HttpServletRequest request, @RequestBody UserDTO payload,
 			@PathVariable Integer userid) {
 		return ApplicationAPIHandler.updateUserProfile(userid, userService, payload);
 	}

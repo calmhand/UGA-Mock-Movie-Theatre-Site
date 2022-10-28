@@ -13,7 +13,7 @@ public interface UserService {
 	
 	public UserDTO getUserDTObyEmail(String email);
 	
-	public UserDTO updateUserDTObyId(Integer userid, UserDTO userdto);
+	public UserDTO updateUserDTObyId(Integer userid, UserDTO payload);
 	
 	public int updateUserPassword(Integer userid, JSONObject payload);
 	
