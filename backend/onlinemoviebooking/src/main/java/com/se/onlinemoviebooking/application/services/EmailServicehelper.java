@@ -1,5 +1,6 @@
 package com.se.onlinemoviebooking.application.services;
 
+import com.se.onlinemoviebooking.application.cache.SimpleCache;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.utilities.ApplicationUtilities;
 
@@ -14,11 +15,13 @@ public class EmailServicehelper {
 				"<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"+ "Thank you,<br>"+ "b3onlinemoviebooking";
 		
 		String verifykey = "EMC_"+user.getUserID();
-		String verifyURL = "htp://localhost:8084/api/onlinemoviebooking/"
+		String verifyURL = "http://localhost:8084/api/onlinemoviebooking/"
 				+user.getUserID() + "/emailVerify?code=" +ApplicationUtilities.generateTokenAndUpdateCache(verifykey);
 		
 		body = body.replace("[[name]]", user.getLastName());
 		body = body.replace("[[URL]]",verifyURL);
+		
+		System.out.println(SimpleCache.getInstance().getCacheMap());
 		
 		EmailService.getInstance().sendEmail(sub, body, user.getEmail());
 		

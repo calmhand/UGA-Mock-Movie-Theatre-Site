@@ -37,6 +37,11 @@ public class SimpleCache {
 			cacheMap.put(key, value);
 		}
 	}
+	
+	public HashMap<String, String> getCacheMap(){
+		return cacheMap;
+	}
+	
 
 	public void remove(String key) {
 		cacheMap.remove(key);

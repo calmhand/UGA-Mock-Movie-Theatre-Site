@@ -35,8 +35,8 @@ public class EmailService {
 	}
 
 	public EmailService() {
-		appEmail = "Teamb3@uga";
-		appPassword = "b3onlinemoviebooking@outlook.com";
+		appEmail = "b3onlinemoviebooking@outlook.com";
+		appPassword = "Teamb3@uga";
 		props = new Properties();
 		props.put("mail.smtp.host", "smtp-mail.outlook.com");
 		props.put("mail.smtp.port", "587");

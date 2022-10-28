@@ -5,8 +5,11 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.se.onlinemoviebooking.application.cache.SimpleCache;
+import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
+import com.se.onlinemoviebooking.application.database.service.PaymentCardService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
-import com.se.onlinemoviebooking.application.dto.CustomerDTO;
+import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.services.EmailServicehelper;
@@ -68,18 +71,49 @@ public class ApplicationAPIHandler {
 	}
 
 	public static JSONObject updateUserPassword(Integer userID, UserService userService, JSONObject payload) {
-		// to-do
-		return null;
+
+		int rec = userService.updateUserPassword(userID, payload);
+		if (rec > 0) {
+			return successResponse(new JSONObject());
+		}
+
+		return failureResponse(new JSONObject());
 	}
 
-	public static JSONObject addUserPayment(Integer userID, UserService userService, JSONObject payload) {
-		// to-do
-		return null;
+	public static JSONObject addUserPayment(Integer userID, DefaultPaymentCardService paymentCardService, JSONObject payload) {
+		PaymentcardDTO paymentcard = PaymentcardDTO.getObject(payload);
+		
+		PaymentcardDTO savedCard  = paymentCardService.savePaymentCard(paymentcard);
+		
+		JSONParser parser = new JSONParser();
+		JSONObject json;
+		try {
+			json = (JSONObject) parser.parse(savedCard.toJSONString());
+		} catch (ParseException e) {
+			json = new JSONObject();
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
+			return failureResponse(json);
+		}
+		return successResponse(json);
+		
 	}
 
 	public static JSONObject forgotPassword(UserService userService, JSONObject payload) {
-		// to-do
-		return null;
+		
+		if (payload.get("email")==null || ((String)payload.get("email")).isEmpty()) {
+			return failureResponse(new JSONObject());
+		}
+		
+		UserDTO user = userService.getUserDTObyEmail((String)payload.get("email"));
+		if(user ==null ) {
+			return failureResponse(new JSONObject());
+		}
+		
+		EmailServicehelper.sendPasswordResetCode(user);
+		
+		JSONObject resp = new JSONObject();
+		resp.put("userID", user.getUserID());
+		return successResponse(resp);
 	}
 
 	public static JSONObject emailResetPassword(Integer userID, UserService userService, JSONObject payload) {
@@ -87,9 +121,18 @@ public class ApplicationAPIHandler {
 		return null;
 	}
 
-	public static JSONObject verifyEmail(Integer userID, UserService userService, JSONObject payload) {
-		// to-do
-		return null;
+	public static JSONObject verifyEmail(Integer userID, UserService userService, String code) {
+		System.out.println(SimpleCache.getInstance().getCacheMap());
+		String key = "EMC_"+userID;
+		String val =  SimpleCache.getInstance().get(key);
+		if(val.equals(code)) {
+			userService.updateUserStatus(userID, Status.ACTIVE);
+			return successResponse(new JSONObject());
+		}
+		
+		JSONObject json = new JSONObject();
+		json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.VERIFICATIONFAILED);
+		return failureResponse(json);
 	}
 
 	public static JSONObject confirmEmail(Integer userID, UserService userService, JSONObject payload) {
@@ -107,9 +150,5 @@ public class ApplicationAPIHandler {
 		return resp;
 	}
 
-	/* update profile */
-
-	/* add payment card */
-
-	/* forgot password */
+	
 }

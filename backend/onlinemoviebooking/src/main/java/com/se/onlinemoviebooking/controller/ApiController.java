@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ import com.se.onlinemoviebooking.application.database.service.UserService;
 @RestController
 @RequestMapping("/api/onlinemoviebooking")
 public class ApiController {
-	
+
 	@Resource(name = "userService")
 	private UserService userService;
 
@@ -28,64 +29,57 @@ public class ApiController {
 	public String home() {
 		return "working";
 	}
-	
+
 	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@GetMapping("/hello")
 	@ResponseBody
 	public String hello() {
 		return "<center><h1>Hello Jay</h1></center>";
 	}
-	
-	
-	/*request parameters email
-	 
-	 flow frontend send this request with email, 
-	 backend confirms existence of user email  and send a code to his email
-	 
-	 response {"process":"success", "userId":123}
-	 
-	 
-	 frontend if process success redirects to reset password form with fields email,code,new password
-	 else if process failure something went wrong
-	 
-	 * */
+
+	/*
+	 * request parameters email
+	 * 
+	 * flow frontend send this request with email, backend confirms existence of
+	 * user email and send a code to his email
+	 * 
+	 * response {"process":"success", "userID":123}
+	 * 
+	 * 
+	 * frontend if process success redirects to reset password form with fields
+	 * email,code,new password else if process failure something went wrong
+	 * 
+	 */
 	@PostMapping(value = "/forgotpassword")
-	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
 	public JSONObject forgotPassword(HttpServletRequest request, @RequestBody JSONObject payload) {
-		// to-do
 		return ApplicationAPIHandler.forgotPassword(userService, payload);
 	}
-	
-	
+
 	/*
-	 request parameters email,newPassword,code
-	 
-	 backend verifies code which it sent in email and resets password to newPassword
-	 
-	 response parameters {"process":"success"}
-	 
-	 front end redirect to login page  if process success else something went wrong
-	 
-	 * */
+	 * request parameters email,newPassword,code
+	 * 
+	 * backend verifies code which it sent in email and resets password to
+	 * newPassword
+	 * 
+	 * response parameters {"process":"success"}
+	 * 
+	 * front end redirect to login page if process success else something went wrong
+	 * 
+	 */
 	@PostMapping(value = "/{userid}/emailresetpassword")
-	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
 	public JSONObject resetPassword(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {
 		// to-do
 		return ApplicationAPIHandler.emailResetPassword(userid, userService, payload);
 	}
-	
-	//todo
-	
-	@PostMapping(value = "/{userid}/emailVerify")
-	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
-	public JSONObject verifyEmail(HttpServletRequest request, @RequestBody JSONObject payload,
-			@PathVariable Integer userid) {
+
+	// todo
+
+	@GetMapping(value = "/{userid}/emailVerify")
+	public JSONObject verifyEmail(HttpServletRequest request, @PathVariable Integer userid,
+			@RequestParam("code") String code) {
 		// to-do
-		return ApplicationAPIHandler.verifyEmail(userid, userService, payload);
+		return ApplicationAPIHandler.verifyEmail(userid, userService, code);
 	}
-	
-	
-	
 
 }
