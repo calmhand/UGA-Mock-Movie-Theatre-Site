@@ -2,7 +2,7 @@
   <div class="homepage">
     <!-- scrollable display for movie trailers? -->
     <div id="trailer-container">
-      <TrailerCarousel />
+      <!-- <TrailerCarousel /> -->
     </div>
 
     <!-- Scrollable? Upcoming movies -->
@@ -25,6 +25,7 @@ import CurrentShows from '@/components/HomeComponents/CurrentShows.vue'
 export default {
   name: 'HomePage',
   components: {
+    // eslint-disable-next-line
     TrailerCarousel, UpcomingShows, CurrentShows
   },
   methods: {

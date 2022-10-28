@@ -26,6 +26,23 @@ export default {
     methods: {
         goToProfile() {
             this.$router.push({name: 'UserProfile', params: {userId: 123}})
+        },
+        async confirmCode() {
+            let code = document.querySelector("#confirmCode")
+            let codePayload = {
+                "code" : code
+            }
+            await fetch("http://127.0.0.1:8084/api/user/", {
+                method: "PUT",
+                headers: {
+                    "Accept" : "application/json",
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify(codePayload)
+            })
+            .then((res) => res.json())
+            .then((result) => {console.log(result);})
+            .catch((err) => {console.log(err);})
         }
     }
 }

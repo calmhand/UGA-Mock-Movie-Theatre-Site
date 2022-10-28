@@ -1,5 +1,6 @@
 <template>
-    <div class="modal fade" id="enterEmailModal" aria-hidden="true" aria-labelledby="enterEmailModalLabel" tabindex="-1">
+    <!-- ENTER EMAIL MODAL-->
+    <div class="modal fade" id="enterEmailModal" aria-hidden="true" aria-labelledby="enterEmailModalLabel" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -9,45 +10,21 @@
                 <div class="modal-body">
                     <i class="fa-solid fa-triangle-exclamation"></i> &nbsp; Enter your email below to be sent a verification code.
                     <div id="col">
-                        <input name="emailReset" type="email" required>
+                        <input id="emailReset" name="emailReset" type="email" required>
                         <label for="emailReset">Email</label>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <!-- TODO: Check if email is in DB. Alert user if email doesn't exist. Else, continue -->
-                    <button class="btn btn-primary" data-bs-target="#verifyAccountModal" data-bs-toggle="modal">Next</button>
+                    <!-- data-bs-toggle = "modal" -->
+                    <button @click="verifyEmail" id="findEmailBtn" class="btn btn-primary" data-bs-target="#resetPasswordModal" data-bs-toggle="modal">Next</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- TODO: Create modal for failed email search attempt. -->
-
-    <div class="modal fade" id="verifyAccountModal" aria-hidden="true" aria-labelledby="verifyAccountModalLabel" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="verifyAccountModalLabel">Verify</h1>
-                    <!-- <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <i class="fa-solid fa-triangle-exclamation"></i> &nbsp; Enter your verification code.
-                        <div id="col">
-                            <input name="resetCode" type="email" maxlength="6" required>
-                            <label for="resetCode">Code</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    
-                    <button class="btn btn-primary" data-bs-target="#resetPasswordModal" data-bs-toggle="modal">Confirm</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="resetPasswordModal" aria-hidden="true" aria-labelledby="resetPasswordModalLabel" tabindex="-1">
+    <!-- ENTER NEW PASSWORDS MODAL-->
+    <div class="modal fade" id="resetPasswordModal" aria-hidden="true" aria-labelledby="resetPasswordModalLabel" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -56,26 +33,32 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <i class="fa-solid fa-triangle-exclamation"></i> &nbsp; Create a new password.
+                        <i class="fa-solid fa-triangle-exclamation"></i> &nbsp; Enter your code and create a new password.
+                        
                         <div id="col">
-                            <input name="newPass" type="email" required>
-                            <label for="newPass">New Password</label>
+                            <input id="resetCode" name="resetCode" type="email" maxlength="6" required>
+                            <label for="resetCode">Code</label>
+                        </div>
+                        <div id="col">
+                            <input id="newPass-forgot" name="newPass-forgot" type="password" required>
+                            <label for="newPass-forgot">New Password</label>
                         </div>
 
                         <div id="col">
-                            <input name="confirmNewPass" type="email" required>
-                            <label for="confirmNewPass">Confirm New Password</label>
+                            <input id="confirmNewPass-forgot" name="confirmNewPass-forgot" type="password" required>
+                            <label for="confirmNewPass-forgot">Confirm New Password</label>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <!-- TODO: Check if password meets security requirements. Continue if good. -->
-                    <button class="btn btn-primary" data-bs-target="#resetSuccessModal" data-bs-toggle="modal">Reset Password</button>
+                    <button @click="setNewPassword()" class="btn btn-primary" data-bs-target="#resetSuccessModal" data-bs-toggle="modal">Reset Password</button>
                 </div>
             </div>
         </div>
     </div>
     
+    <!-- PROCESS COMPLETE MODAL -->
     <div class="modal fade" id="resetSuccessModal" aria-hidden="true" aria-labelledby="resetSuccessModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -94,6 +77,67 @@
 <script>
     export default {
         name: 'ForgotPassword',
+        data() {
+            return {
+                next : true,
+                saveEmail : ""
+            }
+        },
+        methods: {
+            verifyEmail() {
+                let email = document.querySelector("#emailReset").value
+                let searchPayload = {
+                    "email" : email,
+                }
+                const searchEmail = async (payload) => {
+                    await fetch("http://127.0.0.1:8084/api/onlinemoviebooking/forgotpassword", {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    })
+                    .then((res) => res.json())
+                    .then((result) => {
+                        console.log("searchEmail Sucess: " + result);
+                        this.saveEmail = email
+                    })
+                    .catch((err) => {console.log(err);})
+                    // if returns success, proceed (save code and pass as param?).
+                }
+                searchEmail(searchPayload)
+            },
+            setNewPassword() {
+                let pass = document.querySelector("#newPass-forgot").value
+                let confirmPass = document.querySelector("#confirmNewPass-forgot").value
+                let code = document.querySelector("#resetCode").value
+                if (!(pass === confirmPass)) {
+                    alert("Forgot Password System: Passwords don't match.")
+                    throw "Forgot Password System: Passwords don't match."
+                }
+                let newPassPayload = {
+                    "newPassword" : pass,
+                    "code" : code,
+                    "email" : this.saveEmail
+                }
+                const setPass = async (payload) => {
+                    await fetch("http://127.0.0.1:8084/api/onlinemoviebooking/emailresetpassword", {
+                        method: "POST", 
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    })
+                    .then((res) => res.json())
+                    .then(() => {console.log("Successful pass change");})
+                    .catch((err) => {console.log(err);})
+                    // if returns success, proceed.
+                }
+                setPass(newPassPayload)
+            }
+        }
     }
 </script>
 

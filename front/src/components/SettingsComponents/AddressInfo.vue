@@ -9,32 +9,32 @@
         <div id="row">
             <i class="fa-regular fa-map"></i>
             <div id="col">
-                <input id="address" type="text"/>
-                <label for="address">Street Address</label>
+                <input id="changeAddress" type="text" :placeholder="this.$store.state.street"/>
+                <label for="changeAddress">Street Address</label>
             </div>
 
             <div id="col">
-                <input id="regiApt" type="text" style="width: 75px;"/>
-                <label for="regiApt">Apt Num.</label>
+                <input id="changeApt" type="text" style="width: 75px;" :placeholder="this.$store.state.apt"/>
+                <label for="changeApt">Apt Num.</label>
             </div>
         </div>
 
         <div id="row">
           <i class="fa-solid fa-location-dot"></i>
           <div id="col">
-              <input id="zip" type="text" maxlength="5"/>
-              <label for="zip">Zipcode</label>
+              <input id="changeZip" type="text" maxlength="5" :placeholder="this.$store.state.zipcode"/>
+              <label for="changeZip">ZIP Code</label>
           </div>
         </div>
         <div id="row">
           <i class="fa-solid fa-city"></i>
           <div id="col">
-              <input id="city" type="text"/>
-              <label for="city">City</label>
+              <input id="changeCity" type="text" :placeholder="this.$store.state.city"/>
+              <label for="changeCity">City</label>
           </div>
 
           <div id="col">
-              <select id="state">
+              <select id="changeState">
                   <option value="" disabled selected>Select your state</option>
                   <option value="AL">AL</option>
                   <option value="AK">AK</option>
@@ -88,12 +88,12 @@
                   <option value="WV">WV</option>
                   <option value="WY">WY</option>
               </select>
-              <label for="state">State</label>
+              <label for="changeState">State</label>
           </div>
         </div>
-        <!-- TODO: Implement changeAddress Method -->
-        <button>Save Changes</button>
       </form>
+      <!-- TODO: Implement changeAddress Method -->
+        <button @click="changeAddress()">Save Changes</button>
     </div>
   </div>
 </template>
@@ -102,14 +102,40 @@
 export default {
   name: 'AddressInfo',
   methods: {
-    changeAddress() {
-        // let street = document.querySelector('#regiAddress').value
-        // let apt = document.querySelector('#regiApt').value
-        // let zip = document.querySelector('#regiZip').value
-        // let city = document.querySelector('#regiCity').value
-        // let state = document.querySelector('#regiState').value
+    async changeAddress() {
+        let street = document.querySelector('#changeAddress').value
+        let apt = document.querySelector('#changeApt').value
+        let zip = document.querySelector('#changeZip').value
+        let city = document.querySelector('#changeCity').value
+        let state = document.querySelector('#changeState').value
+
+        let addressPayload = {
+            "address" : {
+                "street" : street,
+                "apt" : apt,
+                "zipcode" : zip,
+                "city" : city,
+                "state" : state
+            },
+            "number" : this.$store.state.street,
+            "isSubscribed" : this.$store.state.subbed,
+            "status" : "ACTIVE",
+            "userType" : "CUSTOMER"
+        }
+        
+        await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/updateprofile", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(addressPayload)
+        })
+        .then((res) => res.json())
+        .then((result) => {console.log("success:" + JSON.stringify(result));})
+        .catch((err) => {console.log("Err: " + err);})
     }
-  }
+  },
 }
 </script>
 

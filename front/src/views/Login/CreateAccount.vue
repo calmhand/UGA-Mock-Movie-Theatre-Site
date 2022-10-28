@@ -1,8 +1,7 @@
 <template>
   <div class="create_container">
     <div class="create_form_container">
-        <form id="create-account-form" :onsubmit="this.registerUser">
-            <!-- TODO: Create validation checks for passwords. -->
+        <form id="create-account-form">
             <h3>Personal Details</h3>
             <hr>
 
@@ -19,15 +18,6 @@
                     <label for="regiLast">Last Name</label>
                 </div>
             </div>
-
-            <!-- TODO: Implement later. -->
-            <!-- <div id="row">
-                <i class="fa-solid fa-at"></i>
-                <div id="col">
-                    <input id="userName" type="text"/>
-                    <label for="userName">Username</label>
-                </div>
-            </div> -->
 
             <div id="row">
                 <i class="fa-solid fa-mobile-screen"></i>
@@ -87,7 +77,7 @@
                 <i class="fa-solid fa-location-dot"></i>
                 <div id="col">
                     <input id="regiZip" type="text" maxlength="5"/>
-                    <label for="regiZip">Zipcode</label>
+                    <label for="regiZip">ZIP Code</label>
                 </div>
 
                 <div id="col">
@@ -158,8 +148,8 @@
                 <div id="col">
                     <label for="isSubscribed"><input id="isSubscribed" type="checkbox" checked="checked"/>Sign-up for promotions?</label>
                 </div>
-                <router-link id="create-account-btn" to="/login/confirmation">Next Step</router-link>
-                <button id="create-account-btn" type="submit">Create Account</button>
+                <!-- <router-link id="create-account-btn" to="/login/confirmation">Next Step</router-link> -->
+                <button @click="this.registerUser" id="create-account-btn" type="submit">Create Account</button>
             </div>
         </form>
         <div id="movie-image"></div>
@@ -172,7 +162,7 @@ export default {
     name: "CreateAccount",
     methods: {
         async sendPayload(payload) {
-            await fetch("http://127.0.0.1:8084/user/register", {
+            await fetch("http://127.0.0.1:8084/api/auth/register", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -182,10 +172,23 @@ export default {
             })
             .then((res) => res.json())
             .then((result) => {
-                this.$router.push({path : "/login/confirmation"})
+                alert("Sucessfully registered: Please check email to verify account before logging in.")
+                this.$router.push({path : "/login"})
                 console.log('success: ', result);
+                // this.confirm(result.userID)
             })
             .catch((err) => console.log('err: ', err))
+        },
+        async confirm(id) {
+            await fetch("http://127.0.0.1:8084/" + id + "/confirmemail", {
+                method: 'PUT',
+                headers: {
+                    
+                },
+            })
+            .then((res) => res.json())
+            .then((result) => {console.log(result);})
+            .catch((err) => {console.log("success: " + err);})
         },
         registerUser() {
             let fname = document.querySelector('#regiFirst').value
@@ -199,6 +202,12 @@ export default {
             let city = document.querySelector('#regiCity').value
             let state = document.querySelector('#regiState').value
             let isSubbed = document.querySelector('#isSubscribed').checked
+
+            let confirmPass = document.querySelector("#confirmRegiPass").value
+            if (!(pass === confirmPass)) {
+                alert("Registration Error: Passwords don't match.")
+                throw "Err: Password dont match."
+            }
 
             let payload = {
                 "firstName" : fname,

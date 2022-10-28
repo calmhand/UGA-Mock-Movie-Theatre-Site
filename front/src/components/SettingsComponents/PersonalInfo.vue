@@ -5,31 +5,42 @@
         <h3>Personal Info</h3>
         <hr>
       </div>
+      <div id="row">
+        <i class="fa-solid fa-address-card"></i>
+        <div id="col">
+          <input :placeholder="this.$store.state.email" disabled>
+          <label>Email</label>
+        </div>
+
+        <div id="col">
+          <input :placeholder="this.$store.state.id" disabled>
+          <label>Account ID </label>
+        </div>
+      </div>
         <!-- change name form -->
         <form>
           <div id="row">
             <i class="fa-regular fa-user"></i>
             <div id="col">
-              <input id="newfName" type="text" required/>
+              <input id="newfName" type="text" :placeholder="this.$store.state.firstName" required/>
               <label for="newfName">First Name</label>
             </div>
 
             <div id="col">
-              <input id="newlName" type="text" required/>
+              <input id="newlName" type="text" :placeholder="this.$store.state.lastName" required/>
               <label for="newlName">Last Name</label>
             </div>
             <!-- TODO: Link changeName method -->
-            <button>Save Changes</button>
+            <button @click="updateProfile(`name`)">Save Changes</button>
           </div>
         </form>
-
         <!-- change password form -->
         <form>
           <div id="row">
                 <i class="fa-solid fa-key"></i>
                 <div id="col">
                     <input id="currentPass" type="password" required/>
-                    <label for="currentPass">Password</label>
+                    <label for="currentPass">Current Password</label>
                 </div>
 
                 <div id="col">
@@ -37,7 +48,7 @@
                     <label for="newPass">New Password</label>
                 </div>
                 <!-- TODO: Link changePass method -->
-                <button>Change Password</button>
+                <button @click="updateProfile(`pass`)">Change Password</button>
             </div>
         </form>
     </div>
@@ -48,20 +59,64 @@
 export default {
     name: 'PersonalInfo',
     methods: {
-      changeName() {
-        // using fetch, post to api
-        let newFirst = document.querySelector("#newfName").value
-        let newLast = document.querySelector("#newlName").value
-        // eslint-disable-next-line
-        let newNamePayload = {
-          "firstName" : newFirst,
-          "lastName" : newLast,
+      updateProfile(select) {
+        const changeName = async () => {
+          let newFirst = document.querySelector("#newfName").value
+          let newLast = document.querySelector("#newlName").value
+          let newNamePayload = {
+                "firstName" : newFirst,
+                "lastName" : newLast,
+                "number" : this.$store.state.street,
+                "isSubscribed" : this.$store.state.subbed,
+                "status" : "ACTIVE",
+                "userType" : "CUSTOMER"
+            }
+          await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/updateprofile", {
+            method: "PUT",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newNamePayload)
+          })
+          .then((res) => res.json())
+          .then((result) => {
+            alert("Password succesfully changed!")
+            console.log(result);
+          })
+          .catch((err) => {console.log("err: " + err);})
+        }
+
+        const changePass = async () => {
+          let currentPass = document.querySelector("#currentPass").value
+          let newPass = document.querySelector("#newPass").value
+          let newPassPayload = {
+            "email" : this.$store.state.email,
+            "password" : currentPass,
+            "newPassword" : newPass,
+          }
+          
+          await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/resetpassword", {
+            method: "PUT",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newPassPayload)
+          })
+          .then((res) => res.json())
+          .then((result) => {
+            console.log("Change pass (when logged in): " + JSON.stringify(result));
+          })
+          .catch((err) => {console.log("err: " + err);})
+        }
+
+        if (select === "name") {
+          changeName()
+        } else if (select === "pass") {
+          changePass()
         }
       },
-      changePass() {
-        // let currentPass = document.querySelector("#currentPass")
-        // let newPass = document.querySelector("#newPass")
-      }
     }
 }
 </script>
@@ -119,7 +174,7 @@ export default {
         width: 200px;
         height: 50px;
         background-color: transparent;
-        font-size: 25px;
+        font-size: 17px;
         border: none;
         border-bottom: solid 4px #FBFFF1;
         outline: none;
@@ -133,6 +188,10 @@ export default {
 
     input:invalid:focus {
         border-bottom: solid 4px red;
+    }
+    
+    input::placeholder {
+      color: white;
     }
 
     button {

@@ -10,14 +10,14 @@
             <form>
                 <div id="col">
                     <h3>Subscribe to our promotions</h3>
-                    <button>Subscribe</button>
+                    <button @click="updateSubscription(true)">Subscribe</button>
                 </div>
             </form>
 
             <form>
                 <div id="col">
                     <h3 style="color: red;">Unsubscribe from all current promotions</h3>
-                    <button>Unsubscribe</button>
+                    <button @click="updateSubscription(false)">Unsubscribe</button>
                 </div>
             </form>
         </div>
@@ -27,6 +27,30 @@
 <script>
     export default {
         name: 'PromoInfo',
+        methods: {
+            updateSubscriptions(choice) {
+                const update = async (promoPayload) => {
+                    await fetch("", {
+                        method: "PUT",
+                        headers: {
+                            "Accept" : "application/json",
+                            "Content-Type" : "application/json"
+                        },
+                        body: JSON.stringify(promoPayload)
+                    })
+                    .then((res) => res.json())
+                    .then((result) => {console.log(result);})
+                    .catch((err) => {console.log("Err: " + err);})
+                }
+                
+                let payload = {
+                    userid : this.$store.state.id,
+                    isSubscribed : choice
+                }
+
+                update(payload)
+            }
+        }
     }
 </script>
 

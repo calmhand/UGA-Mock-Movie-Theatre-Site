@@ -53,8 +53,13 @@ export default {
             btn.style.color = '#6061c8'
             btn.style.textDecoration = 'underline'
         }
+    },
+    beforeMount() {
+        if (this.$store.state.currentState == 0) {
+            alert("Must be logged in.")
+            this.$router.push({path: "/login"})
+        }
     }
-
 }
 </script>
 

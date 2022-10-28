@@ -1,18 +1,20 @@
 <template>
     <div class="nav-bar" id="nav-bar">
         <div id="nav-content">
-            <!-- Right Side -->
+            <!-- Left Side -->
             <!-- Home -->
             <router-link id="nav-element" to="/home"><i class="fa-solid fa-house"></i></router-link>
             
             <!-- Shows -->
             <router-link id="nav-element" to="/movies/list"><i class="fa-solid fa-ticket"></i></router-link>
 
+            <!-- Right Side -->
+            <!-- Logout -->
             <a v-show="isLoggedIn()" @click="logOut()" id="nav-element" style="float:right;"><i class="fa-solid fa-right-from-bracket"></i></a>
 
             <!-- Login/Account -->
-            <router-link id="nav-element" style="float:right;" to="/login"><i class="fa-regular fa-user"></i></router-link>
-            <!-- <a id="nav-element" style="float:right;"><i class="fa-regular fa-user"></i></a> -->
+            <a id="nav-element" v-if="isLoggedIn()" @click=sendUser() style="float:right;"><i class="fa-solid fa-user"></i></a>
+            <a id="nav-element" v-else @click=sendUser() style="float:right;"><i class="fa-regular fa-user"></i></a>
 
             <!-- Search -->
             <router-link id="nav-element" style="float:right;" to="/home"><i @click="search()" class="fa-solid fa-magnifying-glass"></i></router-link>
@@ -28,7 +30,9 @@ export default {
     props: [''],
     methods: {
         logOut() {
-            this.$store.state.currentState = 0
+            alert("You have been logged out!")
+            this.$router.push({path: "/home"})
+            this.$store.commit("clearToken")
         },
         isLoggedIn() {
             if (this.$store.state.currentState == 1 || this.$store.state.currentState == 2) {
@@ -41,8 +45,7 @@ export default {
             if (this.$store.state.currentState == 0) {
                 this.$router.push({path: '/login'})
             } else if (this.$store.state.currentState == 1) {
-                // TODO: Send to user's profile. get user id from JWT token.
-                this.$router.push({path: ''})
+                this.$router.push({path: '/user/' + this.$store.state.id})
             } else if (this.$store.state.currentState == 2) {
                 // TODO: Send to admin profile. get user id from JWT token.
                 this.$router.push({path: ''})
@@ -64,7 +67,7 @@ export default {
             searchBar.style.opacity = '0'
             searchBar.style.pointerEvents = 'none'
         }
-    }
+    },
 }
 </script>
 

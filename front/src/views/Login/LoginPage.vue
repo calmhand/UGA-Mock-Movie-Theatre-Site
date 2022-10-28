@@ -2,7 +2,7 @@
   <div class="login-container">
 
     <div id="form-container">
-      <form :onsubmit="this.loginUser">
+      <form>
         <h3><i class="fa-solid fa-user"></i> Login</h3>
         <hr>
         <div id="col">
@@ -13,14 +13,9 @@
           <input name="loginPassword" type="password" id="loginPassword" required>
           <label for="loginPassword"><i class="fa-solid fa-key"></i>Password</label>
         </div>
-        <!-- TODO: Delete after login is implemented. -->
-        <button type="button" id="login-button" @click="goToProfile()">
+        <button type="button" @click="parseLoginForm()" id="create-acc-btn">
           <i class="fa-solid fa-right-to-bracket"></i>
         </button>
-        <!-- TODO: Implement Login -->
-        <!-- <button type="submit" id="create-acc-btn">
-          <i class="fa-solid fa-right-to-bracket"></i>TESTING
-        </button> -->
       </form>
     </div>
 
@@ -48,24 +43,73 @@ export default {
   name: "LoginPage",
   components: {ForgotPassword},
   methods: {
-    goToProfile() {
-      this.$router.push({name: 'UserProfile', params: {userId: 123}})
-    },
     parseLoginForm() {
       let email = document.querySelector("#loginEmail").value
-      let pass = document.querySelector("#loginPass").value
+      let pass = document.querySelector("#loginPassword").value
 
       let loginPayload = {
-        "email" : email,
+        "username" : email,
         "password" : pass
       }
-      this.loginUser(loginPayload)
-    },
-    loginUser(payload) {
-      // fetch here. 
-      // upon success: change site state, append store with user creds, push user to profile via router.
-      // this.$store.state.currentState = 1
-      console.log(payload);
+
+      const getProfile = async () => {
+        await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/getprofile", {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          this.$store.commit("setUserInfo", data)
+        })
+        .catch((err) => {console.log("err in getProfile: " + err);})
+      }
+
+      const login = async (payload) => {
+        await fetch("http://127.0.0.1:8084/api/auth/login", {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        })
+        .then((res) => res.json())
+        .then((s) => {
+          if (s.status != 401) {
+            console.log("Succesfully retrieved JWT Token (from LoginPage.vue): " + s);
+            alert("Login successful!")
+            this.$store.commit("parseToken", s)
+            getProfile()
+            console.log("test:" + this.$store.state.userInfo);
+            this.$router.push("/home")
+          } else {
+            console.log("Unsuccsesful login attempt (from LoginPage.vue): " + JSON.stringify(s));
+            alert("Wrong credentials. Try again.")
+          }
+        })
+        .catch((err) => {console.log("Err:" + err);})
+      }
+      // eslint-disable-next-line
+      const getProf = async () => {
+        await fetch("http://127.0.0.1:8084/api/user/" + this.$store.state.id +"/getprofile", {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((res) => res.json())
+        .then((result) => {
+          console.log("Successfully retrieved profile: " + JSON.stringify(result));
+          return result
+        })
+        .catch((err) => {console.log(err);})
+      }
+      login(loginPayload)
     },
   },
 }
