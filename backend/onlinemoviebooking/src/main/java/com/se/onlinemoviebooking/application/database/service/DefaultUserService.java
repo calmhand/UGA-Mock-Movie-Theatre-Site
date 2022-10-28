@@ -49,7 +49,7 @@ public class DefaultUserService implements UserService {
 		String newPassword = payload.get("newPassword") != null ? (String) payload.get("newPassword") : "";
 
 		if (user.getEmail().equals(email) && encoder.matches(password, user.getPassword()) && !newPassword.isEmpty()) {
-			return userRepository.updatePassword(encoder.encode(password), userid);
+			return userRepository.updatePassword(encoder.encode(newPassword), userid);
 		}
 
 		return 0;
