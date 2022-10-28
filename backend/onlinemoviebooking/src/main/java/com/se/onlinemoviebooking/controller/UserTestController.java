@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,8 @@ import com.se.onlinemoviebooking.application.dto.UserDTO;
 
 @RestController
 @RequestMapping("/api/test")
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "*")
 public class UserTestController {
 
 	@Resource(name = "userService")

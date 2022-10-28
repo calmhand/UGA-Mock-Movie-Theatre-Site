@@ -12,7 +12,7 @@ import com.se.onlinemoviebooking.application.dao.PaymentcardDAO;
 public interface PaymentCardRepository  extends JpaRepository<PaymentcardDAO,Long>{
 	
 	@Query("SELECT p FROM PaymentcardDAO p WHERE p.userID = ?1")
-	Collection<PaymentcardDAO> findAllActiveUsers(String userID);
+	Collection<PaymentcardDAO> getAllUserCards(Integer userID);
 	
 	@Transactional
 	@Modifying

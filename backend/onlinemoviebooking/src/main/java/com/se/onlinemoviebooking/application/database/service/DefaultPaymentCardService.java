@@ -29,7 +29,7 @@ public class DefaultPaymentCardService {
 	
 	public List<PaymentcardDTO> getPaymentCards( Integer userID) {
 		
-		Collection<PaymentcardDAO> list = paymentCardRepository.findAllActiveUsers(Integer.toString(userID));
+		Collection<PaymentcardDAO> list = paymentCardRepository.getAllUserCards(userID);
 		
 		List<PaymentcardDTO> dtoList = new ArrayList<PaymentcardDTO>();
 		

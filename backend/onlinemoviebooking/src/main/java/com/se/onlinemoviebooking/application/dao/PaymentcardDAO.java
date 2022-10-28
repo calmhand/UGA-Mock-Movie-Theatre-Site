@@ -20,7 +20,7 @@ public class PaymentcardDAO implements SimpleDAO{
     private Integer cardID;
 	
 	@Column(name = "userid")
-    private String userID;
+    private Integer userID;
 	
 	@Column(name = "cardnumber")
 	private String cardNumber;
@@ -35,7 +35,7 @@ public class PaymentcardDAO implements SimpleDAO{
 		return cardID;
 	}
 
-	public String getUserID() {
+	public Integer getUserID() {
 		return userID;
 	}
 
@@ -55,7 +55,7 @@ public class PaymentcardDAO implements SimpleDAO{
 		this.cardID = cardID;
 	}
 
-	public void setUserID(String userID) {
+	public void setUserID(Integer userID) {
 		this.userID = userID;
 	}
 

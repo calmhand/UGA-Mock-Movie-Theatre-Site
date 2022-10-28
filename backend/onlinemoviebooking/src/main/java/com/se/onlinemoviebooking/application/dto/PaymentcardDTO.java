@@ -8,7 +8,7 @@ public class PaymentcardDTO implements SimpleDTO {
 
 	private Integer cardID;
 
-	private String userID;
+	private Integer userID;
 
 	private String cardNumber;
 
@@ -20,7 +20,7 @@ public class PaymentcardDTO implements SimpleDTO {
 		
 	}
 
-	public PaymentcardDTO(Integer cardID, String userID, String cardNumber, String cardExpiry,
+	public PaymentcardDTO(Integer cardID, Integer userID, String cardNumber, String cardExpiry,
 			AddressDTO billingAddress) {
 		super();
 		this.cardID = cardID;
@@ -34,7 +34,7 @@ public class PaymentcardDTO implements SimpleDTO {
 		return cardID;
 	}
 
-	public String getUserID() {
+	public Integer getUserID() {
 		return userID;
 	}
 
@@ -54,7 +54,7 @@ public class PaymentcardDTO implements SimpleDTO {
 		this.cardID = cardID;
 	}
 
-	public void setUserID(String userID) {
+	public void setUserID(Integer userID) {
 		this.userID = userID;
 	}
 
