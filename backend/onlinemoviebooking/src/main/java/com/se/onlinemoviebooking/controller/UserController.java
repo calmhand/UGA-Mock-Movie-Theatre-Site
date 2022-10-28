@@ -57,7 +57,7 @@ public class UserController {
 
 	/* email,password,newPassword */
 	/* response is UserDTO parameters with no password and "process": "success" */
-	@PostMapping(value = "/{userid}/resetpassword")
+	@PutMapping(value = "/{userid}/resetpassword")
 	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	public JSONObject updateUserPassword(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {

@@ -55,7 +55,7 @@ public class UserTestController {
 
 	/* email,password,newPassword */
 	/* response is UserDTO parameters with no password and "process": "success" */
-	@PostMapping(value = "/{userid}/resetpassword")
+	@PutMapping(value = "/{userid}/resetpassword")
 	public JSONObject updateUserPassword(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {
 		return ApplicationAPIHandler.updateUserPassword(userid, userService, payload);
