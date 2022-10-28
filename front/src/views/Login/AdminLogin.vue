@@ -29,7 +29,13 @@
 
 <script>
 export default {
-    name: "AdminLogin"
+    name: "AdminLogin",
+    beforeMount() {
+        if (this.$store.state.currentState == 1) {
+            alert("Must be logged in.")
+            this.$router.push({path: "/login"})
+        }
+    }
 }
 </script>
 

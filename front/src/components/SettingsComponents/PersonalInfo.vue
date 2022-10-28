@@ -81,7 +81,7 @@ export default {
           })
           .then((res) => res.json())
           .then((result) => {
-            alert("Password succesfully changed!")
+            alert("Name succesfully changed!")
             console.log(result);
           })
           .catch((err) => {console.log("err: " + err);})
@@ -106,7 +106,8 @@ export default {
           })
           .then((res) => res.json())
           .then((result) => {
-            console.log("Change pass (when logged in): " + JSON.stringify(result));
+            alert("Password succesfully changed!")
+            console.log("Changed pass (when logged in): " + JSON.stringify(result));
           })
           .catch((err) => {console.log("err: " + err);})
         }

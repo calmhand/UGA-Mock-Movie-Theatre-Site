@@ -10,7 +10,13 @@
 <script>
 import ManageMovies from '@/components/AdminComponents/ManageMovies.vue'
 export default {
-    components: {ManageMovies}
+    components: {ManageMovies},
+    beforeMount() {
+        if (this.$store.state.currentState == 0 || this.$store.state.currentState == 1) {
+            alert("Must be logged in.")
+            this.$router.push({path: "/login"})
+        }
+    }
 }
 </script>
 
