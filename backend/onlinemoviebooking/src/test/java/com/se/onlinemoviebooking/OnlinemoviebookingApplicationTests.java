@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.AddressDTO;
 import com.se.onlinemoviebooking.application.dto.CustomerDTO;
+import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.dto.UserType;
@@ -85,7 +86,7 @@ class OnlinemoviebookingApplicationTests {
 		
 		UserDTO result = UserDTO.getObject(json);
 		System.out.println(result.toJSONString());
-		
+		System.out.println((new PaymentcardDTO()).toJSONString());
 		
 		//UserDTO saveduser = userService.saveUser(user);	
 		

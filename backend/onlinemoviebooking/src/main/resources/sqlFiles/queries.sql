@@ -48,8 +48,8 @@ DROP TABLE IF EXISTS `paymentcard`;
 CREATE TABLE `paymentcard` (
   `cardid` int unsigned NOT NULL AUTO_INCREMENT,
   `userid` int unsigned NOT NULL,
-  `cardnumber` varchar(50) NOT NULL,
-  `cardexpiry` varchar(50) NOT NULL,
+  `cardnumber` varchar(500) NOT NULL,
+  `cardexpiry` varchar(500) NOT NULL,
   `billingaddress` varchar(500),
   PRIMARY KEY (`cardid`),
   FOREIGN KEY (`userid`) REFERENCES user(`userid`) ON DELETE CASCADE,
