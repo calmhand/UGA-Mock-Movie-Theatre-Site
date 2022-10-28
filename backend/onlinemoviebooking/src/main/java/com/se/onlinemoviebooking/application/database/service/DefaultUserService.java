@@ -1,13 +1,12 @@
 package com.se.onlinemoviebooking.application.database.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.se.onlinemoviebooking.application.dao.UserDAO;
 import com.se.onlinemoviebooking.application.database.repository.UserRepository;
 import com.se.onlinemoviebooking.application.dto.AddressDTO;
-import com.se.onlinemoviebooking.application.dto.AdminDTO;
-import com.se.onlinemoviebooking.application.dto.CustomerDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.dto.UserType;
@@ -17,6 +16,9 @@ public class DefaultUserService implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	PasswordEncoder encoder;
 
 	@Override
 	public UserDTO saveUser(UserDTO userDTO) {
@@ -30,6 +32,12 @@ public class DefaultUserService implements UserService {
 		return populateUserData(userRow);
 	}
 	
+	@Override
+	public int updateUserPassword(Integer userid, String password) {
+		
+		return userRepository.updatePassword(encoder.encode(password),userid);
+	}
+	
 	
 	
 	@Override
@@ -37,22 +45,22 @@ public class DefaultUserService implements UserService {
 		UserDAO userRow = userRepository.findByuserid(userid);
 		
 		UserDTO userDTO = new UserDTO();
-		userDTO.setUserID(userdto.getUserID());
+		//userDTO.setUserID(userdto.getUserID());
 		userDTO.setFirstName(userdto.getFirstName()==null?userRow.getFirstName():userdto.getFirstName());
-		userDTO.setLastName(userdto.getLastName());
-		userDTO.setNumber(userdto.getNumber());
-		userDTO.setEmail(userdto.getEmail());
+		userDTO.setLastName(userdto.getLastName()==null?userRow.getLastName():userdto.getLastName());
+		userDTO.setNumber(userdto.getNumber()==null?userRow.getNumber():userdto.getNumber());
+		//userDTO.setEmail(userdto.getEmail());
 		//userDTO.setPassword(userDAO.getPassword()); //to-do encryption , should we send to front end
-		userDTO.setIsSubscribed(userdto.getIsSubscribed());
-		userDTO.setAddress(userdto.getAddress());
-		userDTO.setUserType(userdto.getUserType()); 
-		userDTO.setStatus(userdto.getStatus());
+		userDTO.setIsSubscribed(userdto.getIsSubscribed()==null?userRow.getIsSubscribed():userdto.getIsSubscribed());
+		userDTO.setAddress(userdto.getAddress()==null?AddressDTO.getObject(userRow.getAddress()):userdto.getAddress());
+		userDTO.setUserType(userdto.getUserType()==null?UserType.getUserTypeByName(userRow.getUserType()):userdto.getUserType()); 
+		userDTO.setStatus(userdto.getStatus()==null?Status.getStatusByID(userRow.getStatusID()):userdto.getStatus());
 		
 		
 		
-		return userRepository.updateUserDAO(userdto.getFirstName(), userdto.getLastName(), userdto.getNumber(),
-				userdto.getIsSubscribed(), userdto.toJSONString(), userdto.getUserType().getName(), 
-				userdto.getStatus().getID(), userid);
+		return userRepository.updateUserDAO(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getNumber(),
+				userDTO.getIsSubscribed(), userDTO.toJSONString(), userDTO.getUserType().getName(), 
+				userDTO.getStatus().getID(), userid);
 		
 		
 	}
@@ -81,7 +89,7 @@ public class DefaultUserService implements UserService {
 		userDTO.setLastName(userDAO.getLastName());
 		userDTO.setNumber(userDAO.getNumber());
 		userDTO.setEmail(userDAO.getEmail());
-		//userDTO.setPassword(userDAO.getPassword()); //to-do encryption , should we send to front end
+		userDTO.setPassword(userDAO.getPassword()); //to-do encryption , should we send to front end
 		userDTO.setIsSubscribed(userDAO.getIsSubscribed());
 		userDTO.setAddress(AddressDTO.getObject(userDAO.getAddress()));
 		userDTO.setUserType(UserType.getUserTypeByName(userDAO.getUserType())); 

@@ -9,5 +9,7 @@ public interface UserService {
 	public UserDTO getUserDTObyId(Integer userid);
 	
 	public int updateUserDTObyId(Integer userid, UserDTO userdto);
+	
+	public int updateUserPassword(Integer userid, String password);
 
 }

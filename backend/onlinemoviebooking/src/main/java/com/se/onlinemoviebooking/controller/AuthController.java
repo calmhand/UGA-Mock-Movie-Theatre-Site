@@ -57,7 +57,7 @@ public class AuthController {
 		return ApplicationAPIHandler.registerUser(userService, payload, encoder);
 	}
 
-	@PostMapping("/login")
+	@PostMapping(value ="/login")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 		System.out.println(loginRequest.getPassword());
 		System.out.println(loginRequest.getUsername());

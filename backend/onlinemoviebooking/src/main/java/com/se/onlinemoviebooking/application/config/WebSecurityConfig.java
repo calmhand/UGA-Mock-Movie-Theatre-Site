@@ -59,7 +59,7 @@ public class WebSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/api/auth/**").permitAll().antMatchers("/api/test/**").permitAll().anyRequest()
+				.antMatchers("/api/auth/**").permitAll().antMatchers("/api/onlinemoviebooking/**").permitAll().antMatchers("/api/test/**").permitAll().anyRequest()
 				.authenticated();
 
 		http.authenticationProvider(authenticationProvider());

@@ -24,7 +24,7 @@ public enum Status {
 		case "ACTIVE":
 			return Status.ACTIVE;
 		case "INACTIVE":
-			return Status.ACTIVE;
+			return Status.INACTIVE;
 		case "DELETE":
 			return Status.DELETE;
 		default:
@@ -37,7 +37,7 @@ public enum Status {
 		case 1:
 			return Status.ACTIVE;
 		case 2:
-			return Status.ACTIVE;
+			return Status.INACTIVE;
 		case 3:
 			return Status.DELETE;
 		default:

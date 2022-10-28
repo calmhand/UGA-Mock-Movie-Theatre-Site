@@ -22,9 +22,9 @@ public class ApplicationAPIHandler {
 		userDTO.setPassword(encoder.encode(userDTO.getPassword()));
 		userDTO.setStatus(Status.INACTIVE);
 		UserDTO saveduser = userService.saveUser(userDTO);
-		
+
 		EmailServicehelper.sendRegisterEmailConfirmation(saveduser);
-		
+
 		JSONParser parser = new JSONParser();
 		JSONObject json;
 		try {
@@ -36,11 +36,11 @@ public class ApplicationAPIHandler {
 		}
 		return successResponse(json);
 	}
-	
+
 	public static JSONObject getUserProfile(Integer userID, UserService userService, JSONObject payload) {
-		
+
 		UserDTO user = userService.getUserDTObyId(userID);
-		
+
 		JSONParser parser = new JSONParser();
 		JSONObject json;
 		try {
@@ -54,16 +54,16 @@ public class ApplicationAPIHandler {
 	}
 
 	public static JSONObject updateUserProfile(Integer userID, UserService userService, JSONObject payload) {
-		
+
 		UserDTO user = UserDTO.getObject(payload);
-		
+
 		int rec = userService.updateUserDTObyId(userID, user);
-		
+
 		JSONObject json = new JSONObject();
-		if(rec>0) {
+		if (rec > 0) {
 			return successResponse(json);
 		}
-		
+
 		return failureResponse(json);
 	}
 
@@ -81,19 +81,17 @@ public class ApplicationAPIHandler {
 		// to-do
 		return null;
 	}
-	
-	public static JSONObject emailResetPassword(Integer userID,UserService userService, JSONObject payload) {
+
+	public static JSONObject emailResetPassword(Integer userID, UserService userService, JSONObject payload) {
 		// to-do
 		return null;
 	}
-	
-	public static JSONObject verifyEmail(Integer userID,UserService userService, JSONObject payload) {
+
+	public static JSONObject verifyEmail(Integer userID, UserService userService, JSONObject payload) {
 		// to-do
 		return null;
 	}
-	
-	
-	
+
 	public static JSONObject confirmEmail(Integer userID, UserService userService, JSONObject payload) {
 		// to-do
 		return null;

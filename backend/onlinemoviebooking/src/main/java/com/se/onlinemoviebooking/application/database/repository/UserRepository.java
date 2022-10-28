@@ -13,6 +13,11 @@ public interface UserRepository extends JpaRepository<UserDAO, Long> {
 
 	@Query("SELECT u FROM UserDAO u WHERE u.email = ?1")
 	public UserDAO findByEmail(String email);
+	
+	
+	@Modifying
+	@Query("update UserDAO u set u.password = ?1 WHERE u.userID = ?2")
+	public int updatePassword(String password, Integer userid);
 
 	@Modifying
 	@Query("update UserDAO u set u.firstName = ?1, u.lastName = ?2, u.number = ?3, u.isSubscribed = ?4, u.address = ?5, u.userType = ?6, u.statusID = ?7 where u.userID = ?8")

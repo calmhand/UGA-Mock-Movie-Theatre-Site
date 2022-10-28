@@ -72,7 +72,9 @@ public class LoginDetails implements UserDetails {
 	}
 
 	public Set<UserType> getRoles() {
-		return (this.user instanceof CustomerDTO) ? new HashSet<>(Arrays.asList(UserType.GUEST, UserType.CUSTOMER))
+		
+		
+		return this.user.getUserType().equals(UserType.CUSTOMER)?new HashSet<>(Arrays.asList(UserType.GUEST, UserType.CUSTOMER))
 				: new HashSet<>(Arrays.asList(UserType.GUEST, UserType.CUSTOMER, UserType.ADMIN));
 
 	}
