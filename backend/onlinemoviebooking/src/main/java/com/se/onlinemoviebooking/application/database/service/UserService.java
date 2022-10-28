@@ -13,10 +13,12 @@ public interface UserService {
 	
 	public UserDTO getUserDTObyEmail(String email);
 	
-	public int updateUserDTObyId(Integer userid, UserDTO userdto);
+	public UserDTO updateUserDTObyId(Integer userid, UserDTO userdto);
 	
 	public int updateUserPassword(Integer userid, JSONObject payload);
 	
 	public int updateUserStatus(Integer userid, Status st);
+	
+	public int resetUserPassword( JSONObject payload);
 
 }

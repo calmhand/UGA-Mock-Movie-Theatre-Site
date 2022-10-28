@@ -1,10 +1,13 @@
 package com.se.onlinemoviebooking.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
+import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 
 @RestController
 @RequestMapping("/api/user")
@@ -67,5 +71,30 @@ public class UserController {
 			@PathVariable Integer userid) {
 		return ApplicationAPIHandler.addUserPayment(userid, paymentCardService, payload);
 	}
+
+	@GetMapping(value = "/{userid}/getpaymentCards")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
+	public List<PaymentcardDTO> getUserPayments(HttpServletRequest request, @PathVariable Integer userid) {
+		return ApplicationAPIHandler.getUserPayments(userid, paymentCardService);
+	}
+	
+	@PutMapping(value = "/{userid}/editpaymentCard")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
+	public JSONObject editUserPayment(HttpServletRequest request, @RequestBody PaymentcardDTO payload,
+			@PathVariable Integer userid) {
+		return ApplicationAPIHandler.editUserPayment(userid, paymentCardService, payload);
+	}
+	
+	@DeleteMapping(value = "/{userid}/deletepaymentCard")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
+	public JSONObject deleteUserPayment(HttpServletRequest request, @RequestBody PaymentcardDTO payload,
+			@PathVariable Integer userid) {
+		return ApplicationAPIHandler.deleteUserPayment(userid, paymentCardService, payload);
+	}
+	
+	
+	
+	
+	
 
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.se.onlinemoviebooking.application.cache.SimpleCache;
 import com.se.onlinemoviebooking.application.dao.UserDAO;
 import com.se.onlinemoviebooking.application.database.repository.UserRepository;
 import com.se.onlinemoviebooking.application.dto.AddressDTO;
@@ -53,6 +54,25 @@ public class DefaultUserService implements UserService {
 
 		return 0;
 	}
+	
+	@Override
+	public int resetUserPassword( JSONObject payload) {
+
+		String email = payload.get("email") != null ? (String) payload.get("email") : "";
+		String newPassword = payload.get("newPassword") != null ? (String) payload.get("newPassword") : "";
+		String code = payload.get("code") != null ? (String) payload.get("code") : "";
+		UserDTO user = getUserDTObyEmail(email);
+		
+		if(user!=null) {
+			String key = "RPW_"+user.getUserID();
+			String val =  SimpleCache.getInstance().get(key);
+			if(val!=null && val.equals(code)) {
+				return userRepository.updatePassword(encoder.encode(newPassword), user.getUserID());
+			}
+		}
+
+		return 0;
+	}
 
 	@Override
 	public int updateUserStatus(Integer userid, Status st) {
@@ -61,15 +81,15 @@ public class DefaultUserService implements UserService {
 	}
 
 	@Override
-	public int updateUserDTObyId(Integer userid, UserDTO userdto) {
+	public UserDTO updateUserDTObyId(Integer userid, UserDTO userdto) {
 		UserDAO userRow = userRepository.findByuserid(userid);
 
 		UserDTO userDTO = new UserDTO();
-		// userDTO.setUserID(userdto.getUserID());
+		userDTO.setUserID(userRow.getUserID());
 		userDTO.setFirstName(userdto.getFirstName() == null ? userRow.getFirstName() : userdto.getFirstName());
 		userDTO.setLastName(userdto.getLastName() == null ? userRow.getLastName() : userdto.getLastName());
 		userDTO.setNumber(userdto.getNumber() == null ? userRow.getNumber() : userdto.getNumber());
-		// userDTO.setEmail(userdto.getEmail());
+		userDTO.setEmail(userRow.getEmail());
 		// userDTO.setPassword(userDAO.getPassword()); //to-do encryption , should we
 		// send to front end
 		userDTO.setIsSubscribed(
@@ -81,9 +101,14 @@ public class DefaultUserService implements UserService {
 		userDTO.setStatus(
 				userdto.getStatus() == null ? Status.getStatusByID(userRow.getStatusID()) : userdto.getStatus());
 
-		return userRepository.updateUserDAO(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getNumber(),
+		int up = userRepository.updateUserDAO(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getNumber(),
 				userDTO.getIsSubscribed(), userDTO.toJSONString(), userDTO.getUserType().getName(),
 				userDTO.getStatus().getID(), userid);
+		if(up>0) {
+			return userDTO;
+		}
+		
+		return new UserDTO();
 
 	}
 

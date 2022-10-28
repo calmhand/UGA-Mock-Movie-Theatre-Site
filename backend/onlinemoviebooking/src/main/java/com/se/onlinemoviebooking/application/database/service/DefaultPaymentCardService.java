@@ -1,5 +1,10 @@
 package com.se.onlinemoviebooking.application.database.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +27,45 @@ public class DefaultPaymentCardService {
 		return populatePaymentCardDTO(paymentCardRepository.save(pcd));
 	}
 	
-	public static PaymentcardDAO populatePaymentDAO(PaymentcardDTO pc) {
+	public List<PaymentcardDTO> getPaymentCards( Integer userID) {
+		
+		Collection<PaymentcardDAO> list = paymentCardRepository.findAllActiveUsers(Integer.toString(userID));
+		
+		List<PaymentcardDTO> dtoList = new ArrayList<PaymentcardDTO>();
+		
+		for (Iterator<PaymentcardDAO> name = list.iterator();name.hasNext();) {
+			dtoList.add(populatePaymentCardDTO(name.next()));
+		}
+		
+		return dtoList;
+	}
+	
+	public PaymentcardDTO updatePaymentCard(PaymentcardDTO card, Integer cardID) {
+		
+		EncryptionService es = EncryptionService.getInstance();
+		
+		int up = paymentCardRepository.updateCard(es.convertToEntityAttribute(card.getCardNumber()), 
+				es.convertToEntityAttribute(card.getCardExpiry()), 
+				card.getBillingAddress().toJSONString(), cardID);
+		
+		if(up>0) {
+			return card;
+		}
+		return new PaymentcardDTO();
+	}
+	
+	public boolean deletePaymentCard(Integer cardID) {
+		
+		int up = paymentCardRepository.deleteBycardID(cardID);
+		if(up>0) {
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
+	public PaymentcardDAO populatePaymentDAO(PaymentcardDTO pc) {
 		
 		EncryptionService es = EncryptionService.getInstance();
 		PaymentcardDAO pcd = new PaymentcardDAO();
@@ -36,7 +79,7 @@ public class DefaultPaymentCardService {
 		return pcd;
 	}
 	
-	public static PaymentcardDTO populatePaymentCardDTO(PaymentcardDAO pcd) {
+	public PaymentcardDTO populatePaymentCardDTO(PaymentcardDAO pcd) {
 		
 		EncryptionService es = EncryptionService.getInstance();
 		

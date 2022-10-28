@@ -10,9 +10,9 @@ public class EmailServicehelper {
 	//EMC_userid , RPW_userid
 	public static boolean sendRegisterEmailConfirmation(UserDTO user) {
 		String sub ="Email Confirmation";
-		String body = "Dear [[name]],<br>"+ 
-		"Please click the link below to verify your registration:<br>"+ 
-				"<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"+ "Thank you,<br>"+ "b3onlinemoviebooking";
+		String body = "Dear [[name]],\\r\\n"+ 
+		"Please click the link below to verify your registration:\\r\\n"+ 
+				"\"[[URL]]\""+ "Thank you,\\r\\n"+ "b3onlinemoviebooking";
 		
 		String verifykey = "EMC_"+user.getUserID();
 		String verifyURL = "http://localhost:8084/api/onlinemoviebooking/"

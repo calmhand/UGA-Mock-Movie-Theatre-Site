@@ -66,11 +66,9 @@ public class ApiController {
 	 * front end redirect to login page if process success else something went wrong
 	 * 
 	 */
-	@PostMapping(value = "/{userid}/emailresetpassword")
-	public JSONObject resetPassword(HttpServletRequest request, @RequestBody JSONObject payload,
-			@PathVariable Integer userid) {
-		// to-do
-		return ApplicationAPIHandler.emailResetPassword(userid, userService, payload);
+	@PostMapping(value = "/emailresetpassword")
+	public JSONObject resetPassword(HttpServletRequest request, @RequestBody JSONObject payload) {
+		return ApplicationAPIHandler.emailResetPassword(userService, payload);
 	}
 
 	// todo
@@ -78,7 +76,6 @@ public class ApiController {
 	@GetMapping(value = "/{userid}/emailVerify")
 	public JSONObject verifyEmail(HttpServletRequest request, @PathVariable Integer userid,
 			@RequestParam("code") String code) {
-		// to-do
 		return ApplicationAPIHandler.verifyEmail(userid, userService, code);
 	}
 
