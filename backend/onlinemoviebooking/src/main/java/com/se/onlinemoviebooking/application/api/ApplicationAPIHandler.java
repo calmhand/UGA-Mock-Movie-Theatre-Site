@@ -163,8 +163,9 @@ public class ApplicationAPIHandler {
 
 	public static JSONObject editUserPayment(Integer userid, DefaultPaymentCardService paymentCardService,
 			PaymentcardDTO payload) {
+		
 
-		PaymentcardDTO pcd = paymentCardService.updatePaymentCard(payload, userid);
+		PaymentcardDTO pcd = paymentCardService.updatePaymentCard(payload, payload.getCardID());
 
 		JSONObject json = new JSONObject();
 
