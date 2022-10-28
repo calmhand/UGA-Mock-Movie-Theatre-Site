@@ -41,10 +41,10 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 
-	public static JSONObject getUserProfile(Integer userID, UserService userService, JSONObject payload) {
+	public static JSONObject getUserProfile(Integer userID, UserService userService) {
 
 		UserDTO user = userService.getUserDTObyId(userID);
-
+		user.setPassword("");
 		JSONParser parser = new JSONParser();
 		JSONObject json;
 		try {
@@ -108,8 +108,11 @@ public class ApplicationAPIHandler {
 	}
 
 	public static JSONObject emailResetPassword(UserService userService, JSONObject payload) {
-		userService.resetUserPassword(payload);
-		return null;
+		int up = userService.resetUserPassword(payload);
+		if (up > 0) {
+			return successResponse(new JSONObject());
+		}
+		return failureResponse(new JSONObject());
 	}
 
 	public static JSONObject verifyEmail(Integer userID, UserService userService, String code) {

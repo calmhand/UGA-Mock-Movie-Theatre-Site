@@ -60,7 +60,8 @@ public class DefaultUserService implements UserService {
 
 		String email = payload.get("email") != null ? (String) payload.get("email") : "";
 		String newPassword = payload.get("newPassword") != null ? (String) payload.get("newPassword") : "";
-		String code = payload.get("code") != null ? (String) payload.get("code") : "";
+		String code = payload.get("code") != null ? 
+				(payload.get("code") instanceof  Integer ? Integer.toString((Integer)payload.get("code")):(String)payload.get("code")): "";
 		UserDTO user = getUserDTObyEmail(email);
 		
 		if(user!=null) {
