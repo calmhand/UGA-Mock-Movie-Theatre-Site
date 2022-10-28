@@ -18,6 +18,24 @@ public class EncryptionService implements AttributeConverter<String, String> {
 
     private final Key key;
     private final Cipher cipher;
+    
+    
+    private static EncryptionService encryptionService = null;
+    
+    //let this be singleton for now
+    public static EncryptionService getInstance()
+    {
+        if (encryptionService == null) {
+        	try {
+				encryptionService = new EncryptionService();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+  
+        return encryptionService;
+    }
 
     public EncryptionService() throws Exception {
         key = new SecretKeySpec(SECRET.getBytes(), ESS);

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,16 +24,27 @@ public class UserController {
 	private UserService userService;
 	
 	
+	
+	@GetMapping(value = "/{userid}/getprofile")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
+	public JSONObject getUserProfile(HttpServletRequest request, @RequestBody JSONObject payload,
+			@PathVariable Integer userid) {
+		return ApplicationAPIHandler.getUserProfile(userid, userService, payload);
+	}
+	
+	
+	
+	
 	/*same parameters as register except password,userid,email(field should be blocked by frontend also ),
 	even sent this wont update
 	
 	response is UserDTO parameters with no password and "process": "success"
 	*/
+	
 	@PutMapping(value = "/{userid}/updateprofile")
 	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	public JSONObject updateUserProfile(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {
-		// to-do
 		return ApplicationAPIHandler.updateUserProfile(userid, userService, payload);
 	}
 

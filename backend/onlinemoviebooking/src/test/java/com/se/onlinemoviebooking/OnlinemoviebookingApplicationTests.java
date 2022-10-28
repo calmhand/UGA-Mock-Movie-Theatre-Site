@@ -13,6 +13,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ import com.se.onlinemoviebooking.application.dto.AddressDTO;
 import com.se.onlinemoviebooking.application.dto.CustomerDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
+import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,29 +40,50 @@ class OnlinemoviebookingApplicationTests {
 	void contextLoads() {
 	}
 
-	// @Test
+	@Test
 	public void whenSerializeAndDeserializeUsingJackson_thenCorrect() throws IOException {
 
-		CustomerDTO user = new CustomerDTO();
+		UserDTO user = new UserDTO();
 		AddressDTO add = new AddressDTO();
 		add.setStreet("2838 barnett shoals dr");
 		add.setApt("505");
 		add.setCity("Athens");
 		add.setState("GA");
 		add.setZipcode("30605");
+		
 		user.setAddress(add);
 		user.setUserID(123);
 		user.setStatus(Status.ACTIVE);
 		user.setEmail("myemail@gmail.com");
 		user.setFirstName("jay");
-		user.setLastName("kurri");
+		//user.setLastName("kurri");
 		user.setIsSubscribed(false);
 		user.setNumber("999999");
 		user.setPassword("mypassword");
-		System.out.println(user.toJSONString());
-		UserDTO saveduser = userService.saveUser(user);
-		System.out.println(saveduser.getFirstName());
-		System.out.println(saveduser.toJSONString());
+		
+		
+		
+		String jsonStr = user.toJSONString();
+		System.out.println(jsonStr);
+		
+		JSONParser parser = new JSONParser();
+		JSONObject json;
+		try {
+			json = (JSONObject) parser.parse(jsonStr);
+		} catch (ParseException e) {
+			json = new JSONObject();
+		}
+		json.remove("lastName");
+		
+		
+		System.out.println(json);
+		
+		UserDTO result = UserDTO.getObject(json);
+		System.out.println(result.toJSONString());
+		
+		
+		//UserDTO saveduser = userService.saveUser(user);	
+		
 //		String jsonStr = user.toJSONString();
 //		System.out.println(jsonStr);
 //		UserDTO result = UserDTO.getObject(jsonStr);
@@ -66,7 +91,7 @@ class OnlinemoviebookingApplicationTests {
 //				+ result.getAddress().getStreet());
 	}
 
-	@Test
+	//@Test
 	public void mailservice() {
 
 		try {

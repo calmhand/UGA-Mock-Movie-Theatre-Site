@@ -15,6 +15,7 @@ public class UserDTO implements SimpleDTO {
 	private Boolean isSubscribed;
 	private AddressDTO address;
 	private Status status;
+	private UserType userType;
 
 	public UserDTO() {
 	}
@@ -53,6 +54,14 @@ public class UserDTO implements SimpleDTO {
 
 	public Status getStatus() {
 		return status;
+	}
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
 	}
 
 	public void setUserID(Integer userID) {

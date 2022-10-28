@@ -17,7 +17,7 @@ import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/onlinemoviebooking")
 public class ApiController {
 	
 	@Resource(name = "userService")
@@ -42,7 +42,7 @@ public class ApiController {
 	 flow frontend send this request with email, 
 	 backend confirms existence of user email  and send a code to his email
 	 
-	 response {"process":"success"}
+	 response {"process":"success", "userId":123}
 	 
 	 
 	 frontend if process success redirects to reset password form with fields email,code,new password
@@ -51,10 +51,9 @@ public class ApiController {
 	 * */
 	@PostMapping(value = "/forgotpassword")
 	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
-	public JSONObject forgotPassword(HttpServletRequest request, @RequestBody JSONObject payload,
-			@PathVariable Integer userid) {
+	public JSONObject forgotPassword(HttpServletRequest request, @RequestBody JSONObject payload) {
 		// to-do
-		return ApplicationAPIHandler.forgotPassword(userid, userService, payload);
+		return ApplicationAPIHandler.forgotPassword(userService, payload);
 	}
 	
 	
@@ -68,12 +67,22 @@ public class ApiController {
 	 front end redirect to login page  if process success else something went wrong
 	 
 	 * */
-	@PostMapping(value = "/emailresetpassword")
+	@PostMapping(value = "/{userid}/emailresetpassword")
 	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
 	public JSONObject resetPassword(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {
 		// to-do
-		return ApplicationAPIHandler.forgotPassword(userid, userService, payload);
+		return ApplicationAPIHandler.emailResetPassword(userid, userService, payload);
+	}
+	
+	//todo
+	
+	@PostMapping(value = "/{userid}/emailVerify")
+	@PreAuthorize("hasRole('GUEST') or hasRole('CUSTOMER') or hasRole('ADMIN')")
+	public JSONObject verifyEmail(HttpServletRequest request, @RequestBody JSONObject payload,
+			@PathVariable Integer userid) {
+		// to-do
+		return ApplicationAPIHandler.verifyEmail(userid, userService, payload);
 	}
 	
 	
