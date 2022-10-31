@@ -2,7 +2,7 @@
   <div class="homepage">
     <!-- scrollable display for movie trailers? -->
     <div id="trailer-container">
-      <!-- <TrailerCarousel /> -->
+      <TrailerCarousel />
     </div>
 
     <!-- Scrollable? Upcoming movies -->
