@@ -20,15 +20,15 @@ export default {
 
 <style scoped>
   #film-poster-container {
-    height: 250px;
-    width: 150px;
-    margin: 5px 30px;
+    height: 275px;
+    width: 175px;
+    margin: 5px 35px;
     color: black;
   }
 
   #poster-image {
-    width: 150px;
-    height: 250px;
+    height: inherit;
+    width: inherit;
     border: solid 2px black;
     transition: opacity 0.2s ease-in-out;
   }

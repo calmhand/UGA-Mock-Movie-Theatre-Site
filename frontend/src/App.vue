@@ -22,26 +22,6 @@
       }
     },
   }
-  /**
-   * D6 Checklist
-   * 
-   * Registration
-   * - Send confirmation email: IN PROGRESS***
-   * 
-   * Login
-   * - Forget password process: IN PROGRESS***
-   * 
-   * Logout: DONE
-   * 
-   * Edit Profile
-   * - Information should be taken from DB and displayed: IN PROGRESS***
-   * - First/Last Name, Billing Address, Password, Payment Card are modifyable: IN PROGRESS***
-   * - Information saved in DB correctly: IN PROGRESS***
-   * 
-   * Non-Functional Reqs: DONE
-   * 
-   * Security Reqs: DONE
-   */
 </script>
 
 <style>
@@ -56,6 +36,11 @@
 @font-face {
   font-family: robo;
   src: url(@/assets/Roboto_Condensed/RobotoCondensed-Regular.ttf);
+}
+
+@font-face {
+  font-family: bold-robo;
+  src: url(@/assets/Roboto_Condensed/RobotoCondensed-BoldItalic.ttf)
 }
 
 #app {

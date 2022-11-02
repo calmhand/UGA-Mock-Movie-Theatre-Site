@@ -5,28 +5,20 @@
       <TrailerCarousel />
     </div>
 
-    <!-- Scrollable? Upcoming movies -->
-    <h1>UPCOMING MOVIES</h1><br>
-    <UpcomingShows />
-    
-    <!-- Scrollable? Movies currently showing. -->
-    <div>
-      <h1>NOW PLAYING</h1><br>
-      <CurrentShows />
-    </div>
+    <ShowsContainer />
+
   </div>
 </template>
 
 <script>
 import TrailerCarousel from '@/components/HomeComponents/TrailerCarousel.vue'
-import UpcomingShows from '@/components/HomeComponents/UpcomingShows.vue'
-import CurrentShows from '@/components/HomeComponents/CurrentShows.vue'
+import ShowsContainer from '@/components/HomeComponents/ShowsContainer.vue'
 
 export default {
   name: 'HomePage',
   components: {
     // eslint-disable-next-line
-    TrailerCarousel, UpcomingShows, CurrentShows
+    TrailerCarousel, ShowsContainer
   },
   methods: {
 
@@ -44,10 +36,6 @@ export default {
     margin: 0;
     color: white;
     text-decoration: underline;
-  }
-
-  #trailer-container {
-    height: 350px;
   }
 
 </style>

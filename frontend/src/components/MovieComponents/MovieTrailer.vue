@@ -84,6 +84,7 @@ export default {
     flex-direction: column;
     text-align: left;
     padding: 50px;
+    width: 100%;
     z-index: 1;
   }
 
@@ -117,6 +118,6 @@ export default {
 
   article {
     color: #FBFFF1;
-    font-size: 20px;
+    font-size: 1.2em;
   }
 </style>
