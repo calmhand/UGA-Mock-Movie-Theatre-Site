@@ -175,20 +175,8 @@ export default {
                 alert("Sucessfully registered: Please check email to verify account before logging in.")
                 this.$router.push({path : "/login"})
                 console.log('success: ', result);
-                // this.confirm(result.userID)
             })
             .catch((err) => console.log('err: ', err))
-        },
-        async confirm(id) {
-            await fetch("http://127.0.0.1:8084/" + id + "/confirmemail", {
-                method: 'PUT',
-                headers: {
-                    
-                },
-            })
-            .then((res) => res.json())
-            .then((result) => {console.log(result);})
-            .catch((err) => {console.log("success: " + err);})
         },
         registerUser() {
             let fname = document.querySelector('#regiFirst').value

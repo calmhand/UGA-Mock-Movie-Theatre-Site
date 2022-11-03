@@ -55,8 +55,8 @@ export default {
         }
     },
     beforeMount() {
-        if (this.$store.state.currentState == 0) {
-            alert("Must be logged in.")
+        if (this.$store.state.currentState == 0 || this.$store.state.currentState == 2) {
+            alert("Must be logged in as customer.")
             this.$router.push({path: "/login"})
         }
     }

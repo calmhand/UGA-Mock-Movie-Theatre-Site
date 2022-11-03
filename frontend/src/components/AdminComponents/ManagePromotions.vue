@@ -1,7 +1,7 @@
 <template>
-  <div class="Manage-promotions-container">
+  <div id="manage-promotions-container">
     <div id="allpromotions-container">
-      <h1>Promotions</h1>
+
       <table>
         <tr>
           <th>Promotion name</th>
@@ -73,7 +73,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
   
@@ -103,6 +102,10 @@ export default {
 </script>
   
 <style scoped>
+#manage-promotions-container {
+  display: none;
+}
+
 #add-promo-form {
   margin: 0 auto;
   width: 100%;

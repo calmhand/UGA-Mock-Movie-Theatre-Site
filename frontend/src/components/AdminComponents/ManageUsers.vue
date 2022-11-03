@@ -1,5 +1,5 @@
 <template>
-    <div class="Manage-users-container">
+    <div id="manage-users-container">
         <div id="users-container">
             <h1>Users</h1>
             <table>
@@ -50,6 +50,10 @@ export default {
 </script>
   
 <style scoped>
+#manage-users-container {
+    display: none;
+}
+
 button {
     background-color: #e67e22;
     border-radius: 4px;

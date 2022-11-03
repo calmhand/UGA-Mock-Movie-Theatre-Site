@@ -2,7 +2,7 @@
     <div id="shows-container">
         <div id="show-display-section">
             <h2 style="display: inline;">Featured Movies</h2>
-            <a @click="selectWindow(`upcoming-btn`, `upcoming-container`)" id="upcoming-btn" style="border-bottom: solid 2px #3088BE; color: #3088BE;">Upcoming</a>
+            <a @click="selectWindow(`upcoming-btn`, `upcoming-container`)" id="upcoming-btn" style="border-bottom: solid 2px #3088BE; opacity: 1;">Upcoming</a>
             <a @click="selectWindow(`playing-btn`, `playing-container`)" id="playing-btn">Now Playing</a>
             <hr/>
         </div>
@@ -45,7 +45,7 @@ export default {
             let btn = document.querySelector("#" + btnID)
             let window = document.querySelector("#" + windowID)
             btn.style.borderBottom = "solid 2px #3088BE"
-            btn.style.color = "#3088BE"
+            btn.style.color = "#FBFFF1"
             btn.style.opacity = "1"
             window.style.display = "block"
         }
@@ -60,7 +60,7 @@ export default {
         align-content: center;
         align-items: center;
         justify-content: center;
-        background-image: linear-gradient(180deg, black 0%, transparent 100%);
+        background-image: linear-gradient(180deg, black 45%, transparent 100%);
         padding: 50px;
     }
 
@@ -79,6 +79,8 @@ export default {
     a {
         float: right;
         margin: 0 10px;
+        color: #FBFFF1;
+        opacity: 0.5;
         transition: opacity 0.3s ease-in-out;
     }
 

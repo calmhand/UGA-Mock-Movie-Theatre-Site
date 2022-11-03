@@ -1,66 +1,73 @@
 <template>
     <div id="admin-console-container">
-        <h1>Admin Console</h1>
-
-        <div class="admin-btn-group">
-            <button @click="showHome()">Summary</button>
-            <button @click="showManageMovies()">Manage Movies</button>
-            <button @click="showManagePromotions()">Manage Promotions</button>
-            <button @click="showManageUsers()">Manage Users</button>
-        </div>
-        <div class="admin-components">
-            <AdminHome v-if="showComponentAdminHome" />
-            <ManageMovies v-if="showComponentManageMovies" />
-            <ManagePromotions v-if="showComponentManagePromotions" />
-            <ManageUsers v-if="showComponentManageUsers" />
+        <div id="console-display">
+            <div id="admin-btns">
+                <a @click="switchView(0)" style="border-bottom: solid 2px #3088BE; opacity: 1;">Summary</a>
+                <a @click="switchView(1)">Manage Movies</a>
+                <a @click="switchView(2)">Manage Showtimes</a>
+                <a @click="switchView(3)">Manage Promotions</a>
+                <a @click="switchView(4)">Manage Users</a>
+            </div>
+            <div id="console-view">
+                <AdminSummary />
+                <ManageMovies />
+                <ManageShowtimes />
+                <ManagePromotions />
+                <ManageUsers />
+            </div>
         </div>
     </div>
 </template>
   
 <script>
-import AdminHome from '@/components/AdminComponents/AdminHome.vue';
+import AdminSummary from '@/components/AdminComponents/AdminSummary.vue';
 import ManageMovies from '@/components/AdminComponents/ManageMovies.vue';
+import ManageShowtimes from '@/components/AdminComponents/ManageShowtimes.vue'
 import ManagePromotions from '@/components/AdminComponents/ManagePromotions.vue';
 import ManageUsers from '@/components/AdminComponents/ManageUsers.vue';
+
 export default {
     name: "AdminConsole",
-    components: { AdminHome, ManageMovies, ManagePromotions, ManageUsers },
+    components: { AdminSummary, ManageMovies, ManageShowtimes, ManagePromotions, ManageUsers },
     methods: {
-        hide(){
-            this.showComponentAdminHome = false,
-            this.showComponentManageMovies = false,
-            this.showComponentManagePromotions = false,
-            this.showComponentManageUsers = false
+        switchView(id) {
+            let buttons = document.querySelector("#admin-btns").children
+            const clearBtnStyles = () => {
+                for (let i = 0; i < buttons.length; i++) {
+                    let btn = buttons[i].style
+                    btn.opacity = "0.5"
+                    btn.border = "none"
+                }
+            }
+
+            const styleBtn = () => {
+                let b = buttons[id].style
+                b.borderBottom = "solid 2px #3088BE"
+                b.opacity = "1"
+            }
+            
+            let windows = document.querySelector("#console-view").children
+            const hideWindows = () => {
+                for (let i = 0; i < windows.length; i++) {
+                    let window = windows[i].style
+                    window.display = "none"
+                }
+            }
+
+            const showWindow = () => {
+                let w = windows[id].style
+                w.display = "flex"
+            }
+
+            clearBtnStyles()
+            styleBtn()
+            hideWindows()
+            showWindow()
         },
-        showHome() {
-            this.hide(),
-            this.showComponentAdminHome = true
-        },
-        showManageMovies() {
-            this.hide(),
-            this.showComponentManageMovies = true
-        },
-        showManagePromotions() {
-            this.hide(),
-            this.showComponentManagePromotions = true
-        },
-        showManageUsers() {
-            this.hide(),
-            this.showComponentManageUsers = true
-        },
-    },
-    data() {
-        return{
-            showComponentAdminHome: true,
-            showComponentManageMovies :false,
-            showComponentManagePromotions :false,
-            showComponentManageUsers :false
-        }
-        
     },
     beforeMount() {
         if (this.$store.state.currentState == 0 || this.$store.state.currentState == 1) {
-            alert("Must be logged in.")
+            alert("Must be logged in as admin.")
             this.$router.push({path: "/login"})
         }
     },
@@ -68,38 +75,52 @@ export default {
 </script>
   
 <style scoped>
-ManageMovies {
-    display: none;
-}
-.admin-components{
-margin: 2% 10% 10% 10%;
-}
 
 #admin-console-container {
-    min-height: 100vh;
-    width: 100vW;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-div.admin-btn-group {
-    align-content: center;
-    width: 100%;
+#console-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    height: 90%;
+    width: 90%;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
 }
 
-.admin-btn-group button {
-    background-color: black;
-    color: #b3b3b3;
-    padding: 10px 24px;
+#admin-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 1.15em;
+}
+
+a {
+    text-align: left;
+    margin: 15px 20px;
+    opacity: 0.5;
+    color: #FBFFF1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+a:hover {
+    opacity: 0.5;
     cursor: pointer;
-
-    /*float: right;  Float the buttons side by side */
 }
 
-.admin-btn-group button:hover {
-    background-color: white;
-}
-
-.admin-btn-group button:not(:last-child) {
-    border-right: none;
-    /* Prevent double borders */
+#console-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border: solid 1px red;
 }
 </style>
