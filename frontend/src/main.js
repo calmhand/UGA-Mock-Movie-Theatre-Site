@@ -9,11 +9,10 @@ const siteStates = {
     "ADMIN" : 2,
 }
 
-// TODO: CHANGE CURRENT STATE BACK TO 0
 const store = createStore({
   state() {
     return {
-      currentState : 2,
+      currentState : 0,
       id : 0,
       email : "",
       roles : [],

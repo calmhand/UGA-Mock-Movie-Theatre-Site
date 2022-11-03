@@ -6,7 +6,8 @@
                 <a @click="switchView(1)">Manage Movies</a>
                 <a @click="switchView(2)">Manage Showtimes</a>
                 <a @click="switchView(3)">Manage Promotions</a>
-                <a @click="switchView(4)">Manage Users</a>
+                <!-- TODO: Won't implement unless told to do otherwise. -->
+                <!-- <a @click="switchView(4)">Manage Users</a> -->
             </div>
             <div id="console-view">
                 <AdminSummary />
@@ -121,6 +122,5 @@ a:hover {
     justify-content: center;
     align-items: center;
     height: 100%;
-    border: solid 1px red;
 }
 </style>

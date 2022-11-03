@@ -2,8 +2,8 @@
   <div id="manage-movies-container">
     <div id="movie-opts">
       <a data-bs-toggle="modal" data-bs-target="#add-movie-modal"><i class="fa-solid fa-plus"></i></a>
-      <!-- TODO: Implement search? -->
-      <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
+      <!-- TODO: Implement search for movies? -->
+      <a><i class="fa-solid fa-magnifying-glass"></i></a>
     </div>
 
     <div id="movie-console">
@@ -57,7 +57,7 @@ export default {
 
 <style scoped>
 #manage-movies-container {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;

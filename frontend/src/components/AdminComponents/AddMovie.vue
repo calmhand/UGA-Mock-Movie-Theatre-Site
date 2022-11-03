@@ -1,5 +1,5 @@
 <template>
-    <div id="add-movie-modal" class="modal" tabindex="-1">
+    <div id="add-movie-modal" class="modal fade" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -80,6 +80,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <!-- TODO: Implement AddMovie Button. -->
                     <button type="button" class="btn btn-primary">Add Movie</button>
                 </div>
             </div>
@@ -95,7 +96,7 @@ export default {
 
 <style scoped>
     #add-movie-modal {
-        color: white;
+        color: #FBFFF1;
     }
     
     .modal-content {

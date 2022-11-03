@@ -32,7 +32,6 @@
 <script>
 export default {
     name: "AdminSummary",
-    props: [''],
     methods: {
         getAdminStats() {
             //api to get stats

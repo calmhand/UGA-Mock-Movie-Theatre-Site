@@ -1,8 +1,13 @@
 <template>
-  <div id="manage-promotions-container">
-    <div id="allpromotions-container">
+  <div id="manage-promos-container">
+    <div id="promo-opts">
+      <a data-bs-toggle="modal" data-bs-target="#add-promo-modal"><i class="fa-solid fa-plus"></i></a>
+      <!-- TODO: Implement search for promos? -->
+      <a><i class="fa-solid fa-magnifying-glass"></i></a>
+    </div>
 
-      <table>
+    <div id="promo-console">
+      <table id="manage-promos-table">
         <tr>
           <th>Promotion name</th>
           <th>Discount</th>
@@ -17,7 +22,8 @@
           <td>HOMECOMING10</td>
           <td>True</td>
           <td>True</td>
-          <td><button>Send to Users</button>
+          <td>
+            <button>Dispatch</button>
             <button>Suspend</button>
             <button>Activate</button>
           </td>
@@ -28,72 +34,26 @@
           <td>SANTA20</td>
           <td>False</td>
           <td>False</td>
-          <td><button>Send to Users</button>
+          <td>
+            <button>Dispatch</button>
             <button>Suspend</button>
             <button>Activate</button>
           </td>
         </tr>
-      </table>
+      </table>      
     </div>
-    <br /><br />
-    <div id="addpromo-container">
-      <button @click="openAddPromoForm()">Add Promo</button>
-      <div id="addpromo-form-container">
-        <form id="add-promo-form">
-          <div class="labels">
-            <label for="promotionName">Promotion Name</label>
-          </div>
-          <div class="input-tab">
-            <input class="input-field" type="text" name="promotionName">
-          </div>
-
-          <div class="labels">
-            <label for="discount">Discount</label>
-          </div>
-          <div class="input-tab">
-            <input class="input-field" type="text" name="discount">
-          </div>
-
-          <div class="labels">
-            <label for="promotionCode">Promotion Code</label>
-          </div>
-          <div class="input-tab">
-            <input class="input-field" type="text" name="promotionCode">
-          </div>
-
-          <!-- <div class="submission">
-          <button type="submit" @click="savePromo()">Save</button>
-          <button @click="closeAddPromoForm()">Cancel</button>
-        </div> -->
-        <!-- added outside </form> as submit is messing up url path-->
-        </form>
-        <div class="submission">
-          <button @click="savePromo()">Save</button>
-          <button @click="closeAddPromoForm()">Cancel</button>
-        </div>
-      </div>
-    </div>
+    
+    <AddPromo />
   </div>
 </template>
   
 <script>
+import AddPromo from '@/components/AdminComponents/AddPromo.vue'
 export default {
   name: "ManageMovies",
-  props: [''],
+  components: {AddPromo},
   methods: {
-    openAddPromoForm() {
-      document.getElementById("addpromo-form-container").style.display = "block";
-    },
-    closeAddPromoForm() {
-      document.getElementById("addpromo-form-container").style.display = "none";
-    },
-    savePromo() {
-      // save
-      this.closeAddPromoForm();
-    },
-    loadPromotions() {
-      // api to call all promotions and load the table
-    },
+    
   }
 }
 
@@ -102,96 +62,62 @@ export default {
 </script>
   
 <style scoped>
-#manage-promotions-container {
+#manage-promos-container {
   display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-#add-promo-form {
-  margin: 0 auto;
+#promo-opts {
   width: 100%;
-  padding: 10px;
-}
-
-#addpromo-form-container {
-  display: none;
-}
-
-.labels {
-  display: inline-block;
   text-align: right;
-  width: 40%;
-  vertical-align: top;
-  margin-top: 20px;
 }
 
-.input-tab {
-  display: inline-block;
-  text-align: left;
-  width: 50%;
-  margin-left: 10px;
+#promo-console {
+  width: 100%;
 }
 
-.input-field {
-  display: inline-block;
-  width: 50%;
-  padding: 5px;
-  margin: 18px 0 0 10px;
-  border: 1px solid #e67e22;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: bold;
+#manage-promos-table {
+    background-color: #090b9b33;
+    border: 1px solid #FBFFF1;
+    margin: 10px;
 }
 
-#dropdown {
-  width: 50%;
-  padding: 5px;
-  margin: 20px 0 10px 10px;
-  border: 1px solid #e67e22;
-  border-radius: 3px;
-  font-family: inherit;
-  font-size: 15px;
+i {
+  font-size: 20px;
+  margin: 0 10px;
+  color: #FBFFF1;
 }
 
-.submission {
-  margin: 10px 0px 0px 60px;
+a {
+  text-decoration: none;
+  font-size: 20px;
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+a:hover {
+  opacity: 0.7;
 }
 
 button {
-  background-color: #e67e22;
-  border-radius: 4px;
-  color: white;
-  font-size: 1em;
-  font-weight: bold;
-  font-family: inherit;
-  padding: 10px 15px;
-  border: 1px solid;
+  width: 100px;
+  height: 45px;
+  margin: 0 10px;
+  border: solid 4px #FBFFF1;
+  border-radius: 10px;
+  text-align: center;
+  transition: opacity 0.2s ease-in-out;
 }
 
 button:hover {
-  background-color: #bf6516;
+  opacity: 0.7;
 }
 
-h1 {
-  text-align: left;
-  font-size: 25px;
-}
-
-table {
-  font-family: arial, sans-serif;
-  color: black;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td,
-th {
-  border: 1px solid #dddddd;
+td, th {
+  border: 1px solid #FBFFF1;
   text-align: left;
   padding: 8px;
-}
-
-tr {
-  background-color: white;
 }
 </style>
