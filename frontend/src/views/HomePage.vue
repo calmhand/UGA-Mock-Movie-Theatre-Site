@@ -1,12 +1,7 @@
 <template>
   <div class="homepage">
-    <!-- scrollable display for movie trailers? -->
-    <div id="trailer-container">
-      <TrailerCarousel />
-    </div>
-
+    <!-- <TrailerCarousel /> -->
     <ShowsContainer />
-
   </div>
 </template>
 

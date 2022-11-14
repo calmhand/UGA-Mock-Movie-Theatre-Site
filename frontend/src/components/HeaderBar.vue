@@ -32,21 +32,22 @@ export default {
         logOut() {
             alert("You have been logged out!")
             this.$router.push({path: "/home"})
-            this.$store.commit("clearToken")
+            this.$store.commit("site/CLEAR_TOKEN")
         },
         isLoggedIn() {
-            if (this.$store.state.currentState == 1 || this.$store.state.currentState == 2) {
+            if (this.$store.state.site.currentState == 1 || this.$store.state.site.currentState == 2) {
                 return true
             } else {
                 return false
             }
         },
         sendUser() {
-            if (this.$store.state.currentState == 0) {
+            // TODO: DELETE: this.$store.commit("moduleTest/TEMP_TEST")
+            if (this.$store.state.site.currentState == 0) {
                 this.$router.push({path: '/login'})
-            } else if (this.$store.state.currentState == 1) {
-                this.$router.push({path: '/user/' + this.$store.state.id})
-            } else if (this.$store.state.currentState == 2) {
+            } else if (this.$store.state.site.currentState == 1) {
+                this.$router.push({path: '/user/' + this.$store.state.site.id})
+            } else if (this.$store.state.site.currentState == 2) {
                 // TODO: Send to admin profile. get user id from JWT token.
                 this.$router.push({path: '/admin/console'})
             }

@@ -46,14 +46,13 @@ export default {
     parseLoginForm() {
       let email = document.querySelector("#loginEmail").value
       let pass = document.querySelector("#loginPassword").value
-
       let loginPayload = {
         "username" : email,
         "password" : pass
       }
 
       const getProfile = async () => {
-        await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/getprofile", {
+        await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/getprofile", {
           method: "GET",
           headers: {
             'Accept': 'application/json',
@@ -62,8 +61,8 @@ export default {
         })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          this.$store.commit("setUserInfo", data)
+          console.log("Successfully retrieved profile: " + JSON.stringify(data));
+          this.$store.commit("users/SET_USER", data)
         })
         .catch((err) => {console.log("err in getProfile: " + err);})
       }
@@ -80,11 +79,10 @@ export default {
         .then((res) => res.json())
         .then((s) => {
           if (s.status != 401) {
-            console.log("Succesfully retrieved JWT Token (from LoginPage.vue): " + s);
             alert("Login successful!")
-            this.$store.commit("parseToken", s)
+            console.log("Succesfully retrieved JWT Token (from LoginPage.vue): " + s);
+            this.$store.commit("site/PARSE_TOKEN", s)
             getProfile()
-            console.log("test:" + this.$store.state.userInfo);
             this.$router.push("/home")
           } else {
             console.log("Unsuccsesful login attempt (from LoginPage.vue): " + JSON.stringify(s));
@@ -92,22 +90,6 @@ export default {
           }
         })
         .catch((err) => {console.log("Err:" + err);})
-      }
-      // eslint-disable-next-line
-      const getProf = async () => {
-        await fetch("http://127.0.0.1:8084/api/user/" + this.$store.state.id +"/getprofile", {
-          method: "GET",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        })
-        .then((res) => res.json())
-        .then((result) => {
-          console.log("Successfully retrieved profile: " + JSON.stringify(result));
-          return result
-        })
-        .catch((err) => {console.log(err);})
       }
       login(loginPayload)
     },

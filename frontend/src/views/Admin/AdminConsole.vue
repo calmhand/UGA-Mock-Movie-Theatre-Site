@@ -67,7 +67,7 @@ export default {
         },
     },
     beforeMount() {
-        if (this.$store.state.currentState == 0 || this.$store.state.currentState == 1) {
+        if (this.$store.state.site.currentState == 0 || this.$store.state.site.currentState == 1) {
             alert("Must be logged in as admin.")
             this.$router.push({path: "/login"})
         }

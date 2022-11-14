@@ -44,7 +44,7 @@
                 }
                 
                 let payload = {
-                    userid : this.$store.state.id,
+                    userid : this.$store.state.site.id,
                     isSubscribed : choice
                 }
 

@@ -8,32 +8,33 @@
       <div id="row">
         <i class="fa-solid fa-address-card"></i>
         <div id="col">
-          <input :placeholder="this.$store.state.email" disabled>
+          <input :placeholder="this.$store.state.site.email" disabled>
           <label>Email</label>
         </div>
 
         <div id="col">
-          <input :placeholder="this.$store.state.id" disabled>
+          <input :placeholder="this.$store.state.site.id" disabled>
           <label>Account ID </label>
         </div>
       </div>
+      
         <!-- change name form -->
         <form>
           <div id="row">
             <i class="fa-regular fa-user"></i>
             <div id="col">
-              <input id="newfName" type="text" :placeholder="this.$store.state.firstName" required/>
+              <input id="newfName" type="text" :placeholder="this.$store.state.users.firstName" required/>
               <label for="newfName">First Name</label>
             </div>
 
             <div id="col">
-              <input id="newlName" type="text" :placeholder="this.$store.state.lastName" required/>
+              <input id="newlName" type="text" :placeholder="this.$store.state.users.lastName" required/>
               <label for="newlName">Last Name</label>
             </div>
-            <!-- TODO: Link changeName method -->
             <button @click="updateProfile(`name`)">Save Changes</button>
           </div>
         </form>
+
         <!-- change password form -->
         <form>
           <div id="row">
@@ -47,7 +48,6 @@
                     <input id="newPass" type="password" required/>
                     <label for="newPass">New Password</label>
                 </div>
-                <!-- TODO: Link changePass method -->
                 <button @click="updateProfile(`pass`)">Change Password</button>
             </div>
         </form>
@@ -64,14 +64,15 @@ export default {
           let newFirst = document.querySelector("#newfName").value
           let newLast = document.querySelector("#newlName").value
           let newNamePayload = {
-                "firstName" : newFirst,
-                "lastName" : newLast,
-                "number" : this.$store.state.street,
-                "isSubscribed" : this.$store.state.subbed,
-                "status" : "ACTIVE",
-                "userType" : "CUSTOMER"
-            }
-          await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/updateprofile", {
+              "firstName" : newFirst,
+              "lastName" : newLast,
+              "number" : this.$store.state.users.street,
+              "isSubscribed" : this.$store.state.users.subbed,
+              "status" : "ACTIVE",
+              "userType" : "CUSTOMER"
+          }
+
+          await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/updateprofile", {
             method: "PUT",
             headers: {
               'Accept': 'application/json',
@@ -82,7 +83,7 @@ export default {
           .then((res) => res.json())
           .then((result) => {
             alert("Name succesfully changed!")
-            console.log(result);
+            console.log("Name change result: " + JSON.stringify(result));
           })
           .catch((err) => {console.log("err: " + err);})
         }
@@ -90,13 +91,13 @@ export default {
         const changePass = async () => {
           let currentPass = document.querySelector("#currentPass").value
           let newPass = document.querySelector("#newPass").value
-          let newPassPayload = {
-            "email" : this.$store.state.email,
+          const newPassPayload = {
+            "email" : this.$store.state.site.email,
             "password" : currentPass,
             "newPassword" : newPass,
           }
           
-          await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/resetpassword", {
+          await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/resetpassword", {
             method: "PUT",
             headers: {
               "Accept": "application/json",
@@ -107,11 +108,13 @@ export default {
           .then((res) => res.json())
           .then((result) => {
             alert("Password succesfully changed!")
+            document.querySelector("#currentPass").value = ""
+            document.querySelector("#newPass").value = ""
             console.log("Changed pass (when logged in): " + JSON.stringify(result));
           })
           .catch((err) => {console.log("err: " + err);})
         }
-
+        
         if (select === "name") {
           changeName()
         } else if (select === "pass") {
@@ -192,7 +195,7 @@ export default {
     }
     
     input::placeholder {
-      color: white;
+      color: #FBFFF1;
     }
 
     button {

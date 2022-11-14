@@ -14,13 +14,6 @@
         <hr>
       </div>
       <form>
-        <div id="row">
-            <!-- <i class="fa-solid fa-address-card"></i>
-            <div id="col">
-              <input id="fullName" type="text" required/>
-              <label for="fullName">Full Name</label>
-            </div> -->
-          </div>
 
           <div id="row">
             <i class="fa-solid fa-credit-card"></i>
@@ -185,7 +178,7 @@ export default {
         }
       }
 
-      await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/addpayment", {
+      await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/addpayment", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -194,11 +187,11 @@ export default {
         body: JSON.stringify(cardPayload)
       })
       .then((res) => res.json())
-      .then((result) => {console.log("success:" + result);})
+      .then((result) => {console.log("success, card saved:" + result);})
       .catch((err) => {console.log("Err: " + err);})
     },
     async getCards() {
-      await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/getpaymentCards", {
+      await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/getpaymentCards", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -208,14 +201,13 @@ export default {
       .then((res) => res.json())
       .then((result) => {
         let primaryCard = JSON.stringify(result[0])
+        
         for (let i = 0; i < result.length; i++) {
           this.showCard(JSON.stringify(result[i]))
         }
-        // {"cardID":2,"userID":40,"cardNumber":"1234849234134218","cardExpiry":"04/25","billingAddress":{"street":"1968 Lakeview Bend Way","apt":"","city":"Buford","state":"GA","zipcode":"30519"}}
+
         console.log(primaryCard);
         document.querySelector("#cardNum").placeholder = JSON.parse(primaryCard).cardNumber
-        // document.querySelector("#expireMM").placeholder = JSON.parse(primaryCard)["cardExpiry"].splice(0,1)
-        // document.querySelector("#expireYY").value = JSON.parse(primaryCard)["cardExpiry"].splice(3,4)
         document.querySelector("#billAddress").placeholder = JSON.parse(primaryCard)["billingAddress"]["street"]
         document.querySelector("#billApt").placeholder = JSON.parse(primaryCard)["billingAddress"]["apt"]
         document.querySelector("#billZip").placeholder = JSON.parse(primaryCard)["billingAddress"]["zipcode"]

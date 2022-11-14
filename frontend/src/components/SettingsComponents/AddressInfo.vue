@@ -9,12 +9,12 @@
         <div id="row">
             <i class="fa-regular fa-map"></i>
             <div id="col">
-                <input id="changeAddress" type="text" :placeholder="this.$store.state.street"/>
+                <input id="changeAddress" type="text" :placeholder="this.$store.state.users.street"/>
                 <label for="changeAddress">Street Address</label>
             </div>
 
             <div id="col">
-                <input id="changeApt" type="text" style="width: 75px;" :placeholder="this.$store.state.apt"/>
+                <input id="changeApt" type="text" style="width: 75px;" :placeholder="this.$store.state.users.apt"/>
                 <label for="changeApt">Apt Num.</label>
             </div>
         </div>
@@ -22,14 +22,14 @@
         <div id="row">
           <i class="fa-solid fa-location-dot"></i>
           <div id="col">
-              <input id="changeZip" type="text" maxlength="5" :placeholder="this.$store.state.zipcode"/>
+              <input id="changeZip" type="text" maxlength="5" :placeholder="this.$store.state.users.zipcode"/>
               <label for="changeZip">ZIP Code</label>
           </div>
         </div>
         <div id="row">
           <i class="fa-solid fa-city"></i>
           <div id="col">
-              <input id="changeCity" type="text" :placeholder="this.$store.state.city"/>
+              <input id="changeCity" type="text" :placeholder="this.$store.state.users.city"/>
               <label for="changeCity">City</label>
           </div>
 
@@ -109,7 +109,7 @@ export default {
         let city = document.querySelector('#changeCity').value
         let state = document.querySelector('#changeState').value
 
-        let addressPayload = {
+        const addressPayload = {
             "address" : {
                 "street" : street,
                 "apt" : apt,
@@ -117,13 +117,13 @@ export default {
                 "city" : city,
                 "state" : state
             },
-            "number" : this.$store.state.street,
-            "isSubscribed" : this.$store.state.subbed,
+            "number" : this.$store.state.users.phone,
+            "isSubscribed" : this.$store.state.users.subbed,
             "status" : "ACTIVE",
             "userType" : "CUSTOMER"
         }
         
-        await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.id + "/updateprofile", {
+        await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/updateprofile", {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -132,9 +132,12 @@ export default {
             body: JSON.stringify(addressPayload)
         })
         .then((res) => res.json())
-        .then((result) => {console.log("success:" + JSON.stringify(result));})
+        .then((result) => {
+            console.log("success:" + JSON.stringify(result));
+            this.$store.commit("users/SET_USER", result)
+        })
         .catch((err) => {console.log("Err: " + err);})
-    }
+    },
   },
 }
 </script>
@@ -176,7 +179,7 @@ export default {
     }
 
     i {
-        font-size: 25px;
+        font-size: 17px;
         margin: 0 10px;
         height: 20px;
         width: 20px;
@@ -192,7 +195,7 @@ export default {
         width: 200px;
         height: 50px;
         background-color: transparent;
-        font-size: 25px;
+        font-size: 17px;
         border: none;
         border-bottom: solid 4px #FBFFF1;
         outline: none;
@@ -206,6 +209,10 @@ export default {
 
     input:invalid:focus {
         border-bottom: solid 4px red;
+    }
+
+    input::placeholder {
+      color: #FBFFF1;
     }
 
     button {

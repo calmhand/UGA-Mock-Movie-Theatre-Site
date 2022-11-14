@@ -27,7 +27,6 @@ import PromoInfo from '../../components/SettingsComponents/PromoInfo.vue'
 
 export default {
     name: "UserProfile",
-    props: ['userId', 'email', 'username', 'address'],
     components: { PersonalInfo, AddressInfo, PaymentInfo, PromoInfo},
     methods: {
         displayOrders() {
@@ -54,8 +53,8 @@ export default {
             btn.style.textDecoration = 'underline'
         }
     },
-    beforeMount() {
-        if (this.$store.state.currentState == 0 || this.$store.state.currentState == 2) {
+    mounted() {
+        if (this.$store.state.site.currentState == 0 || this.$store.state.site.currentState == 2) {
             alert("Must be logged in as customer.")
             this.$router.push({path: "/login"})
         }
