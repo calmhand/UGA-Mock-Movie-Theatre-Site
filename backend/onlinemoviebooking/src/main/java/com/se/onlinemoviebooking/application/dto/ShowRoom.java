@@ -1,7 +1,7 @@
 package com.se.onlinemoviebooking.application.dto;
 
 public enum ShowRoom {
-	SCREENX(1,"SCREEN-X"), MAXRELAX(2,"MAX-RELAX"), REAL3D(3,"REAL3D");
+	SCREENX(1,"SCREEN-X"), MAXRELAX(2,"MAX-RELAX"), REAL3D(3,"REAL3D"), SCREENPLAY(4,"SCREEN-PLAY");
 	
 	private Integer id;
 	private String name;
@@ -27,6 +27,8 @@ public enum ShowRoom {
 			return ShowRoom.MAXRELAX;
 		case "REAL3D":
 			return ShowRoom.REAL3D;
+		case "SCREEN-PLAY":
+			return ShowRoom.SCREENPLAY;
 		default:
 			return ShowRoom.SCREENX;
 		}
@@ -40,6 +42,8 @@ public enum ShowRoom {
 			return ShowRoom.MAXRELAX;
 		case 3:
 			return ShowRoom.REAL3D;
+		case 4:
+			return ShowRoom.SCREENPLAY;
 		default:
 			return ShowRoom.SCREENX;
 		}

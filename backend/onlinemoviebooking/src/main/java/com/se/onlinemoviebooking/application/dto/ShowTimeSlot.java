@@ -1,7 +1,7 @@
 package com.se.onlinemoviebooking.application.dto;
 
 public enum ShowTimeSlot {
-	SHOW1(1,"9:00AM"),SHOW2(2,"1:00PM"),SHOW3(3,"6:00PM"),SHOW4(4,"10:00PM");
+	SHOW1(1,"09:00"),SHOW2(2,"13:00"),SHOW3(3,"18:00"),SHOW4(4,"22:00"); // HH:MM format
 	
 	
 	private Integer id;
@@ -22,13 +22,13 @@ public enum ShowTimeSlot {
 	
 	public static ShowTimeSlot getShowRoomByName(String showTimeSlot) {
 		switch (showTimeSlot.trim().toUpperCase()) {
-		case "9:00AM":
+		case "09:00":
 			return ShowTimeSlot.SHOW1;
-		case "1:00PM":
+		case "13:00":
 			return ShowTimeSlot.SHOW2;
-		case "6:00PM":
+		case "18:00":
 			return ShowTimeSlot.SHOW3;
-		case "10:00PM":
+		case "22:00":
 			return ShowTimeSlot.SHOW4;
 		default:
 			return null;
