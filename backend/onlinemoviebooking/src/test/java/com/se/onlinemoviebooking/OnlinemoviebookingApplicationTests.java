@@ -29,6 +29,7 @@ import com.se.onlinemoviebooking.application.dto.MovieCategory;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.MovieRating;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
+import com.se.onlinemoviebooking.application.dto.PromotionDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.dto.UserType;
@@ -45,6 +46,30 @@ class OnlinemoviebookingApplicationTests {
 	}
 	
 	@Test
+	public void printPromotionDTO() {
+		
+		PromotionDTO promotionDTO = new PromotionDTO();
+		
+		promotionDTO.setPromoID(Long.parseLong("124"));
+		promotionDTO.setPromotionName("thanksgiving-promotion");
+		promotionDTO.setPromocode("THANKS15");
+		try {
+			promotionDTO.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-11-20"));
+		} catch (java.text.ParseException e) {	
+		}
+		try {
+			promotionDTO.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-11-25"));
+		} catch (java.text.ParseException e) {	
+		}
+		
+		promotionDTO.setIsSent(false);
+		promotionDTO.setDiscount(Float.parseFloat("15.0"));
+		
+		System.out.println(promotionDTO.toJSONString());
+		
+	}
+	
+	//@Test
 	public void printmoviedto() {
 		MovieDTO movieDTO = new MovieDTO();
 		

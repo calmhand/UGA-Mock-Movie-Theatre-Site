@@ -21,6 +21,9 @@ public interface UserRepository extends JpaRepository<UserDAO, Long> {
 	@Query("SELECT u FROM UserDAO u WHERE u.email = ?1")
 	public UserDAO findByEmail(String email);
 	
+	@Query("SELECT u FROM UserDAO u WHERE u.isSubscribed = true")
+	public List<UserDAO> getSubscribedUsers();
+	
 	@Transactional
 	@Modifying
 	@Query("update UserDAO u set u.password = ?1 WHERE u.userID = ?2")

@@ -1,5 +1,7 @@
 package com.se.onlinemoviebooking.application.database.service;
 
+import java.util.List;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +40,12 @@ public class DefaultUserService implements UserService {
 	public UserDTO getUserDTObyEmail(String email) {
 		UserDAO userRow = userRepository.findByEmail(email);
 		return populateUserData(userRow);
+	}
+	
+	@Override
+	public List<UserDAO> getSubscribedUsers() {
+		List<UserDAO> subscribedUsers = userRepository.getSubscribedUsers();
+		return subscribedUsers;
 	}
 
 	@Override

@@ -12,6 +12,7 @@ public class ApplicationStringConstants {
 	//error messages 
 	public static final String ERROR = "error";
 	public static final String SOMETHINGWENTWRONG = "something went wrong";
+	public static final String UPDATEFORBIDDEN = "update forbidden";
 	public static final String VERIFICATIONFAILED = "VERIFICATION FAILED TRY AGAIN";
 	public static final String INVALIDEMAIL = "email is invalid";
 	public static final String PASSWORDMISMATCH = "password and confirm password are not same";
