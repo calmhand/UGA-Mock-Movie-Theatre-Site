@@ -80,8 +80,6 @@ public class AdminApiHandler {
 
 		JSONParser parser = new JSONParser();
 		JSONObject response;
-		System.out.println(updated);
-		System.out.println((updated.getPromoID()));
 		if(updated.getPromoID() ==null || updated.getPromoID()<1) {
 			response = new JSONObject();
 			response.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.UPDATEFORBIDDEN);
@@ -110,6 +108,33 @@ public class AdminApiHandler {
 			return successResponse(response);
 		}
 		
+		return failureResponse(response);
+	}
+	
+	public static JSONObject getUsers(UserService userService) {
+		JSONObject response = new JSONObject();
+		response.put("users", userService.getUsers());
+		return successResponse(response);
+	}
+	
+	
+	public static JSONObject suspendUser(UserService userService, Integer userID) {
+		JSONObject response = new JSONObject();
+		
+		boolean updated = userService.suspendUser(userID);
+		if(updated) {
+			return successResponse(response);
+		}
+		return failureResponse(response);
+	}
+	
+	public static JSONObject activateUser(UserService userService, Integer userID) {
+		JSONObject response = new JSONObject();
+		
+		boolean updated = userService.activateUser(userID);
+		if(updated) {
+			return successResponse(response);
+		}
 		return failureResponse(response);
 	}
 

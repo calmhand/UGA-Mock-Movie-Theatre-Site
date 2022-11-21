@@ -71,6 +71,21 @@ public class AdminTestController {
 	public JSONObject sendPromotion(HttpServletRequest request,@PathVariable Long promoid) {
 		return AdminApiHandler.sendPromotions(userService, promotionService, promoid);
 	}
+	
+	@GetMapping("/manage-users")
+	public JSONObject getUsers(HttpServletRequest request) {
+		return AdminApiHandler.getUsers(userService);
+	}
+	
+	@PutMapping("/manage-users/suspenduser/{userid}")
+	public JSONObject suspendUser(HttpServletRequest request, @PathVariable Integer userid) {
+		return AdminApiHandler.suspendUser(userService, userid);
+	}
+	
+	@PutMapping("/manage-users/activateuser/{userid}")
+	public JSONObject activateUser(HttpServletRequest request, @PathVariable Integer userid) {
+		return AdminApiHandler.activateUser(userService, userid);
+	}
 
 	
 }

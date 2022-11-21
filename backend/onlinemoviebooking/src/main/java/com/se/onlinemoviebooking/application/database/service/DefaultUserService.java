@@ -1,7 +1,9 @@
 package com.se.onlinemoviebooking.application.database.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,15 @@ public class DefaultUserService implements UserService {
 
 	@Autowired
 	PasswordEncoder encoder;
+	
+	@Override
+	public JSONArray getUsers() {
+		List<UserDAO> usersList = new ArrayList<UserDAO>();
+		usersList = userRepository.getAllUsers();
+		JSONArray usersArray = new JSONArray();
+		usersArray.addAll(usersList);	
+		return usersArray;
+	}
 
 	@Override
 	public UserDTO saveUser(UserDTO userDTO) {
@@ -46,6 +57,24 @@ public class DefaultUserService implements UserService {
 	public List<UserDAO> getSubscribedUsers() {
 		List<UserDAO> subscribedUsers = userRepository.getSubscribedUsers();
 		return subscribedUsers;
+	}
+	
+	@Override
+	public boolean suspendUser(Integer userId) {
+		int up = userRepository.suspendUser(userId);
+		if(up>0) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean activateUser(Integer userId) {
+		int up = userRepository.activateUser(userId);
+		if(up>0) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override

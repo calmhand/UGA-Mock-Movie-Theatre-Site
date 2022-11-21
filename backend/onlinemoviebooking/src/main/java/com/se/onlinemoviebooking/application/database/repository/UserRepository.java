@@ -26,6 +26,16 @@ public interface UserRepository extends JpaRepository<UserDAO, Long> {
 	
 	@Transactional
 	@Modifying
+	@Query("update UserDAO u set u.statusID=3  where u.userID = ?1")
+	public int suspendUser(Integer userID);
+	
+	@Transactional
+	@Modifying
+	@Query("update UserDAO u set u.statusID=1  where u.userID = ?1")
+	public int activateUser(Integer userID);
+	
+	@Transactional
+	@Modifying
 	@Query("update UserDAO u set u.password = ?1 WHERE u.userID = ?2")
 	public int updatePassword(String password, Integer userid);
 	

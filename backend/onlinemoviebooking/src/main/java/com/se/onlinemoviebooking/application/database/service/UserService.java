@@ -2,6 +2,7 @@ package com.se.onlinemoviebooking.application.database.service;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.se.onlinemoviebooking.application.dao.UserDAO;
@@ -25,5 +26,11 @@ public interface UserService {
 	public int updateUserStatus(Integer userid, Status st);
 	
 	public int resetUserPassword( JSONObject payload);
+
+	boolean suspendUser(Integer userId);
+
+	boolean activateUser(Integer userId);
+
+	JSONArray getUsers();
 
 }
