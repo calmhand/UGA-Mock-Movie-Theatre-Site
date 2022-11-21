@@ -2,6 +2,7 @@ package com.se.onlinemoviebooking;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -24,12 +25,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.AddressDTO;
-import com.se.onlinemoviebooking.application.dto.CustomerDTO;
+import com.se.onlinemoviebooking.application.dto.MovieCategory;
+import com.se.onlinemoviebooking.application.dto.MovieDTO;
+import com.se.onlinemoviebooking.application.dto.MovieRating;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.dto.UserType;
-import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,8 +43,32 @@ class OnlinemoviebookingApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
+	
 	@Test
+	public void printmoviedto() {
+		MovieDTO movieDTO = new MovieDTO();
+		
+		movieDTO.setMovieID(Long.parseLong("124"));
+		movieDTO.setTitle("RRR");
+		movieDTO.setCategory(MovieCategory.ACTION);
+		movieDTO.setRating(MovieRating.PG13);
+		try {
+			movieDTO.setReleaseDate(new SimpleDateFormat("yyyy-MM-dd").parse("2018-01-01"));
+		} catch (java.text.ParseException e) {
+			
+		}
+		movieDTO.setDirector("Rajamouli");
+		movieDTO.setProducer("Danayya");
+		movieDTO.setCast("Ramcharan, NTR, AliaBhatt, rajiv kanakala");
+		movieDTO.setSynopsis("Action packed indian movie");
+		movieDTO.setPosterURL("https://assets-prd.ignimgs.com/2022/07/11/rrr-button-ver-1657577923010.jpg");
+		movieDTO.setTrailerURL("https://www.youtube.com/watch?v=NgBoMJy386M");
+		
+		
+		System.out.println(movieDTO.toJSONString());
+	}
+
+	//@Test
 	public void whenSerializeAndDeserializeUsingJackson_thenCorrect() throws IOException {
 
 		UserDTO user = new UserDTO();

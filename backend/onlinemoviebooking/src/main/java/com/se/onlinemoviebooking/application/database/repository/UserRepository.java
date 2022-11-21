@@ -1,5 +1,7 @@
 package com.se.onlinemoviebooking.application.database.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.se.onlinemoviebooking.application.dao.UserDAO;
 
 public interface UserRepository extends JpaRepository<UserDAO, Long> {
+	
+	
+	@Query("select u from UserDAO u")
+    public List<UserDAO> getAllUsers();
 
 	@Query("SELECT u FROM UserDAO u WHERE u.userID = ?1")
 	public UserDAO findByuserid(Integer userid);

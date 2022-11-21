@@ -4,7 +4,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,44 +18,28 @@ import com.se.onlinemoviebooking.application.database.service.MovieService;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/test/admin")
 @CrossOrigin(origins = "http://localhost:3000")
 //@CrossOrigin(origins = "*")
-public class AdminController {
+public class AdminTestController {
 
 	@Resource(name = "movieService")
 	private MovieService movieService;
 
-	@GetMapping("/home")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String adminAccess() {
-		return "Welcome home Admin";
-	}
-	
 	@GetMapping("/manage-movies")
-	@PreAuthorize("hasRole('ADMIN')")
 	public JSONObject getMovies(HttpServletRequest request) {
 		return AdminApiHandler.getMovies(movieService);
 	}
-	
+
 	@PostMapping("/manage-movies/addmovie")
-	@PreAuthorize("hasRole('ADMIN')")
 	public JSONObject addMovie(HttpServletRequest request, @RequestBody MovieDTO paylaod) {
 		return AdminApiHandler.addMovie(movieService, paylaod);
 	}
-	
+
 	@PutMapping("/manage-movies/updatemovie/{movieid}")
-	@PreAuthorize("hasRole('ADMIN')")
-	public JSONObject updateMovie(HttpServletRequest request, @RequestBody MovieDTO paylaod, @PathVariable Long userid) {
-		return AdminApiHandler.updateMovie(userid, movieService, paylaod);
-	}
-	
-	
-	
-	@GetMapping("/manage-users")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String manageUsers() {
-		return "Welcome Admin, manage users.";
+	public JSONObject updateMovie(HttpServletRequest request, @RequestBody MovieDTO paylaod,
+			@PathVariable Long movieid) {
+		return AdminApiHandler.updateMovie(movieid, movieService, paylaod);
 	}
 
 }

@@ -7,7 +7,7 @@ import com.se.onlinemoviebooking.application.dto.UserDTO;
 
 public interface UserService {
 	
-	UserDTO saveUser(UserDTO userDTO);
+	public UserDTO saveUser(UserDTO userDTO);
 	
 	public UserDTO getUserDTObyId(Integer userid);
 	
