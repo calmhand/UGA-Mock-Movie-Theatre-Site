@@ -91,8 +91,33 @@ CREATE TABLE `promotion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+DROP TABLE IF EXISTS `showroom`;
+
+CREATE TABLE `showroom` (
+  `showroomid` int unsigned NOT NULL AUTO_INCREMENT,
+  `showroom_name` char(250) NOT NULL,
+  `seats` int unsigned NOT NULL,
+  PRIMARY KEY (`showroomid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `showroom` WRITE;
+INSERT INTO `showroom` VALUES (1,"ScreenX", 48),(2,"Max Relax", 48),(3,"Real 3D", 48);
+UNLOCK TABLES;
 
 
+DROP TABLE IF EXISTS `Showtime`;
+
+CREATE TABLE `showtime` (
+  `showid` int(11) NOT NULL AUTO_INCREMENT,
+  `movieid` int(11) NOT NULL COMMENT 'movie being played',
+  `showroomid` int(11) NOT NULL COMMENT 'showroom of show (which hall)',
+  `show_date` date NOT NULL COMMENT 'date of show',
+  `show_timeslot` int NOT NULL COMMENT 'slot of show, lets keep 4 slots: 1(9:00 am),2(1:00 pm ),3(6:00pm),4(10:00pm)',
+  PRIMARY KEY (`showid`),
+  FOREIGN KEY (`movieid`) REFERENCES movie(`movieid`) ON DELETE CASCADE,
+  FOREIGN KEY (`showroomid`) REFERENCES showroom(`showroomid`) ON DELETE CASCADE,
+  CONSTRAINT uc_showroom_date_slot UNIQUE (showroomid,show_date,show_timeslot)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 

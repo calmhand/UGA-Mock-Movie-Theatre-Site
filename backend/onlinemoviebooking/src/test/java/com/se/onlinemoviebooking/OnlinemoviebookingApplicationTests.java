@@ -30,6 +30,9 @@ import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.MovieRating;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.PromotionDTO;
+import com.se.onlinemoviebooking.application.dto.ShowRoom;
+import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
+import com.se.onlinemoviebooking.application.dto.ShowTimeSlot;
 import com.se.onlinemoviebooking.application.dto.Status;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.dto.UserType;
@@ -44,35 +47,51 @@ class OnlinemoviebookingApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-	
+
 	@Test
+	public void printShowTimeDTO() {
+
+		ShowTimeDTO showTimeDTO = new ShowTimeDTO();
+		showTimeDTO.setShowID(Long.parseLong("1"));
+		showTimeDTO.setMovieID(Long.parseLong("3"));
+		showTimeDTO.setShowRoom(ShowRoom.MAXRELAX);
+		try {
+			showTimeDTO.setShowDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-11-20"));
+		} catch (java.text.ParseException e) {
+		}
+		showTimeDTO.setShowTimeSlot(ShowTimeSlot.SHOW1);
+		
+		System.out.println(showTimeDTO.toJSONString());
+	}
+
+	//@Test
 	public void printPromotionDTO() {
-		
+
 		PromotionDTO promotionDTO = new PromotionDTO();
-		
+
 		promotionDTO.setPromoID(Long.parseLong("124"));
 		promotionDTO.setPromotionName("thanksgiving-promotion");
 		promotionDTO.setPromocode("THANKS15");
 		try {
 			promotionDTO.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-11-20"));
-		} catch (java.text.ParseException e) {	
+		} catch (java.text.ParseException e) {
 		}
 		try {
 			promotionDTO.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-11-25"));
-		} catch (java.text.ParseException e) {	
+		} catch (java.text.ParseException e) {
 		}
-		
+
 		promotionDTO.setIsSent(false);
 		promotionDTO.setDiscount(Float.parseFloat("15.0"));
-		
+
 		System.out.println(promotionDTO.toJSONString());
-		
+
 	}
-	
-	//@Test
+
+	// @Test
 	public void printmoviedto() {
 		MovieDTO movieDTO = new MovieDTO();
-		
+
 		movieDTO.setMovieID(Long.parseLong("124"));
 		movieDTO.setTitle("RRR");
 		movieDTO.setCategory(MovieCategory.ACTION);
@@ -80,7 +99,7 @@ class OnlinemoviebookingApplicationTests {
 		try {
 			movieDTO.setReleaseDate(new SimpleDateFormat("yyyy-MM-dd").parse("2018-01-01"));
 		} catch (java.text.ParseException e) {
-			
+
 		}
 		movieDTO.setDirector("Rajamouli");
 		movieDTO.setProducer("Danayya");
@@ -88,12 +107,11 @@ class OnlinemoviebookingApplicationTests {
 		movieDTO.setSynopsis("Action packed indian movie");
 		movieDTO.setPosterURL("https://assets-prd.ignimgs.com/2022/07/11/rrr-button-ver-1657577923010.jpg");
 		movieDTO.setTrailerURL("https://www.youtube.com/watch?v=NgBoMJy386M");
-		
-		
+
 		System.out.println(movieDTO.toJSONString());
 	}
 
-	//@Test
+	// @Test
 	public void whenSerializeAndDeserializeUsingJackson_thenCorrect() throws IOException {
 
 		UserDTO user = new UserDTO();
@@ -103,7 +121,7 @@ class OnlinemoviebookingApplicationTests {
 		add.setCity("Athens");
 		add.setState("GA");
 		add.setZipcode("30605");
-		
+
 		user.setAddress(add);
 		user.setUserID(123);
 		user.setStatus(Status.ACTIVE);
@@ -114,12 +132,10 @@ class OnlinemoviebookingApplicationTests {
 		user.setIsSubscribed(false);
 		user.setNumber("999999");
 		user.setPassword("mypassword");
-		
-		
-		
+
 		String jsonStr = user.toJSONString();
 		System.out.println(jsonStr);
-		
+
 		JSONParser parser = new JSONParser();
 		JSONObject json;
 		try {
@@ -130,17 +146,15 @@ class OnlinemoviebookingApplicationTests {
 		json.remove("lastName");
 		json.remove("email");
 		json.remove("userID");
-		
-		
-		
+
 		System.out.println(json);
-		
+
 		UserDTO result = UserDTO.getObject(json);
 		System.out.println(result.toJSONString());
 		System.out.println((new PaymentcardDTO()).toJSONString());
-		
-		//UserDTO saveduser = userService.saveUser(user);	
-		
+
+		// UserDTO saveduser = userService.saveUser(user);
+
 //		String jsonStr = user.toJSONString();
 //		System.out.println(jsonStr);
 //		UserDTO result = UserDTO.getObject(jsonStr);
@@ -148,7 +162,7 @@ class OnlinemoviebookingApplicationTests {
 //				+ result.getAddress().getStreet());
 	}
 
-	//@Test
+	// @Test
 	public void mailservice() {
 
 		try {
