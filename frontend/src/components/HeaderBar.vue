@@ -30,7 +30,8 @@ export default {
     props: [''],
     methods: {
         logOut() {
-            alert("You have been logged out!")
+            // alert("You have been logged out!")
+            document.querySelector("#cards-display").innerHTML = ""
             this.$router.push({path: "/home"})
             this.$store.commit("site/CLEAR_TOKEN")
         },

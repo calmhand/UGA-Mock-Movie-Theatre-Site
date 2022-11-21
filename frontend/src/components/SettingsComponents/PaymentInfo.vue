@@ -145,15 +145,26 @@
       </form>
         <div id="row">
           <button @click="saveCard()">Save Card</button>
-          <button style="margin: 0 10px;" @click="getCards()">See Cards</button>
+          <button @click="getCards()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cards-modal">
+            Show Saved Cards
+          </button>
         </div>
     </div>
+    <CardsModal/>
   </div>
 </template>
 
 <script>
+import CardsModal from '@/components/SettingsComponents/CardsModal.vue'
+
 export default {
   name: 'PaymentInfo',
+  components: {CardsModal},
+  data() {
+    return {
+      calledCards : false,
+    }
+  },
   methods: {
     async saveCard() {
       let cardNum = document.querySelector("#cardNum").value
@@ -166,7 +177,7 @@ export default {
       let state = document.querySelector("#billState").value
 
       let cardPayload = {
-        "userID" : this.$store.state.id,
+        "userID" : this.$store.state.site.id,
         "cardNumber" : cardNum,
         "cardExpiry" : expirationMonth + "/" + expirationYear,
         "billingAddress" : {
@@ -200,26 +211,38 @@ export default {
       })
       .then((res) => res.json())
       .then((result) => {
-        let primaryCard = JSON.stringify(result[0])
-        
-        for (let i = 0; i < result.length; i++) {
-          this.showCard(JSON.stringify(result[i]))
+        if (!this.calledCards) {
+          for (let i = 0; i < result.length; i++) {
+            let content = this.parseCard(result[i])
+            document.querySelector("#cards-display").innerHTML += content
+            this.calledCards = true
+          }
         }
-
-        console.log(primaryCard);
-        document.querySelector("#cardNum").placeholder = JSON.parse(primaryCard).cardNumber
-        document.querySelector("#billAddress").placeholder = JSON.parse(primaryCard)["billingAddress"]["street"]
-        document.querySelector("#billApt").placeholder = JSON.parse(primaryCard)["billingAddress"]["apt"]
-        document.querySelector("#billZip").placeholder = JSON.parse(primaryCard)["billingAddress"]["zipcode"]
-        document.querySelector("#billCity").placeholder = JSON.parse(primaryCard)["billingAddress"]["city"]
-        document.querySelector("#billState").value = JSON.parse(primaryCard)["billingAddress"]["state"]
       })
       .catch((err) => {console.log("Err: No Cards: " + err);})
     },
-    showCard(card) {
-      alert(card)
-    }
-    
+    parseCard(card) {
+      return `
+        <div id="card-container">
+          <h5>Card ID: ` + card["cardID"] + `</h5>
+          <div id="row">
+            Number: ` + card["cardNumber"] + `
+            Exp: ` + card["cardExpiry"] + `
+          </div>
+          <h5>Billing</h5>
+          <div id="row">
+            Address: ` + card["billingAddress"]["street"] + `
+            Apt: ` + card["billingAddress"]["apt"] + `
+          </div>
+          <div id="row">
+            Zipcode: ` + card["billingAddress"]["zipcode"] + `
+            City: ` + card["billingAddress"]["city"] + `
+            State: ` + card["billingAddress"]["state"] + `
+          </div>
+        </div>
+        <hr>
+      `
+    },
   }
 }
 </script>
@@ -241,82 +264,82 @@ export default {
   }
 
   #row {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 
-    #col {
-        display: flex;
-        flex-direction: column;
-        margin: 0 15px;
-    }
+  #col {
+      display: flex;
+      flex-direction: column;
+      margin: 0 15px;
+  }
 
-    h3 {
-        margin-top: 25px;
-    }
+  h3 {
+      margin-top: 25px;
+  }
 
-    hr {
-        margin: 0;
-    }
+  hr {
+      margin: 0;
+  }
 
-    i {
-        font-size: 25px;
-        margin: 0 10px;
-        height: 20px;
-        width: 20px;
-    }
+  i {
+      font-size: 25px;
+      margin: 0 10px;
+      height: 20px;
+      width: 20px;
+  }
 
-    label {
-        font-size: 20px;
-        padding-right: 10px;
-        color: #FBFFF1;
-    }
+  label {
+      font-size: 20px;
+      padding-right: 10px;
+      color: #FBFFF1;
+  }
 
-    input {
-        width: 200px;
-        height: 50px;
-        background-color: transparent;
-        font-size: 15px;
-        border: none;
-        border-bottom: solid 4px #FBFFF1;
-        outline: none;
-        color: #FBFFF1;
-        transition: border-color 0.2s ease-in-out;
-    }
+  input {
+      width: 200px;
+      height: 50px;
+      background-color: transparent;
+      font-size: 15px;
+      border: none;
+      border-bottom: solid 4px #FBFFF1;
+      outline: none;
+      color: #FBFFF1;
+      transition: border-color 0.2s ease-in-out;
+  }
 
-    input:required {
-        border-bottom: solid 4px #FBFFF1;
-    }
+  input:required {
+      border-bottom: solid 4px #FBFFF1;
+  }
 
-    input:invalid:focus {
-        border-bottom: solid 4px red;
-    }
+  input:invalid:focus {
+      border-bottom: solid 4px red;
+  }
 
-    button {
-        padding: 5px;
-        margin: 10px 0;
-        width: 175px;
-        text-decoration: none;
-        font-size: 20px;
-        text-align: center;
-        color: #FBFFF1;
-        background-color: transparent;
-        border: solid 2px #FBFFF1;
-        border-radius: 20px;
-        transition: opacity 0.2s ease-in-out;
-    }
+  button {
+      padding: 5px;
+      margin: 10px 10px;
+      width: 175px;
+      text-decoration: none;
+      font-size: 20px;
+      text-align: center;
+      color: #FBFFF1;
+      background-color: transparent;
+      border: solid 2px #FBFFF1;
+      border-radius: 20px;
+      transition: opacity 0.2s ease-in-out;
+  }
 
-    button:hover {
-        opacity: 0.6;
-    }
+  button:hover {
+      opacity: 0.6;
+  }
 
-    select {
-        width: 100px;
-        height: 50px;
-        color: #FBFFF1;
-        background-color: transparent;
-        border: none;
-        border-bottom: solid 4px #FBFFF1;
-    }
+  select {
+      width: 100px;
+      height: 50px;
+      color: #FBFFF1;
+      background-color: transparent;
+      border: none;
+      border-bottom: solid 4px #FBFFF1;
+  }
 </style>
