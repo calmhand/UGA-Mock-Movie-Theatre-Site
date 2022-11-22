@@ -66,14 +66,14 @@ public class AdminTestController {
 		return AdminApiHandler.getAllShows(showTimeService);
 	}
 	
+	@PostMapping("/manage-shows/addshow")
+	public JSONObject addMovie(HttpServletRequest request, @RequestBody JSONObject payload) {
+		return AdminApiHandler.addShow(showTimeService, payload);
+	}
+	
 	@GetMapping("/manage-shows/{date}") //  manage-shows/2022-11-21
 	public JSONObject getShows(HttpServletRequest request, @PathVariable String date) {
 		return AdminApiHandler.getShows(showTimeService, date);
-	}
-	
-	@GetMapping("/manage-shows/available/{date}") //  manage-shows/available/2022-11-21
-	public JSONObject getAvailableShows(HttpServletRequest request, @PathVariable String date) {
-		return AdminApiHandler.getAvailableShows(showTimeService, date);
 	}
 	
 	@GetMapping("/manage-shows/{movieid}/{date}") //   manage-shows/282/2022-11-21
@@ -81,9 +81,14 @@ public class AdminTestController {
 		return AdminApiHandler.getShowsByMovieDate(showTimeService, movieid, date);
 	}
 	
-	@PostMapping("/manage-shows/addshow")
-	public JSONObject addMovie(HttpServletRequest request, @RequestBody JSONObject payload) {
-		return AdminApiHandler.addShow(showTimeService, payload);
+	@GetMapping("/manage-shows/available/{date}") //  manage-shows/available/2022-11-21
+	public JSONObject getAvailableShows(HttpServletRequest request, @PathVariable String date) {
+		return AdminApiHandler.getAvailableShows(showTimeService, date);
+	}
+	
+	@GetMapping("/manage-shows/movie/{movieid}")
+	public JSONObject getMovieShows(HttpServletRequest request, @PathVariable Long movieid) {
+		return AdminApiHandler.getShowsForMovie(showTimeService, movieid);
 	}
 	
 	

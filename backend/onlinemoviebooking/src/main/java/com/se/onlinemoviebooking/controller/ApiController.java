@@ -86,6 +86,11 @@ public class ApiController {
 		return ApplicationAPIHandler.getMatchedMoviesBynameAndGenre(movieService, name, genre);
 	}
 	
+	@GetMapping("/movie/{movieid}/shows")
+	public JSONObject getMovieShows(HttpServletRequest request, @PathVariable Long movieid) {
+		return AdminApiHandler.getShowsForMovie(showTimeService, movieid);
+	}
+	
 
 	
 	@GetMapping("/shows/{movieid}/{date}") //   shows/282/2022-11-21
