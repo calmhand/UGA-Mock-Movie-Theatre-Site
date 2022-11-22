@@ -2,6 +2,7 @@ package com.se.onlinemoviebooking.application.database.service;
 
 import org.json.simple.JSONArray;
 
+import com.se.onlinemoviebooking.application.dao.PromotionDAO;
 import com.se.onlinemoviebooking.application.dto.PromotionDTO;
 
 public interface PromotionService {
@@ -11,6 +12,8 @@ public interface PromotionService {
 	public PromotionDTO updatePromotionById(Long promotionID, PromotionDTO payload);
 	
 	public JSONArray getPromotions();
+	
+	public PromotionDAO getPromotionById(Long promoid);
 
 	boolean updatePromotionAfterSent(Long promotionID);
 

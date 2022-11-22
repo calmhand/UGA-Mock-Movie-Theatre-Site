@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.se.onlinemoviebooking.application.dao.PromotionDAO;
 import com.se.onlinemoviebooking.application.dao.UserDAO;
 import com.se.onlinemoviebooking.application.database.service.MovieService;
 import com.se.onlinemoviebooking.application.database.service.PromotionService;
@@ -18,6 +19,7 @@ import com.se.onlinemoviebooking.application.dto.PromotionDTO;
 import com.se.onlinemoviebooking.application.dto.ShowRoom;
 import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 import com.se.onlinemoviebooking.application.dto.ShowTimeSlot;
+import com.se.onlinemoviebooking.application.services.EmailServicehelper;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
 public class AdminApiHandler {
@@ -174,10 +176,11 @@ public class AdminApiHandler {
 	}
 	
 	public static JSONObject sendPromotions(UserService userService,PromotionService promotionService, Long promoID) {
+		PromotionDAO promotion = promotionService.getPromotionById(promoID);
 		JSONObject response = new JSONObject();
 		List<UserDAO> subscribedUsers = userService.getSubscribedUsers();
-		for(int i=0; i<subscribedUsers.size();i++) {
-			//emails
+		for(UserDAO user:subscribedUsers) {
+			EmailServicehelper.sendPromotionEmail(user, promotion); //add seperate thread later
 		}
 		boolean updatedPromotion = promotionService.updatePromotionAfterSent(promoID);
 		if(updatedPromotion) {

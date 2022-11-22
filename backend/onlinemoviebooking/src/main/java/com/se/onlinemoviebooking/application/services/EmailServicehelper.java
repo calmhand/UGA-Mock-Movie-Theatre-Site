@@ -1,6 +1,8 @@
 package com.se.onlinemoviebooking.application.services;
 
 import com.se.onlinemoviebooking.application.cache.SimpleCache;
+import com.se.onlinemoviebooking.application.dao.PromotionDAO;
+import com.se.onlinemoviebooking.application.dao.UserDAO;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.utilities.ApplicationUtilities;
 
@@ -22,6 +24,24 @@ public class EmailServicehelper {
 		body = body.replace("[[URL]]",verifyURL);
 		
 		System.out.println(SimpleCache.getInstance().getCacheMap());
+		
+		EmailService.getInstance().sendEmail(sub, body, user.getEmail());
+		
+		return true;
+	}
+	
+	public static boolean sendPromotionEmail(UserDAO user, PromotionDAO promotion) {
+		String sub ="Book a movie now!! Promotion Available For You!!!";
+		String body = "Dear [[name]], \n"+ 
+		"Promotion.. [[promo]] available for you. Use code [[promocode]] and get [[discount]] discount. Book tickets now.\n"+
+				"click here [[URL]]";
+		
+		
+		body = body.replace("[[name]]", user.getLastName());
+		body = body.replace("[[promo]]",promotion.getPromotionName());
+		body = body.replace("[[promocode]]",promotion.getPromocode());
+		body = body.replace("[[discount]]",Float.toString(promotion.getDiscount()));
+		body = body.replace("[[URL]]","http://localhost:3000");
 		
 		EmailService.getInstance().sendEmail(sub, body, user.getEmail());
 		
