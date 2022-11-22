@@ -22,11 +22,6 @@ export default {
         font-size: 20px;
         opacity: 0.9;
 
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-
         /* position: fixed;
         bottom: 0px;
         left: 0px;

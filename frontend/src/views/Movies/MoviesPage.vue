@@ -55,9 +55,9 @@ export default {
     
 <style scoped>
   #movies-container {
-    height: 100vh;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     padding: 50px;
   }
 

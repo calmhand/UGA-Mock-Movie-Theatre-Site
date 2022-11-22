@@ -62,6 +62,7 @@ export default {
 #genre-btn-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     padding: 25px;
 }

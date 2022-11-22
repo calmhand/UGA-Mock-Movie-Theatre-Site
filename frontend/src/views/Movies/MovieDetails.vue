@@ -149,7 +149,7 @@ export default {
 
 
   p {
-    font-size: 35px;
+    font-size: 20px;
   }
 
   img {
