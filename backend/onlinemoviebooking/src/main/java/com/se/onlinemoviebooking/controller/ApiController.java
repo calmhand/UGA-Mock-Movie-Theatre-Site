@@ -64,6 +64,28 @@ public class ApiController {
 			@RequestParam("code") String code) {
 		return ApplicationAPIHandler.verifyEmail(userid, userService, code);
 	}
+	
+	
+	@GetMapping("/home")
+	public JSONObject homepage(HttpServletRequest request) {
+		return ApplicationAPIHandler.getHomePageData(movieService);
+	}
+	
+	@GetMapping("/movies-title/{name}")
+	public JSONObject getMoviesByName(HttpServletRequest request, @PathVariable String name) {
+		return ApplicationAPIHandler.getMatchedMoviesByname(movieService, name);
+	}
+	
+	@GetMapping("/movies-genre/{genre}")
+	public JSONObject getMoviesByGenre(HttpServletRequest request, @PathVariable String genre) {
+		return ApplicationAPIHandler.getMoviesByGenre(movieService, genre);
+	}
+	
+	@GetMapping("/movies-genre-title/{genre}/{name}")
+	public JSONObject getMoviesByGenreAndName(HttpServletRequest request, @PathVariable String genre, @PathVariable String name) {
+		return ApplicationAPIHandler.getMatchedMoviesBynameAndGenre(movieService, name, genre);
+	}
+	
 
 	
 	@GetMapping("/shows/{movieid}/{date}") //   shows/282/2022-11-21

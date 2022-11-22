@@ -19,8 +19,20 @@ public interface MovieRepository extends JpaRepository<MovieDAO, Long> {
 	@Query("SELECT m FROM MovieDAO m WHERE m.title = ?1")
 	public List<MovieDAO> findByName(String name);
 	
+	@Query("SELECT m FROM MovieDAO m WHERE m.title LIKE %:name%")
+	public List<MovieDAO> findByMatchingName(@Param("name") String name);
+	
+	@Query("SELECT m FROM MovieDAO m WHERE m.category = :genre and m.title LIKE %:name%")
+	public List<MovieDAO> findByMatchingNameAndGenre(@Param("name") String name, @Param("genre") String genre);
+	
+	@Query("SELECT m FROM MovieDAO m WHERE m.category = ?1")
+	public List<MovieDAO> findByGenre(String genre);
+	
 	@Query("select m from MovieDAO m where m.releaseDate > :date")
     public List<MovieDAO> getUpcomingMovies(@Param("date") Date date);
+	
+	@Query("select m from MovieDAO m where m.releaseDate <= :date")
+    public List<MovieDAO> getNowPlayingMovies(@Param("date") Date date);
 	
 	@Transactional
 	@Modifying

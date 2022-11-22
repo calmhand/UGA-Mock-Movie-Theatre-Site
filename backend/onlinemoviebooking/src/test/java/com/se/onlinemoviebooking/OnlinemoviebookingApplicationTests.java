@@ -3,6 +3,7 @@ package com.se.onlinemoviebooking;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -47,8 +48,26 @@ class OnlinemoviebookingApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
+	
 	@Test
+	public void runtests() {
+		 
+		
+		//printdate();
+		//printShowTimeDTO();
+		//printPromotionDTO();
+		printmovieDTO();
+		//whenSerializeAndDeserializeUsingJackson_thenCorrect()
+		//mailservice();
+	}
+
+	public void printdate() {
+		Date date = new Date();
+	      SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+	       String str = formatter.format(date);
+	      System.out.print("Current date: "+str);
+	}
+	
 	public void printShowTimeDTO() {
 
 		ShowTimeDTO showTimeDTO = new ShowTimeDTO();
@@ -64,7 +83,6 @@ class OnlinemoviebookingApplicationTests {
 		System.out.println(showTimeDTO.toJSONString());
 	}
 
-	//@Test
 	public void printPromotionDTO() {
 
 		PromotionDTO promotionDTO = new PromotionDTO();
@@ -88,8 +106,7 @@ class OnlinemoviebookingApplicationTests {
 
 	}
 
-	// @Test
-	public void printmoviedto() {
+	public void printmovieDTO() {
 		MovieDTO movieDTO = new MovieDTO();
 
 		movieDTO.setMovieID(Long.parseLong("124"));
@@ -97,7 +114,7 @@ class OnlinemoviebookingApplicationTests {
 		movieDTO.setCategory(MovieCategory.ACTION);
 		movieDTO.setRating(MovieRating.PG13);
 		try {
-			movieDTO.setReleaseDate(new SimpleDateFormat("yyyy-MM-dd").parse("2018-01-01"));
+			movieDTO.setReleaseDate(new SimpleDateFormat("yyyy-MM-dd").parse("2022-11-25"));
 		} catch (java.text.ParseException e) {
 
 		}
@@ -111,7 +128,6 @@ class OnlinemoviebookingApplicationTests {
 		System.out.println(movieDTO.toJSONString());
 	}
 
-	// @Test
 	public void whenSerializeAndDeserializeUsingJackson_thenCorrect() throws IOException {
 
 		UserDTO user = new UserDTO();
@@ -162,7 +178,7 @@ class OnlinemoviebookingApplicationTests {
 //				+ result.getAddress().getStreet());
 	}
 
-	// @Test
+	
 	public void mailservice() {
 
 		try {

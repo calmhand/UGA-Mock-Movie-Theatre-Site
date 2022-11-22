@@ -48,6 +48,12 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 	
+	public static JSONObject getAllShows(ShowTimeService showTimeService) {
+		JSONObject response = new JSONObject();
+		response.put("shows", showTimeService.getShowTimes());
+		return successResponse(response);
+	}
+	
 	public static JSONObject getShowsByMovieDate(ShowTimeService showTimeService, Long movieid, String date) {
 		JSONObject response = new JSONObject();
 		Date dateParam;

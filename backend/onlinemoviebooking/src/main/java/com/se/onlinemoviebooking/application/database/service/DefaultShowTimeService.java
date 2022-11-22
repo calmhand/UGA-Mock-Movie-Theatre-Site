@@ -29,6 +29,17 @@ public class DefaultShowTimeService implements ShowTimeService{
 		ShowTimeDAO showTimeDAO = populateShowTimeEntity(showTimeDTO); 
 		return getJsonFromShowTimeDAO(showTimeRepository.save(showTimeDAO));
 	}
+	
+	@Override
+	public JSONArray getShowTimes() {
+		List<ShowTimeDAO> showTimesList = new ArrayList<ShowTimeDAO>();
+		showTimesList = showTimeRepository.getAllShowTimes();
+		JSONArray showTimesArray = new JSONArray();
+		for(ShowTimeDAO std : showTimesList) {
+			showTimesArray.add(getJsonFromShowTimeDAO(std));
+		}		
+		return showTimesArray;
+	}
 
 	@Override
 	public JSONArray getShowTimesByDate(Date date) {

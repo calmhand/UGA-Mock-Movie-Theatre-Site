@@ -11,6 +11,9 @@ import com.se.onlinemoviebooking.application.dao.ShowTimeDAO;
 
 public interface ShowTimeRepository extends JpaRepository<ShowTimeDAO, Long> {
 	
+	@Query("select s from ShowTimeDAO s")
+    public List<ShowTimeDAO> getAllShowTimes();
+	
 	@Query("select s from ShowTimeDAO s where s.showDate = :date")
     public List<ShowTimeDAO> getShowTimesByDate(@Param("date") Date date);
 	

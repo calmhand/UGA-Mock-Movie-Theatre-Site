@@ -1,9 +1,11 @@
 package com.se.onlinemoviebooking.application.database.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,46 @@ public class DefaultMovieService implements MovieService{
 	public JSONArray getMovies() {
 		List<MovieDAO> movieList = new ArrayList<MovieDAO>();
 		movieList = movieRepository.getAllMovies();
+		JSONArray movieArray = new JSONArray();
+		movieArray.addAll(movieList);	
+		return movieArray;
+	}
+	
+	@Override
+	public JSONObject getHomePageMovies() {
+		JSONObject homepage = new JSONObject();
+		List<MovieDAO> currentMoviesList = new ArrayList<MovieDAO>();
+		List<MovieDAO> upcomingMoviesList = new ArrayList<MovieDAO>();
+		Date date = new Date();
+		currentMoviesList = movieRepository.getNowPlayingMovies(date);
+		upcomingMoviesList = movieRepository.getUpcomingMovies(date);
+		homepage.put("currentMoviesList", currentMoviesList);
+		homepage.put("upcomingMovieList", upcomingMoviesList);
+		return homepage;
+	}
+	
+	@Override
+	public JSONArray getMatchedMovies(String name) {
+		List<MovieDAO> movieList = new ArrayList<MovieDAO>();
+		movieList = movieRepository.findByMatchingName(name);
+		JSONArray movieArray = new JSONArray();
+		movieArray.addAll(movieList);	
+		return movieArray;
+	}
+	
+	@Override
+	public JSONArray getMoviesByGenre(String genre) {
+		List<MovieDAO> movieList = new ArrayList<MovieDAO>();
+		movieList = movieRepository.findByGenre(genre);
+		JSONArray movieArray = new JSONArray();
+		movieArray.addAll(movieList);	
+		return movieArray;
+	}
+	
+	@Override
+	public JSONArray getMatchedMoviesByGenre(String name, String genre) {
+		List<MovieDAO> movieList = new ArrayList<MovieDAO>();
+		movieList = movieRepository.findByMatchingNameAndGenre(name, genre);
 		JSONArray movieArray = new JSONArray();
 		movieArray.addAll(movieList);	
 		return movieArray;

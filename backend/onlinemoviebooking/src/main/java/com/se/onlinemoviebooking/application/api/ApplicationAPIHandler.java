@@ -2,6 +2,7 @@ package com.se.onlinemoviebooking.application.api;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.se.onlinemoviebooking.application.cache.SimpleCache;
 import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
+import com.se.onlinemoviebooking.application.database.service.MovieService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
@@ -182,6 +184,34 @@ public class ApplicationAPIHandler {
 		}
 		return successResponse(json);
 	}
+	
+	
+	
+	public static JSONObject getHomePageData(MovieService movieService) {
+		JSONObject json = movieService.getHomePageMovies();
+		return successResponse(json);
+	}
+	
+	public static JSONObject getMatchedMoviesByname(MovieService movieService, String name) {
+		JSONObject json = new JSONObject();
+		json.put("movies", movieService.getMatchedMovies(name));
+		return successResponse(json);
+	}
+	
+	public static JSONObject getMoviesByGenre(MovieService movieService, String genre) {
+		JSONObject json = new JSONObject();
+		json.put("movies", movieService.getMoviesByGenre(genre));
+		return successResponse(json);
+	}
+	
+	public static JSONObject getMatchedMoviesBynameAndGenre(MovieService movieService, String name, String genre) {
+		JSONObject json = new JSONObject();
+		json.put("movies", movieService.getMatchedMoviesByGenre(name, genre));
+		return successResponse(json);
+	}
+	
+	
+	
 
 	public static JSONObject successResponse(JSONObject resp) {
 		resp.put(ApplicationStringConstants.PROCESS, ApplicationStringConstants.SUCCESS);

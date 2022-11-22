@@ -20,7 +20,6 @@ import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.PromotionDTO;
-import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 
 @RestController
 @RequestMapping("/api/test/admin")
@@ -62,12 +61,17 @@ public class AdminTestController {
 	
 	//shows
 	
+	@GetMapping("/manage-shows")
+	public JSONObject getAllShows(HttpServletRequest request) {
+		return AdminApiHandler.getAllShows(showTimeService);
+	}
+	
 	@GetMapping("/manage-shows/{date}") //  manage-shows/2022-11-21
 	public JSONObject getShows(HttpServletRequest request, @PathVariable String date) {
 		return AdminApiHandler.getShows(showTimeService, date);
 	}
 	
-	@GetMapping("/manage-shows/available/{date}") //  manage-shows/2022-11-21
+	@GetMapping("/manage-shows/available/{date}") //  manage-shows/available/2022-11-21
 	public JSONObject getAvailableShows(HttpServletRequest request, @PathVariable String date) {
 		return AdminApiHandler.getAvailableShows(showTimeService, date);
 	}

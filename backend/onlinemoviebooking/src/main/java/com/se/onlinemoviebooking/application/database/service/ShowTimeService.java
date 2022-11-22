@@ -13,6 +13,8 @@ public interface ShowTimeService {
 	
 	public JSONObject saveShowTime(ShowTimeDTO showTimeDTO);
 	
+	public JSONArray getShowTimes();
+	
 	public JSONArray getShowTimesByDate(Date date);
 	
 	public JSONArray getShowTimesByDateAndMovie(Date date, Long movieid);
