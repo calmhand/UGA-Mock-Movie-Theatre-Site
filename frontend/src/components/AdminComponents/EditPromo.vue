@@ -1,99 +1,118 @@
 <template>
-    <div id="add-promo-modal" class="modal fade" tabindex="-1">
+  <div>
+    <div class="modal fade" id="edit-promo-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="edit-promo-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Promotion</h5>
+                    <h1 class="modal-title fs-5" id="edit-promo-modal-label">Edit Promotion</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
-                <div class="modal-body"> 
+                <div class="modal-body">
                     <form>
                         <div id="row">
                             <div id="col">
-                                <input id="promo-name-input" type="text">
+                                <input id="promo-id-edit" type="text" disabled>
+                                <label>Promo ID</label>
+                            </div>
+                        </div>
+
+                        <div id="row">
+                            <div id="col">
+                                <input id="promo-name-edit" type="text">
                                 <label>Promo Name</label>
                             </div>
 
                             <div id="col">
-                                <input id="discount-input" type="number" min="5" max="50">
+                                <input id="discount-edit" type="number" min="5" max="50">
                                 <label>Discount (%)</label>
                             </div>
                         </div>
 
                         <div id="row">
                             <div id="col">
-                                <input id="promo-code-input" type="text">
+                                <input id="promo-code-edit" type="text">
                                 <label>Promo Code</label>
                             </div>
                         </div>
 
                         <div id="row">
                             <div id="col">
-                                <input id="promo-start-input" type="date">
+                                <input id="promo-start-edit" type="date">
                                 <label>Start Date</label>
                             </div>
 
                             <div id="col">
-                                <input id="promo-end-input" type="date">
+                                <input id="promo-end-edit" type="date">
                                 <label>End Date</label>
                             </div>
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
-                    <button id="close-promo-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button @click="addPromo()" type="button" class="btn btn-primary">Add Promotion</button>
+                    <button id="close-edit-promo-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button @click="editPromo()" type="button" class="btn btn-primary">Edit Promo</button>
                 </div>
             </div>
         </div>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: "AddPromo",
+    name: "EditPromo",
+    data() {
+        return {
+            promoID : 0,
+            promo : {}
+        }
+    },
     methods: {
-        addPromo() {
-            let promoName = document.querySelector("#promo-name-input").value
-            let discount = document.querySelector("#discount-input").value
-            let code = document.querySelector("#promo-code-input").value
-            let promoStart = document.querySelector("#promo-start-input").value
-            let promoEnd = document.querySelector("#promo-end-input").value
+        // TODO: Fix
+        editPromo() {
+            this.setID()
+            let promoNameEdit = document.querySelector("#promo-name-edit").value
+            let codeEdit = document.querySelector("#promo-code-edit").value
+            let discountEdit = document.querySelector("#discount-edit").value
+            let startDateEdit = document.querySelector("#promo-start-edit").value
+            let endDateEdit = document.querySelector("#promo-end-edit").value
 
-            let promoPayload = {
-                "promotionName" : promoName,
-                "promocode" : code,
-                "discount" : discount,
-                "startDate" : promoStart,
-                "endDate" : promoEnd,
+            let promoEditPayload = {
+                "promotionName" : promoNameEdit,
+                "promocode" : codeEdit,
+                "discount" : discountEdit,
+                "startDate" : Math.floor(new Date(startDateEdit)),
+                "endDate" : Math.floor(new Date(endDateEdit)),
                 "isSent" : false
             }
 
-            let postAd = async () => {
-                await fetch("http://127.0.0.1:8084/api/test/admin/manage-promotions/addpromotion", {
+            let editPromo = async (id) => {
+                await fetch("http://127.0.0.1:8084/api/test/admin/manage-promotions/updatepromotion/" + id, {
                     method: "POST",
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(promoPayload),
+                    body: JSON.stringify(promoEditPayload),
                 })
                 .then((res) => res.json())
                 .then(() => {
-                    // console.log("promo added: " + JSON.stringify(s))
-                    document.getElementById("close-promo-modal").click()
+                    document.getElementById("close-edit-promo-modal").click()
                 })
                 .catch((err) => {console.log("err: " + err);})
             }
-            postAd()   
+            editPromo(this.promoID)
+
+        },
+        setID() {
+            this.promoID = document.querySelector('#promo-id-edit').value
         }
-    }
+    },
 }
 </script>
 
 <style scoped>
-    #add-movie-modal {
+    #edit-promo-modal {
         color: #FBFFF1;
     }
     

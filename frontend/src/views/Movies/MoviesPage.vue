@@ -1,58 +1,54 @@
 <template>
+  <div id="genres-container">
+    <GenresBar />
+  </div>
+  <hr>
   <div id="movies-container">
-    <MoviePoster 
-      :title="`Top Gun: Maverick`" 
-      :poster="require(`@/assets/temp_assets/topgun-poster.jpg`)"
-      :genre="`Action`"
-      rating="PG-13"
-      release="07/27"
-    />
+    <MoviePoster v-for="movie in currentFilms" :key="movie.movieID"
+        :id="movie.movieID"
+        :title="movie.title"
+        :genre="movie.category"
+        :rating="movie.rating"
+        :poster="movie.posterURL"
+        :trailer="movie.trailerURL"
+        :release="movie.releaseDate"
+        :movieObj="movie"
+        :upcoming="false"
+      />
 
-    <MoviePoster 
-      :title="`Bullet Train`" 
-      :poster="require(`@/assets/temp_assets/bullettrain-poster.jpg`)"
-      :genre="`Action`"
-      rating="R"
-      release="08/05"
-    />
-
-    <MoviePoster 
-      :title="`On The Come Up`" 
-      :poster="require(`@/assets/temp_assets/onthecomeup-poster.jpg`)"
-      :genre="`Drama`"
-      rating="PG-13"
-      release="09/23"
-    />
-
-    <MoviePoster id="pearl-poster"
-      :title="`Pearl`" 
-      :poster="require(`@/assets/temp_assets/pearl-poster.jpg`)"
-      :genre="`Horror`"
-      rating="R"
-      release="09/16"
-      @click="seeMovieDetails('Pearl')"
-    />
-
-    <MoviePoster 
-      :title="`The Woman King`" 
-      :poster="require(`@/assets/temp_assets/womanking-poster.jpg`)"
-      :genre="`Action`"
-      rating="PG-13"
-      release="09/16"
-    />
   </div>
 </template>
 
 <script>
+import GenresBar from '@/components/MovieComponents/GenresBar.vue'
 import MoviePoster from '@/components/MovieComponents/MoviePoster.vue';
 export default {
     name: "MoviePage",
-    components: {MoviePoster},
+    props: ['query'],
+    components: {GenresBar, MoviePoster},
+    data() {
+      return {
+        currentFilms : []
+      }
+    },
     methods: {
-        seeMovieDetails(id) {
-            console.log(id);
-            this.$router.push({name: 'MovieDetails', params:{movieId:`${id}`}})
-        }
+        async populateMoviePage() {
+          await fetch("http://127.0.0.1:8084/api/onlinemoviebooking/home", {
+              method: "GET",
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+          })
+          .then((res) => res.json())
+          .then((s) => {
+            this.currentFilms = s.currentMoviesList
+          })
+          .catch((err) => {console.log("Err: " + err);})
+      }
+    },
+    mounted() {
+      this.populateMoviePage()
     }
 }
 </script>
@@ -61,7 +57,11 @@ export default {
   #movies-container {
     height: 100vh;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    padding: 50px;
   }
 
+  hr {
+    margin: 0;
+  }
 </style>

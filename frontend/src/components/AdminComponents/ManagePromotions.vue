@@ -2,6 +2,7 @@
   <div id="manage-promos-container">
     <div id="promo-opts">
       <a data-bs-toggle="modal" data-bs-target="#add-promo-modal"><i class="fa-solid fa-plus"></i></a>
+      <a @click="getPromos()"><i class="fa-solid fa-arrows-rotate"></i></a>
       <!-- TODO: Implement search for promos? -->
       <a><i class="fa-solid fa-magnifying-glass"></i></a>
     </div>
@@ -9,56 +10,98 @@
     <div id="promo-console">
       <table id="manage-promos-table">
         <tr>
+          <th>Promotion ID</th>
           <th>Promotion name</th>
           <th>Discount</th>
           <th>Promotion Code</th>
-          <th>Is Active</th>
+          <th>Start Date</th>
+          <th>End Date</th>
           <th>Sent to Users</th>
           <th>Options</th>
         </tr>
-        <tr>
-          <td>Homecoming</td>
-          <td>10%</td>
-          <td>HOMECOMING10</td>
-          <td>True</td>
-          <td>True</td>
+
+        <tr v-for="ad in promos" :key="ad.promoID">
+          <td>{{ad.promoID}}</td>
+          <td>{{ad.promotionName}}</td>
+          <td>{{ad.discount}}</td>
+          <td>{{ad.promocode}}</td>
+          <td>{{convertTime(ad.startDate)}}</td>
+          <td>{{convertTime(ad.endDate)}}</td>
+          <td>{{ad.isSent}}</td>
           <td>
-            <button>Dispatch</button>
-            <button>Suspend</button>
-            <button>Activate</button>
+            <button @click="sendPromo(ad.promoID)">Dispatch</button>
+            <button v-if="ad.isSent === false" @click="sendID(ad.promoID)" id="edit-promo-btn" type="button" data-bs-toggle="modal" data-bs-target="#edit-promo-modal">Edit</button>
+            <button>Remove</button>
           </td>
         </tr>
-        <tr>
-          <td>Christmas</td>
-          <td>20%</td>
-          <td>SANTA20</td>
-          <td>False</td>
-          <td>False</td>
-          <td>
-            <button>Dispatch</button>
-            <button>Suspend</button>
-            <button>Activate</button>
-          </td>
-        </tr>
-      </table>      
+
+      </table>
     </div>
-    
+
     <AddPromo />
+    <EditPromo />
   </div>
 </template>
   
 <script>
 import AddPromo from '@/components/AdminComponents/AddPromo.vue'
+import EditPromo from '@/components/AdminComponents/EditPromo.vue'
+
 export default {
   name: "ManageMovies",
-  components: {AddPromo},
+  components: {AddPromo, EditPromo},
+  data() {
+    return {
+      promos : [],
+    }
+  },
   methods: {
-    
-  }
+    getPromos() {
+      let getAds = async () => {
+        await fetch("http://127.0.0.1:8084/api/test/admin/manage-promotions", {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+        })
+        .then((res) => res.json())
+        .then((s) => {
+          // console.log("Promos successfully retrieved." + JSON.stringify(s));
+          this.promos = s.promotions
+        })
+        .catch((err) => {console.log("Err:" + err);})
+      }
+      getAds()
+    },
+    sendPromo(id) {
+      let dispatchAd = async () => {
+        await fetch("http://127.0.0.1:8084/api/test/admin/manage-promotions/sendpromotion/" + id, {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+        })
+        .then((res) => res.json())
+        .then((s) => {
+          console.log("PromoID:" + id + " successfully dispatched." + JSON.stringify(s));
+        })
+        .catch((err) => {console.log("Err:" + err);})
+      }
+      dispatchAd()
+    },
+    convertTime(time) {
+      return new Date(time).toLocaleDateString("en-US")
+    },
+    sendID(id) {
+      document.querySelector("#promo-id-edit").value = id
+    }
+  },
+  mounted() {
+    this.getPromos()
+  },
 }
-
-  // call loadPromotions
-
 </script>
   
 <style scoped>
@@ -101,7 +144,7 @@ a:hover {
   opacity: 0.7;
 }
 
-button {
+button, #edit-promo-btn {
   width: 100px;
   height: 45px;
   margin: 0 10px;

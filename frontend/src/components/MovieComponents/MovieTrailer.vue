@@ -50,7 +50,7 @@ export default {
           this.show = true
           // console.log(this.imageURL)
           // console.log(movieData);
-        }).catch((res)=>{console.log(res);})
+        }).catch((err)=>{console.log("Err: " + err);})
 
         // Create Trailer Link
         await fetch('https://api.themoviedb.org/3/movie/'+ this.movieID + '/videos?api_key=f3ac6beeff1af51dfca6c7f4e3d29fae')

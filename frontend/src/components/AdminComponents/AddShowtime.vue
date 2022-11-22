@@ -7,44 +7,44 @@
                 </div>
 
                 <div class="modal-body"> 
-                    <form>
+                    <form id="add-showtime-form">
                         <div id="row">
                             <div id="col">
-                                <!-- TODO: Fill options programatically? -->
-                                <select id="dropdown" name="dropdownMovieName">
+                                <select id="add-show-movie-dropdown" name="dropdownMovieName">
                                     <option disabled value selected>Select a Movie</option>
-                                    <option value="Top Gun">Top Gun</option>
-                                    <option value="Bullet Train">Bullet Train</option>
+                                    <option v-for="movie in movies" :key="movie.movieID" :value="movie.movieID">
+                                        {{movie.title}}
+                                    </option>
                                 </select>
                                 <label>Movie Name</label>
                             </div>
 
                             <div id="col">
-                                <input type="text">
-                                <label>Hall</label>
+                                <select id="showroom-dropdown">
+                                    <option disabled value selected>Select Room</option>
+                                    <option value="MAX-RELAX">Max Relax</option>
+                                    <option value="REAL-3D">Real 3D</option>
+                                    <option value="SCREEN-PLAY">Screen Play</option>
+                                    <option value="SCREEN-X">Screen X</option>
+                                </select>
+                                <label>Show Room</label>
                             </div>
                         </div>
 
                         <div id="row">
                             <div id="col">
-                                <input type="number" min="0">
-                                <label>Price (USD)</label>
-                            </div>
-
-                            <div id="col">
-                                <input type="number" min="0">
-                                <label>Booking Fee (%)</label>
-                            </div>
-                        </div>
-
-                        <div style="width: 40%;">
-                            <div id="col">
-                                <input type="date">
+                                <input id="add-showtime-date" type="date">
                                 <label>Show Date</label>
                             </div>
 
                             <div id="col">
-                                <input type="time">
+                                <select id="showtime-dropdown">
+                                    <option disabled value selected>Select Showtime</option>
+                                    <option value="09:00">9:00 AM</option>
+                                    <option value="13:00">1:00 PM</option>
+                                    <option value="18:00">6:00 PM</option>
+                                    <option value="22:00">10:00 PM</option>
+                                </select>
                                 <label>Show Time</label>
                             </div>
                         </div>
@@ -52,9 +52,9 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="close-add-shows-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <!-- TODO: Implement AddShowtime Button. -->
-                    <button type="button" class="btn btn-primary">Add Showtime</button>
+                    <button @click="addShowTime()" type="button" class="btn btn-primary">Add Showtime</button>
                 </div>
             </div>
         </div>
@@ -64,6 +64,61 @@
 <script>
 export default {
     name: "AddShowtime",
+    data() {
+        return {
+            movies : []
+        }
+    },
+    methods: {
+        addShowTime() {
+            let movID = parseInt(document.querySelector("#add-show-movie-dropdown").value)
+            let showtime = document.querySelector("#showtime-dropdown").value
+            let showDate = document.querySelector("#add-showtime-date").value
+            let room = document.querySelector("#showroom-dropdown").value
+
+            let showPayload = {
+                "movieID" : movID,
+                "showRoom" : room,
+                "showDate" : showDate,
+                "showTimeSlot" : showtime
+            }
+            console.log(JSON.stringify(showPayload));
+            let addShow = async () => {
+                await fetch("http://127.0.0.1:8084/api/test/admin/manage-shows/addshow", {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(showPayload)
+                })
+                .then((res) => res.json())
+                .then((s) => {
+                    console.log("Showtime Added: " + JSON.stringify(s));
+
+                    document.getElementById("close-add-shows-btn").click()
+                    document.getElementById("add-showtime-form").reset()
+                })
+            }
+            addShow()
+        },
+        async fetchMovies() {
+            await fetch("http://127.0.0.1:8084/api/onlinemoviebooking/home", {
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then((res) => res.json())
+            .then((s) => {
+                this.movies = s.currentMoviesList
+            })
+        },
+    },
+    mounted() {
+        this.fetchMovies()
+    }
 }
 </script>
 

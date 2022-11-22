@@ -7,39 +7,44 @@
                 </div>
 
                 <div class="modal-body"> 
-                    <form>
+                    <form id="add-movie-form">
                         <div id="row">
                             <div id="col">
-                                <input type="text">
+                                <input id="movie-title" type="text">
                                 <label>Movie Name</label>
                             </div>
 
                             <div id="col">
-                                <input type="text">
+                                <input id="movie-release-input" type="date">
                                 <label>Release Date</label>
                             </div>
                         </div>
 
                         <div id="row">
                             <div id="col">
-                                <select>
+                                <select id="genre-selector">
                                     <option disabled value selected>Select Genre</option>
-                                    <option value="Action">Action</option>
-                                    <option value="Comedy">Comedy</option>
-                                    <option value="Thriller">Thriller</option>
-                                    <option value="Horror">Horror</option>
-                                    <option value="Other">Other</option>
+                                    <option value="ACTION">Action</option>
+                                    <option value="ADVENTURE">Adventure</option>
+                                    <option value="DRAMA">Drama</option>
+                                    <option value="CRIME">Crime</option>
+                                    <option value="ROMANCE">Romance</option>
+                                    <option value="SCIENCE_FICTION">Sci-Fi</option>
+                                    <option value="COMEDY">Comedy</option>
+                                    <option value="THRILLER">Thriller</option>
+                                    <option value="HORROR">Horror</option>
+                                    <option value="OTHER">Other</option>
                                 </select>
                                 <label>Genre</label>
                             </div>
 
                             <div id="col">
-                                <select id="dropdown" name="dropdownRating">
+                                <select id="rating-selector" name="dropdownRating">
                                     <option disabled value selected>Select Rating</option>
-                                    <option value="g">G</option>
-                                    <option value="pg">PG</option>
-                                    <option value="pg13">PG-13</option>
-                                    <option value="r">R</option>
+                                    <option value="G">G</option>
+                                    <option value="PG">PG</option>
+                                    <option value="PG13">PG-13</option>
+                                    <option value="R">R</option>
                                 </select>
                                 <label>Rating</label>
                             </div>
@@ -47,25 +52,32 @@
 
                         <div id="row">
                             <div id="col">
-                                <input type="text">
+                                <input id="movie-cast-input" type="text">
                                 <label>Cast</label>
                             </div>
 
                             <div id="col">
-                                <input type="text">
+                                <input id="movie-director-input" type="text">
                                 <label>Director</label>
                             </div>
                         </div>
 
                         <div id="row">
                             <div id="col">
-                                <input type="text">
+                                <input id="movie-producer-input" type="text">
                                 <label>Executive Producer</label>
+                            </div>
+                        </div>
+
+                        <div id="row">
+                            <div id="col">
+                                <input id="movie-trailer-url-input" type="text">
+                                <label>Trailer URL</label>
                             </div>
 
                             <div id="col">
-                                <input type="text">
-                                <label>Trailer URL</label>
+                                <input id="movie-poster-url-input" type="text">
+                                <label>Poster URL</label>
                             </div>
                         </div>
 
@@ -79,9 +91,9 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="close-add-movie-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <!-- TODO: Implement AddMovie Button. -->
-                    <button type="button" class="btn btn-primary">Add Movie</button>
+                    <button @click="addMovie()" type="button" class="btn btn-primary">Add Movie</button>
                 </div>
             </div>
         </div>
@@ -91,6 +103,52 @@
 <script>
 export default {
     name: "AddMovie",
+    methods: {
+        addMovie() {
+            let title = document.querySelector("#movie-title").value
+            let category = document.querySelector("#genre-selector").value
+            let rating = document.querySelector("#rating-selector").value
+            let release = document.querySelector("#movie-release-input").value
+            let director = document.querySelector("#movie-director-input").value
+            let producer = document.querySelector("#movie-producer-input").value
+            let cast = document.querySelector("#movie-cast-input").value
+            let synopsis = document.querySelector("#add-movie-description").value
+            let posterURL = document.querySelector("#movie-poster-url-input").value
+            let trailerURL = document.querySelector("#movie-trailer-url-input").value
+
+            let moviePayload = {
+                "title" : title,
+                "category" : category,
+                "rating" : rating,
+                "director" : director,
+                "producer" : producer,
+                "cast" : cast,
+                "releaseDate" : release,
+                "synopsis" : synopsis,
+                "posterURL" : posterURL,
+                "trailerURL" : trailerURL
+            }
+
+            let postFilm = async () => {
+                await fetch("http://127.0.0.1:8084/api/test/admin/manage-movies/addmovie", {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(moviePayload),
+                })
+                .then((res) => res.json())
+                .then((s) => {
+                    console.log("movie added: " + JSON.stringify(s));
+                    document.getElementById("close-add-movie-modal").click()
+                    document.getElementById("add-movie-form").reset();
+                })
+                .catch((err) => {console.log("err: " + err);})
+            }
+            postFilm()
+        }
+    },
 }
 </script>
 

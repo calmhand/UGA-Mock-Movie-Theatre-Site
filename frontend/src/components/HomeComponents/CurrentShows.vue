@@ -1,45 +1,15 @@
 <template>
   <div id="current-shows-container">
-    <MoviePoster 
-      :title="`Top Gun: Maverick`" 
-      :poster="require(`@/assets/temp_assets/topgun-poster.jpg`)"
-      :genre="`Action`"
-      rating="PG-13"
-      release="07/27"
-    />
-
-    <MoviePoster 
-      :title="`Bullet Train`" 
-      :poster="require(`@/assets/temp_assets/bullettrain-poster.jpg`)"
-      :genre="`Action`"
-      rating="R"
-      release="08/05"
-    />
-
-    <MoviePoster 
-      :title="`On The Come Up`" 
-      :poster="require(`@/assets/temp_assets/onthecomeup-poster.jpg`)"
-      :genre="`Drama`"
-      rating="PG-13"
-      release="09/23"
-    />
-
-    <router-link to="/movies/pearl/info">
-      <MoviePoster 
-        :title="`Pearl`" 
-        :poster="require(`@/assets/temp_assets/pearl-poster.jpg`)"
-        :genre="`Horror`"
-        rating="R"
-        release="09/16"
-      />
-    </router-link>
-
-    <MoviePoster 
-      :title="`The Woman King`" 
-      :poster="require(`@/assets/temp_assets/womanking-poster.jpg`)"
-      :genre="`Action`"
-      rating="PG-13"
-      release="09/16"
+    <MoviePoster v-for="movie in currentFilms.slice(0, 5)" :key="movie.movieID"
+      :id="movie.movieID"
+      :title="movie.title"
+      :genre="movie.category"
+      :rating="movie.rating"
+      :poster="movie.posterURL"
+      :trailer="movie.trailerURL"
+      :release="movie.releaseDate"
+      :movieObj="movie"
+      :upcoming="false"
     />
   </div>
 </template>
@@ -47,8 +17,31 @@
 <script>
 import MoviePoster from '@/components/MovieComponents/MoviePoster.vue';
 export default {
-    name: "CurrentShows",
-    components: {MoviePoster}
+  name: "CurrentShows",
+  components: {MoviePoster},
+  data() {
+    return {
+      currentFilms : []
+    }
+  },
+  methods: {
+    async getCurrentFilms() {
+      await fetch("http://127.0.0.1:8084/api/onlinemoviebooking/home", {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+      })
+      .then((res) => res.json())
+      .then((s) => {
+        this.currentFilms = s.currentMoviesList
+      })
+    }
+  },
+  mounted() {
+    this.getCurrentFilms()
+  }
 }
 </script>
 

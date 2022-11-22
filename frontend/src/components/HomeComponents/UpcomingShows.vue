@@ -1,39 +1,15 @@
 <template>
   <div id="upcoming-shows-container">
-    <MoviePoster 
-      :title="`The Inspection`" 
-      :poster="require(`@/assets/temp_assets/inspection_poster.jpg`)"
-      :genre="`Drama`"
-      rating="R"
-      release="11/18"
-    />
-    <MoviePoster 
-      :title="`Halloween Ends`"
-      :poster="require(`@/assets/temp_assets/halloweenends-poster.jpg`)"
-      :genre="`Horror`"
-      rating="R"
-      release="10/14"
-    />
-    <MoviePoster 
-      :title="`Amsterdam`"
-      :poster="require(`@/assets/temp_assets/amsterdamposter.jpg`)"
-      :genre="`Drama`"
-      rating="R"
-      release="10/07"
-    />
-    <MoviePoster 
-      :title="`Black Adam`"
-      :poster="require(`@/assets/temp_assets/blackadam_poster.jpeg`)"
-      :genre="`Action`"
-      rating="PG-13"
-      release="10/21"
-    />
-    <MoviePoster 
-      :title="`Black Panther 2`"
-      :poster="require(`@/assets/temp_assets/blackpanther-poster.jpg`)"
-      :genre="`Action`"
-      rating="PG-13"
-      release="11/11"
+    <MoviePoster v-for="movie in upcomingFilms.slice(0, 5)" :key="movie.movieID"
+      :id="movie.movieID"
+      :title="movie.title"
+      :genre="movie.category"
+      :rating="movie.rating"
+      :poster="movie.posterURL"
+      :trailer="movie.trailerURL"
+      :release="movie.releaseDate"
+      :movieObj="movie"
+      :upcoming="false"
     />
   </div>
 </template>
@@ -42,7 +18,30 @@
 import MoviePoster from '@/components/MovieComponents/MoviePoster.vue';
 export default {
     name: "UpcomingShows",
-    components: {MoviePoster}
+    components: {MoviePoster},
+    data() {
+      return {
+        upcomingFilms : []
+      }
+    },
+    methods: {
+      async getUpcomingFilms() {
+        await fetch("http://127.0.0.1:8084/api/onlinemoviebooking/home", {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+        .then((res) => res.json())
+        .then((s) => {
+          this.upcomingFilms = s.upcomingMovieList
+        })
+      },
+    },
+    mounted() {
+      this.getUpcomingFilms()
+    },
 }
 </script>
 

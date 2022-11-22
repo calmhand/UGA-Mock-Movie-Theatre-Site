@@ -15,11 +15,9 @@
           <label for="adminPass"><i class="fa-solid fa-key"></i>Password</label>
         </div>
 
-        <router-link to="/admin/console">
-          <button type="button" id="login-button">
+          <button @click="loginAdmin()" type="button" id="login-button">
             <i class="fa-solid fa-right-to-bracket"></i>
           </button>
-        </router-link>
       </form>
       </div>
     </div>
@@ -30,11 +28,49 @@
 <script>
 export default {
     name: "AdminLogin",
-    beforeMount() {
-        if (this.$store.state.currentState == 1) {
-            alert("Must be logged in.")
-            this.$router.push({path: "/login"})
+    methods: {
+      loginAdmin() {
+        let username = document.querySelector("#user-input").value
+        let password = document.querySelector("#pass-input").value
+
+        let adminPayload = {
+          "username" : username,
+          "password" : password
         }
+
+        let adminLogin = async () => {
+          await fetch("http://127.0.0.1:8084/api/auth/login", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(adminPayload)
+          })
+          .then((res) => res.json())
+          .then((result) => {
+            if (result.status != 401) {
+              alert("Admin Logged In.")
+              this.$store.commit("site/UPDATE_STATE", "ADMIN")
+              this.$store.commit("site/PARSE_TOKEN", result)
+              this.$router.push({path : "/home"})
+              console.log('Admin Login Success: ', result);
+            } else {
+              console.log("Unsuccsesful login attempt (from LoginPage.vue): " + JSON.stringify(result));
+              alert("Wrong credentials. Try again.")
+            }
+          })
+          .catch((err) => console.log('err: ', err))
+        }
+
+        adminLogin()
+      },
+    },
+    beforeMount() {
+        // if (this.$store.state.currentState == 1) {
+        //     alert("Must be logged in.")
+        //     this.$router.push({path: "/login"})
+        // }
     }
 }
 </script>

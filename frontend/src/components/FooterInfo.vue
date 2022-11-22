@@ -21,6 +21,17 @@ export default {
         background-color: #302b3795;
         font-size: 20px;
         opacity: 0.9;
+
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+
+        /* position: fixed;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        margin-bottom: 0px; */
     }
 
     #footer-content {

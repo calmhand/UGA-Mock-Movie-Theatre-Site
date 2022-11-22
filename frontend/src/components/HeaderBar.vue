@@ -18,7 +18,7 @@
 
             <!-- Search -->
             <a id="nav-element" style="float:right;"><i @click="search()" class="fa-solid fa-magnifying-glass"></i></a>
-            <input id="search-input" style="float:right;" placeholder="Search" v-on:focusout="closeSearch()">
+            <input @keyup.enter="getSearchResult()" id="search-input" style="float:right;" placeholder="Search" v-on:focusout="closeSearch()">
 
         </div>
     </div>
@@ -31,7 +31,6 @@ export default {
     methods: {
         logOut() {
             // alert("You have been logged out!")
-            document.querySelector("#cards-display").innerHTML = ""
             this.$router.push({path: "/home"})
             this.$store.commit("site/CLEAR_TOKEN")
         },
@@ -43,21 +42,18 @@ export default {
             }
         },
         sendUser() {
-            // TODO: DELETE: this.$store.commit("moduleTest/TEMP_TEST")
             if (this.$store.state.site.currentState == 0) {
                 this.$router.push({path: '/login'})
             } else if (this.$store.state.site.currentState == 1) {
                 this.$router.push({path: '/user/' + this.$store.state.site.id})
             } else if (this.$store.state.site.currentState == 2) {
-                // TODO: Send to admin profile. get user id from JWT token.
                 this.$router.push({path: '/admin/console'})
             }
         },
         search() {
             let searchBar = document.querySelector('#search-input')
             if (searchBar.style.opacity == '1') {
-                // TODO: Implement Search Function
-                console.log('initiate search');
+                // do nothing
             } else {
                 searchBar.style.opacity = '1'
                 searchBar.style.pointerEvents = 'auto'
@@ -68,6 +64,14 @@ export default {
             // Input auto closes when not in focus.
             searchBar.style.opacity = '0'
             searchBar.style.pointerEvents = 'none'
+            searchBar.value = ""
+        },
+        getSearchResult() {
+            let searchBar = document.querySelector('#search-input').value
+            this.closeSearch()
+            if (searchBar != "") {
+                this.$router.push({path: "/movies/search/" + searchBar})
+            }
         }
     },
 }

@@ -234,7 +234,7 @@ export default {
     }
 
     .create_container {
-        height: 120vh;
+        height: 100%;
         display: flex;
         flex-direction: row;
         justify-content: center;

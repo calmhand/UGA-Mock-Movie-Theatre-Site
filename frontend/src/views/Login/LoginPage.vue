@@ -82,6 +82,7 @@ export default {
             alert("Login successful!")
             console.log("Succesfully retrieved JWT Token (from LoginPage.vue): " + s);
             this.$store.commit("site/PARSE_TOKEN", s)
+            this.$store.commit("site/UPDATE_STATE", "CUSTOMER")
             getProfile()
             this.$router.push("/home")
           } else {

@@ -2,41 +2,43 @@
   <div id="manage-movies-container">
     <div id="movie-opts">
       <a data-bs-toggle="modal" data-bs-target="#add-movie-modal"><i class="fa-solid fa-plus"></i></a>
+      <a @click="getMovies()"><i class="fa-solid fa-arrows-rotate"></i></a>
       <!-- TODO: Implement search for movies? -->
       <a><i class="fa-solid fa-magnifying-glass"></i></a>
     </div>
 
     <div id="movie-console">
       <table id="manage-movie-table">
-        <tr>
-          <th>Movie name</th>
-          <th>Cast</th>
-          <th>Genre</th>
-          <th>Release Date</th>
-          <th>Options</th>
-        </tr>
-        <tr>
-          <td>Top Gun</td>
-          <td>Tom cruise, Monica Barbaro</td>
-          <td>Action</td>
-          <td>09/20/2022</td>
-          <td>
-            <button>View</button>
-            <button>Edit</button>
-            <button>Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Bullet Train</td>
-          <td>Brad Pit, Joe King</td>
-          <td>Thriller</td>
-          <td>09/23/2022</td>
-          <td>
-            <button>View</button>
-            <button>Edit</button>
-            <button>Delete</button>
-          </td>
-        </tr>
+        <div id="movies-table-display">
+          <tr>
+            <th>ID</th>
+            <th>Movie Name</th>
+            <th>Rating</th>
+            <th>Director</th>
+            <th>Cast</th>
+            <th>Synopsis</th>
+            <th>Genre</th>
+            <th>Release Date</th>
+            <th>Options</th>
+          </tr>
+
+          <tr v-for="movie in movies" :key="movie.movieID">
+            <td>{{movie.movieID}}</td>
+            <td>{{movie.title}}</td>
+            <td>{{movie.rating}}</td>
+            <td>{{movie.director}}</td>
+            <td>{{movie.cast}}</td>
+            <td>{{movie.synopsis}}</td>
+            <td>{{movie.category}}</td>
+            <td>{{movie.releaseDate}}</td>
+            <td>
+              <button>Details</button>
+              <button @click="editMovie(movie.movieID)">Edit</button>
+              <button>Remove</button>
+            </td>
+          </tr>
+        </div>
+
       </table>
     </div>
     <AddMovie />
@@ -48,8 +50,33 @@ import AddMovie from '@/components/AdminComponents/AddMovie.vue'
 export default {
   name: "ManageMovies",
   components: {AddMovie},
+  data() {
+    return {
+      movies : [],
+    }
+  },
   methods: {
-
+    getMovies() {
+      let getFilms = async () => {
+        await fetch("http://127.0.0.1:8084/api/test/admin/manage-movies", {
+          method: "GET",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+        })
+        .then((res) => res.json())
+        .then((s) => {
+          // console.log("Movies succesfully retrieved." + JSON.stringify(s));
+          this.movies = s.movies
+        })
+        .catch((err) => {console.log("Err: " + err);})
+      }
+      getFilms()
+    },
+  },
+  mounted() {
+    this.getMovies()
   }
 }
 
@@ -73,9 +100,16 @@ export default {
 }
 
 #manage-movie-table {
-    background-color: #090b9b33;
-    border: 1px solid #FBFFF1;
-    margin: 10px;
+  background-color: #090b9b33;
+  border: 1px solid #FBFFF1;
+  margin: 10px;
+}
+
+#movies-table-display {
+  display: block;
+  height: 400px;
+  width: 100%;
+  overflow-y:scroll;
 }
 
 i {
@@ -96,9 +130,9 @@ a:hover {
 }
 
 button {
-  width: 100px;
+  width: 80px;
   height: 45px;
-  margin: 0 10px;
+  margin: 10px;
   border: solid 4px #FBFFF1;
   border-radius: 10px;
   text-align: center;
@@ -109,7 +143,7 @@ button:hover {
   opacity: 0.7;
 }
 
-td, th {
+td, th{
   border: 1px solid #FBFFF1;
   text-align: left;
   padding: 8px;

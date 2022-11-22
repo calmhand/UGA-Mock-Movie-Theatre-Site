@@ -24,7 +24,7 @@ export default {
             state.roles = payload["roles"]
             state.accessToken = payload["accessToken"]
             state.tokenType = payload["tokenType"]
-            this.commit("site/UPDATE_STATE", "CUSTOMER")
+            // this.commit("site/UPDATE_STATE", "CUSTOMER")
             console.log("success (site.js): Login Successful");
         },
         CLEAR_TOKEN(state) {

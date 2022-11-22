@@ -6,8 +6,7 @@
                 <a @click="switchView(1)">Manage Movies</a>
                 <a @click="switchView(2)">Manage Showtimes</a>
                 <a @click="switchView(3)">Manage Promotions</a>
-                <!-- TODO: Won't implement unless told to do otherwise. -->
-                <!-- <a @click="switchView(4)">Manage Users</a> -->
+                <a @click="switchView(4)">Manage Users</a>
             </div>
             <div id="console-view">
                 <AdminSummary />
@@ -90,7 +89,7 @@ export default {
     flex-direction: column;
     justify-content: center;
 
-    height: 90%;
+    min-height: 100%;
     width: 90%;
 
     background-color: rgba(0, 0, 0, 0.5);

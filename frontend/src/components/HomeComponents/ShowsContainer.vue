@@ -48,8 +48,9 @@ export default {
             btn.style.color = "#FBFFF1"
             btn.style.opacity = "1"
             window.style.display = "block"
-        }
-    }
+
+        },
+    },
 }
 </script>
 

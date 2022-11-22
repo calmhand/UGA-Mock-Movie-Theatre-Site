@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div id="film-poster-container">
+    <div @click="sendToMoviePage()" id="film-poster-container">
       <img id="poster-image" :src="poster"/>
     </div>
-    {{title}} | {{genre}} <br>
+    {{title}} <br>
+    Genre: {{genre}} <br>
     Rating: {{rating}} <br>
     Release: {{release}}
   </div>
@@ -14,7 +15,14 @@
 
 export default {
   name: "MoviePoster",
-  props: ['title', `poster`, `genre`, `release`, `rating`]
+  props: ['title', `poster`, `genre`, `release`, `rating`, `id`, `trailer`, `movieObj`, `upcoming`],
+  methods: {
+    sendToMoviePage() {
+      if (!this.upcoming) {
+        this.$router.push({path: "/movies/"+ this.id + "/" + this.title +"/info"})
+      }
+    }
+  }
 }
 </script>
 

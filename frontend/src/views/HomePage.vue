@@ -1,6 +1,6 @@
 <template>
   <div class="homepage">
-    <!-- <TrailerCarousel /> -->
+    <TrailerCarousel />
     <ShowsContainer />
   </div>
 </template>
@@ -17,6 +17,9 @@ export default {
   },
   methods: {
 
+  },
+  beforeMount() {
+    this.$store.commit("movie/GET_CURRENT_MOVIES")
   }
 }
 </script>

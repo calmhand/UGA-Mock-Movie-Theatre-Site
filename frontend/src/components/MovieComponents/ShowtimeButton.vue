@@ -1,13 +1,13 @@
 <template>
   <div>
-    <button type="button">{{time}}</button>
+    <button type="button">{{showRoom}} : {{showDate}} : {{timeSlot}}</button>
   </div>
 </template>
 
 <script>
 export default {
     name: "ShowtimeButton",
-    props: ['time']
+    props: ['timeSlot', 'showDate', 'showRoom']
 }
 </script>
 
