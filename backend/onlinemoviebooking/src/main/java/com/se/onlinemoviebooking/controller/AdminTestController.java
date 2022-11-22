@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.se.onlinemoviebooking.application.api.AdminApiHandler;
 import com.se.onlinemoviebooking.application.database.service.MovieService;
 import com.se.onlinemoviebooking.application.database.service.PromotionService;
+import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.PromotionDTO;
+import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 
 @RestController
 @RequestMapping("/api/test/admin")
@@ -29,12 +31,18 @@ public class AdminTestController {
 	@Resource(name = "movieService")
 	private MovieService movieService;
 	
+	@Resource(name = "showTimeService")
+	private ShowTimeService showTimeService;
+	
 	@Resource(name = "promotionService")
 	private PromotionService promotionService;
 	
 	@Resource(name = "userService")
 	private UserService userService;
 
+	
+	//movies
+	
 	@GetMapping("/manage-movies")
 	public JSONObject getMovies(HttpServletRequest request) {
 		return AdminApiHandler.getMovies(movieService);
@@ -50,6 +58,32 @@ public class AdminTestController {
 			@PathVariable Long movieid) {
 		return AdminApiHandler.updateMovie(movieid, movieService, payload);
 	}
+	
+	
+	//shows
+	
+	@GetMapping("/manage-shows/{date}") //  manage-shows/2022-11-21
+	public JSONObject getShows(HttpServletRequest request, @PathVariable String date) {
+		return AdminApiHandler.getShows(showTimeService, date);
+	}
+	
+	@GetMapping("/manage-shows/available/{date}") //  manage-shows/2022-11-21
+	public JSONObject getAvailableShows(HttpServletRequest request, @PathVariable String date) {
+		return AdminApiHandler.getAvailableShows(showTimeService, date);
+	}
+	
+	@GetMapping("/manage-shows/{movieid}/{date}") //   manage-shows/282/2022-11-21
+	public JSONObject getShowsOfMovie(HttpServletRequest request,@PathVariable Long movieid, @PathVariable String date) {
+		return AdminApiHandler.getShowsByMovieDate(showTimeService, movieid, date);
+	}
+	
+	@PostMapping("/manage-shows/addshow")
+	public JSONObject addMovie(HttpServletRequest request, @RequestBody JSONObject payload) {
+		return AdminApiHandler.addShow(showTimeService, payload);
+	}
+	
+	
+	//promotions
 	
 	@GetMapping("/manage-promotions")
 	public JSONObject getPromotions(HttpServletRequest request) {
@@ -71,6 +105,8 @@ public class AdminTestController {
 	public JSONObject sendPromotion(HttpServletRequest request,@PathVariable Long promoid) {
 		return AdminApiHandler.sendPromotions(userService, promotionService, promoid);
 	}
+	
+	//users
 	
 	@GetMapping("/manage-users")
 	public JSONObject getUsers(HttpServletRequest request) {

@@ -1,13 +1,14 @@
 package com.se.onlinemoviebooking.application.dto;
 
 public enum ShowRoom {
-	SCREENX(1,"SCREEN-X"), MAXRELAX(2,"MAX-RELAX"), REAL3D(3,"REAL3D"), SCREENPLAY(4,"SCREEN-PLAY");
+	SCREENX(1,"SCREEN-X"), MAXRELAX(2,"MAX-RELAX"), REAL3D(3,"REAL-3D"), SCREENPLAY(4,"SCREEN-PLAY");
 	
 	private Integer id;
 	private String name;
 	
 	ShowRoom(Integer id,String name) {
 		this.name = name;
+		this.id = id;
 	}
 
 	public Integer getId() {

@@ -34,7 +34,7 @@ public class ShowTimeDAO implements SimpleDAO{
 	@Column(name = "show_date")
 	private Date showDate;
 	
-	@Column(name = "show_timslot")
+	@Column(name = "show_timeslot")
 	private Integer showTimeSlot;
 	
 	public ShowTimeDAO() {

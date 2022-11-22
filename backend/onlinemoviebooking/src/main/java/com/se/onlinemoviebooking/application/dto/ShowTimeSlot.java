@@ -9,6 +9,7 @@ public enum ShowTimeSlot {
 	
 	ShowTimeSlot(Integer id,String name) {
 		this.name = name;
+		this.id = id;
 	}
 
 	public Integer getId() {
@@ -20,7 +21,7 @@ public enum ShowTimeSlot {
 	}
 
 	
-	public static ShowTimeSlot getShowRoomByName(String showTimeSlot) {
+	public static ShowTimeSlot getShowTimeSlotByName(String showTimeSlot) {
 		switch (showTimeSlot.trim().toUpperCase()) {
 		case "09:00":
 			return ShowTimeSlot.SHOW1;
@@ -35,7 +36,7 @@ public enum ShowTimeSlot {
 		}
 	}
 
-	public static ShowTimeSlot getShowRoomByID(int id) {
+	public static ShowTimeSlot getShowTimeSlotByID(int id) {
 		switch (id) {
 		case 1:
 			return ShowTimeSlot.SHOW1;

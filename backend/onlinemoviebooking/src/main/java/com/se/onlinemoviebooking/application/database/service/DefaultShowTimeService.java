@@ -1,5 +1,6 @@
 package com.se.onlinemoviebooking.application.database.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,9 +25,9 @@ public class DefaultShowTimeService implements ShowTimeService{
 	private ShowTimeRepository showTimeRepository;
 	
 	@Override
-	public ShowTimeDTO saveShowTime(ShowTimeDTO showTimeDTO) {
-		
-		return null;
+	public JSONObject saveShowTime(ShowTimeDTO showTimeDTO) {
+		ShowTimeDAO showTimeDAO = populateShowTimeEntity(showTimeDTO); 
+		return getJsonFromShowTimeDAO(showTimeRepository.save(showTimeDAO));
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class DefaultShowTimeService implements ShowTimeService{
 		showTimesList = showTimeRepository.getShowTimesByDate(date);
 		JSONArray showTimesArray = new JSONArray();
 		for(ShowTimeDAO std : showTimesList) {
-			showTimesArray.add(getJsonFromShoTimeDAO(std));
+			showTimesArray.add(getJsonFromShowTimeDAO(std));
 		}		
 		return showTimesArray;
 	}
@@ -46,7 +47,7 @@ public class DefaultShowTimeService implements ShowTimeService{
 		showTimesList = showTimeRepository.getShowTimesByDateAndMovie(movieid, date);
 		JSONArray showTimesArray = new JSONArray();
 		for(ShowTimeDAO std : showTimesList) {
-			showTimesArray.add(getJsonFromShoTimeDAO(std));
+			showTimesArray.add(getJsonFromShowTimeDAO(std));
 		}		
 		return showTimesArray;
 	}
@@ -57,11 +58,11 @@ public class DefaultShowTimeService implements ShowTimeService{
 		showTimesList = showTimeRepository.getShowTimesByMovie(movieid);
 		JSONArray showTimesArray = new JSONArray();
 		for(ShowTimeDAO std : showTimesList) {
-			showTimesArray.add(getJsonFromShoTimeDAO(std));
+			showTimesArray.add(getJsonFromShowTimeDAO(std));
 		}		
 		return showTimesArray;
 	}
-
+	
 	@Override
 	public Map<String, List<String>> getAvailableShowTimesOnDate(Date date) {
 		Map<String, List<String>> availableShowsMap = populateAllHallsWithSlots();
@@ -71,7 +72,7 @@ public class DefaultShowTimeService implements ShowTimeService{
 		if(!showTimesList.isEmpty()) {
 			for(ShowTimeDAO sdao: showTimesList) {
 				availableShowsMap.get(ShowRoom.getShowRoomByID(sdao.getShowRoom()).getName())
-				.remove(ShowTimeSlot.getShowRoomByID(sdao.getShowTimeSlot()).getName());
+				.remove(ShowTimeSlot.getShowTimeSlotByID(sdao.getShowTimeSlot()).getName());
 			}
 		}
 		
@@ -95,40 +96,39 @@ public class DefaultShowTimeService implements ShowTimeService{
 	}
 	
 	public static ShowTimeDAO populateShowTimeEntity(ShowTimeDTO showTimeDTO) {
-		ShowTimeDAO showTimeDAO = new ShowTimeDAO();
 		
+		ShowTimeDAO showTimeDAO = new ShowTimeDAO();
 		showTimeDAO.setMovieID(showTimeDTO.getMovieID());
 		showTimeDAO.setShowRoom(showTimeDTO.getShowRoom().getId());
 		showTimeDAO.setShowDate(showTimeDTO.getShowDate());
 		showTimeDAO.setShowTimeSlot(showTimeDTO.getShowTimeSlot().getId());
-		
-		
 		return showTimeDAO;
 	}
 	
 	
 	public static ShowTimeDTO populateShowTimeData(ShowTimeDAO showTimeDAO) {
-		ShowTimeDTO showTimeDTO = new ShowTimeDTO();
 		
+		ShowTimeDTO showTimeDTO = new ShowTimeDTO();
+		showTimeDTO.setShowID(showTimeDAO.getShowID());
 		showTimeDTO.setMovieID(showTimeDAO.getMovieID());
 		showTimeDTO.setShowRoom(ShowRoom.getShowRoomByID(showTimeDAO.getShowRoom()));
-		showTimeDTO.setShowDate(showTimeDTO.getShowDate());
-		showTimeDTO.setShowTimeSlot(ShowTimeSlot.getShowRoomByID(showTimeDAO.getShowTimeSlot()));
+		showTimeDTO.setShowDate(showTimeDAO.getShowDate());
+		showTimeDTO.setShowTimeSlot(ShowTimeSlot.getShowTimeSlotByID(showTimeDAO.getShowTimeSlot()));
 		
 		return showTimeDTO;
 	}
 	
-	public static JSONObject getJsonFromShoTimeDAO(ShowTimeDAO showTimeDAO) {
+	public static JSONObject getJsonFromShowTimeDAO(ShowTimeDAO showTimeDAO) {
 		
 		
 		//{"showID":1,"movieID":3,"showRoom":"MAX-RELAX","showDate":2022-11-12,"showTimeSlot":"09:00"}
 		
 		JSONObject showTimeJson = new JSONObject();
 		showTimeJson.put("showID", showTimeDAO.getShowID());
-		showTimeJson.put("movieID", showTimeDAO.getShowID());
+		showTimeJson.put("movieID", showTimeDAO.getMovieID());
 		showTimeJson.put("showRoom", ShowRoom.getShowRoomByID(showTimeDAO.getShowRoom()).getName());
-		showTimeJson.put("showDate", showTimeDAO.getShowDate());
-		showTimeJson.put("showTimeSlot", ShowTimeSlot.getShowRoomByID(showTimeDAO.getShowTimeSlot()).getName());
+		showTimeJson.put("showDate", new SimpleDateFormat("yyyy-MM-dd").format(showTimeDAO.getShowDate()));
+		showTimeJson.put("showTimeSlot", ShowTimeSlot.getShowTimeSlotByID(showTimeDAO.getShowTimeSlot()).getName());
 		return showTimeJson;
 	}
 	

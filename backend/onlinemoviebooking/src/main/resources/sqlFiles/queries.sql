@@ -101,21 +101,21 @@ CREATE TABLE `showroom` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `showroom` WRITE;
-INSERT INTO `showroom` VALUES (1,"ScreenX", 48),(2,"Max Relax", 48),(3,"Real 3D", 48);
+INSERT INTO `showroom` VALUES (1,"SCREEN-X", 48),(2,"MAX-RELAX", 48),(3,"REAL-3D", 48), (4,"SCREEN-PLAY",48);
 UNLOCK TABLES;
 
 
-DROP TABLE IF EXISTS `Showtime`;
+DROP TABLE IF EXISTS `showtime`;
 
 CREATE TABLE `showtime` (
-  `showid` int(11) NOT NULL AUTO_INCREMENT,
-  `movieid` int(11) NOT NULL COMMENT 'movie being played',
-  `showroomid` int(11) NOT NULL COMMENT 'showroom of show (which hall)',
+  `showid` int unsigned NOT NULL AUTO_INCREMENT,
+  `movieid` int unsigned NOT NULL COMMENT 'movie being played',
+  `showroomid` int unsigned NOT NULL COMMENT 'showroom of show (which hall)',
   `show_date` date NOT NULL COMMENT 'date of show',
-  `show_timeslot` int NOT NULL COMMENT 'slot of show, lets keep 4 slots: 1(9:00 am),2(1:00 pm ),3(6:00pm),4(10:00pm)',
+  `show_timeslot` int unsigned NOT NULL COMMENT 'slot of show, lets keep 4 slots: 1(9:00 am),2(1:00 pm ),3(6:00pm),4(10:00pm)',
   PRIMARY KEY (`showid`),
-  FOREIGN KEY (`movieid`) REFERENCES movie(`movieid`) ON DELETE CASCADE,
-  FOREIGN KEY (`showroomid`) REFERENCES showroom(`showroomid`) ON DELETE CASCADE,
+  FOREIGN KEY (`movieid`) REFERENCES `movie`(`movieid`) ON DELETE CASCADE,
+  FOREIGN KEY (`showroomid`) REFERENCES `showroom`(`showroomid`) ON DELETE CASCADE,
   CONSTRAINT uc_showroom_date_slot UNIQUE (showroomid,show_date,show_timeslot)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

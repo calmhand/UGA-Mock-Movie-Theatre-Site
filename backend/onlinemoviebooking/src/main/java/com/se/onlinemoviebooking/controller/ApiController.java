@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.se.onlinemoviebooking.application.api.AdminApiHandler;
 import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
+import com.se.onlinemoviebooking.application.database.service.MovieService;
+import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 
 @RestController
@@ -26,6 +29,12 @@ public class ApiController {
 
 	@Resource(name = "userService")
 	private UserService userService;
+	
+	@Resource(name = "movieService")
+	private MovieService movieService;
+	
+	@Resource(name = "showTimeService")
+	private ShowTimeService showTimeService;
 
 	@GetMapping("/")
 	@ResponseBody
@@ -40,41 +49,15 @@ public class ApiController {
 		return "<center><h1>Hello Jay</h1></center>";
 	}
 
-	/*
-	 * request parameters email
-	 * 
-	 * flow frontend send this request with email, backend confirms existence of
-	 * user email and send a code to his email
-	 * 
-	 * response {"process":"success", "userID":123}
-	 * 
-	 * 
-	 * frontend if process success redirects to reset password form with fields
-	 * email,code,new password else if process failure something went wrong
-	 * 
-	 */
 	@PostMapping(value = "/forgotpassword")
 	public JSONObject forgotPassword(HttpServletRequest request, @RequestBody JSONObject payload) {
 		return ApplicationAPIHandler.forgotPassword(userService, payload);
 	}
 
-	/*
-	 * request parameters email,newPassword,code
-	 * 
-	 * backend verifies code which it sent in email and resets password to
-	 * newPassword
-	 * 
-	 * response parameters {"process":"success"}
-	 * 
-	 * front end redirect to login page if process success else something went wrong
-	 * 
-	 */
 	@PostMapping(value = "/emailresetpassword")
 	public JSONObject resetPassword(HttpServletRequest request, @RequestBody JSONObject payload) {
 		return ApplicationAPIHandler.emailResetPassword(userService, payload);
 	}
-
-	// todo
 
 	@GetMapping(value = "/{userid}/emailVerify")
 	public JSONObject verifyEmail(HttpServletRequest request, @PathVariable Integer userid,
@@ -82,4 +65,14 @@ public class ApiController {
 		return ApplicationAPIHandler.verifyEmail(userid, userService, code);
 	}
 
+	
+	@GetMapping("/shows/{movieid}/{date}") //   shows/282/2022-11-21
+	public JSONObject getShowsOfMovie(HttpServletRequest request,@PathVariable Long movieid, @PathVariable String date) {
+		return AdminApiHandler.getShowsByMovieDate(showTimeService, movieid, date);
+	}
+	
+	@GetMapping("/shows/{date}") //  shows/2022-11-21
+	public JSONObject getShows(HttpServletRequest request, @PathVariable String date) {
+		return AdminApiHandler.getShows(showTimeService, date);
+	}
 }
