@@ -95,13 +95,14 @@ DROP TABLE IF EXISTS `showroom`;
 
 CREATE TABLE `showroom` (
   `showroomid` int unsigned NOT NULL AUTO_INCREMENT,
-  `showroom_name` char(250) NOT NULL,
+  `showroom_name` varchar(250) NOT NULL,
   `seats` int unsigned NOT NULL,
+  `seat_ids` varchar(1000) NOT NULL COMMENT 'example string of array ["A1","A2","A3".....]',
   PRIMARY KEY (`showroomid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `showroom` WRITE;
-INSERT INTO `showroom` VALUES (1,"SCREEN-X", 48),(2,"MAX-RELAX", 48),(3,"REAL-3D", 48), (4,"SCREEN-PLAY",48);
+INSERT INTO `showroom` VALUES (1,"SCREEN-X", 40),(2,"MAX-RELAX", 40),(3,"REAL-3D", 40), (4,"SCREEN-PLAY",40);
 UNLOCK TABLES;
 
 
@@ -113,6 +114,7 @@ CREATE TABLE `showtime` (
   `showroomid` int unsigned NOT NULL COMMENT 'showroom of show (which hall)',
   `show_date` date NOT NULL COMMENT 'date of show',
   `show_timeslot` int unsigned NOT NULL COMMENT 'slot of show, lets keep 4 slots: 1(9:00 am),2(1:00 pm ),3(6:00pm),4(10:00pm)',
+  `ticket_prices` varchar(250) NOT NULL COMMENT 'example {"child":13.50, "adult":15.50, "senior":14.50}',
   PRIMARY KEY (`showid`),
   FOREIGN KEY (`movieid`) REFERENCES `movie`(`movieid`) ON DELETE CASCADE,
   FOREIGN KEY (`showroomid`) REFERENCES `showroom`(`showroomid`) ON DELETE CASCADE,
@@ -120,7 +122,35 @@ CREATE TABLE `showtime` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+CREATE TABLE `booking` (
+  `bookingid` int unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int unsigned NOT NULL,
+  `movieid` int unsigned NOT NULL,
+  `showid` int unsigned NOT NULL,
+  `tickets` varchar(1000) NOT NULL COMMENT 'example {"child":0, "adult":2, "senior":0}',
+  `booked_seats` varchar(1000) NOT NULL COMMENT '["B4","B5"]',
+  `promoid` int unsigned,
+  `total` float NOT NULL COMMENT 'Total price of tickets',
+  `transactionid` int unsigned NOT NULL,
+  `shipping_address` varchar(255) NOT NULL,
+  `booking_time` datetime NOT NULL,
+  PRIMARY KEY (`bookingid`),
+  FOREIGN KEY (`userid`) REFERENCES user(`userid`) ON DELETE CASCADE,
+  FOREIGN KEY (`movieid`) REFERENCES `movie`(`movieid`),
+  FOREIGN KEY (`showid`) REFERENCES `showtime`(`showid`),
+  FOREIGN KEY (`promoid`) REFERENCES `promotion`(`promoid`),
+  FOREIGN KEY (`transactionid`) REFERENCES `transaction`(`transactionid`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;sh
 
+CREATE TABLE `transaction`(
+`transactionid` int unsigned NOT NULL AUTO_INCREMENT,
+`transaction_time` datetime NOT NULL,
+`transaction_type` varchar(100) NOT NULL COMMENT 'example for now we support card ex: CARD',
+`transaction_details` varchar(500) NOT NULL COMMENT 'based on transaction_type we parse/add this
+ for card it will be {"cardNumber": "xxx2536", bankTransactionID:"3468581237469324691" } we will store last four digits of card',
+`billing_address` varchar(500) NOT NULL,
+PRIMARY KEY (`transactionid`),
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
