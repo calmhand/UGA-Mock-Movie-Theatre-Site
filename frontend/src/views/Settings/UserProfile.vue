@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO: Add orders tab -->
   <div class="profile_page_container">
     <div id="settings-container">
         <div id="settings-opt-container">
@@ -6,6 +7,7 @@
             <a @click="changeDisplay('#address-info-container', 2)" id="opt-btn">Address</a>
             <a @click="changeDisplay('#payment-info-container', 3)" id="opt-btn">Payment</a>
             <a @click="changeDisplay('#promo-info-container', 4)" id="opt-btn">Manage Promotions</a>
+            <!--  -->
         </div>
         <div id="vertical-line"></div>
         <div id="settings-info-container">

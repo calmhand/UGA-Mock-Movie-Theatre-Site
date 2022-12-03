@@ -1,6 +1,6 @@
 <template>
   <div id="seat-selector-container">
-
+    <!-- TODO: Check for seats available vs user's desired ticket amt -->
     <ul class="showcase">
       <li>
         <div class="seat"></div>
