@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO: Price inputs to showtimes. -->
     <div id="admin-console-container">
         <div id="console-display">
             <div id="admin-btns">

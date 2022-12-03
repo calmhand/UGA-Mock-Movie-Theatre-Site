@@ -66,6 +66,6 @@ a.router-link-exact-active {
 
 #main-window {
   min-height: 100vh;
-  background-image: linear-gradient(160deg, #090C9B, #3C3744);
+  background-image: linear-gradient(160deg, red, blue);
 }
 </style>

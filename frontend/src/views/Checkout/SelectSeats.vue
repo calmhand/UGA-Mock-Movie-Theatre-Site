@@ -1,6 +1,6 @@
 <template>
   <div id="seat-selector-container">
-
+    <!-- TODO: Check for seats available vs user's desired ticket amt -->
     <ul class="showcase">
       <li>
         <div class="seat"></div>
@@ -21,6 +21,8 @@
 
       <div class="screen"></div>
 
+      <row :id="num" :obj="payload" />
+
       <div class="row">
         <div class="seat"></div>
         <div class="seat"></div>
@@ -42,6 +44,7 @@
         <div class="seat"></div>
         <div class="seat"></div>
       </div>
+
       <div class="row">
         <div class="seat"></div>
         <div class="seat"></div>
@@ -52,6 +55,7 @@
         <div class="seat sold"></div>
         <div class="seat sold"></div>
       </div>
+
       <div class="row">
         <div class="seat"></div>
         <div class="seat"></div>
@@ -62,6 +66,7 @@
         <div class="seat"></div>
         <div class="seat"></div>
       </div>
+
       <div class="row">
         <div class="seat"></div>
         <div class="seat"></div>
@@ -72,6 +77,7 @@
         <div class="seat"></div>
         <div class="seat"></div>
       </div>
+
       <div class="row">
         <div class="seat"></div>
         <div class="seat"></div>
