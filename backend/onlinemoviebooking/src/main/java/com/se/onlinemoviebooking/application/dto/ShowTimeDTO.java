@@ -13,17 +13,19 @@ public class ShowTimeDTO implements SimpleDTO{
 	private ShowRoom showRoom;
 	private Date showDate;
 	private ShowTimeSlot showTimeSlot;
+	private TicketPriceDTO ticketPrices;
 	
 	public ShowTimeDTO() {
 	}
 	
-	public ShowTimeDTO(long showID, long movieID, ShowRoom showRoom, Date showDate, ShowTimeSlot showTimeSlot) {
+	public ShowTimeDTO(long showID, long movieID, ShowRoom showRoom, Date showDate, ShowTimeSlot showTimeSlot,TicketPriceDTO ticketPrices ) {
 		super();
 		this.showID = showID;
 		this.movieID = movieID;
 		this.showRoom = showRoom;
 		this.showDate = showDate;
 		this.showTimeSlot = showTimeSlot;
+		this.ticketPrices = ticketPrices;
 	}
 	
 	public long getShowID() {
@@ -57,6 +59,14 @@ public class ShowTimeDTO implements SimpleDTO{
 		this.showTimeSlot = showTimeSlot;
 	}
 	
+	public TicketPriceDTO getTicketPrices() {
+		return ticketPrices;
+	}
+
+	public void setTicketPrices(TicketPriceDTO ticketPrices) {
+		this.ticketPrices = ticketPrices;
+	}
+
 	public String toJSONString() {
 		try {
 			return dtoMapper.writeValueAsString(this);

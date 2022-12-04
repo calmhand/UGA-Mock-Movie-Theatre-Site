@@ -3,7 +3,10 @@ package com.se.onlinemoviebooking;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -15,6 +18,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.hibernate.engine.transaction.jta.platform.internal.JOnASJtaPlatform;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -24,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.se.onlinemoviebooking.application.dao.MovieDAO;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.AddressDTO;
 import com.se.onlinemoviebooking.application.dto.MovieCategory;
@@ -48,26 +54,46 @@ class OnlinemoviebookingApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-	
+
 	@Test
 	public void runtests() {
-		 
-		
-		//printdate();
-		//printShowTimeDTO();
-		//printPromotionDTO();
-		printmovieDTO();
-		//whenSerializeAndDeserializeUsingJackson_thenCorrect()
-		//mailservice();
+
+		// printdate();
+		// printShowTimeDTO();
+		// printPromotionDTO();
+		//printmovieDTO();
+		// whenSerializeAndDeserializeUsingJackson_thenCorrect()
+		// mailservice();
+		createseats();
 	}
+
+	public void createseats() {
+		List<String> seats = new ArrayList<String>(Arrays.asList("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "B1",
+				"B2", "B3", "B4", "B5", "B6", "B7", "B8", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "D1", "D2",
+				"D3", "D4", "D5", "D6", "D7", "D8", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8"));
+		JSONArray a = new JSONArray();
+		a.addAll(seats);
+		System.out.println(seats);
+		System.out.println(a);
+		String as = a.toJSONString();
+		System.out.println(as);
+		JSONParser parser = new JSONParser();
+		try {
+			JSONArray asj = (JSONArray) parser.parse(as);
+			System.out.println(asj.toJSONString());
+		} catch (ParseException e) {
+			System.out.println("error");
+		}
+		
+		}
 
 	public void printdate() {
 		Date date = new Date();
-	      SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-	       String str = formatter.format(date);
-	      System.out.print("Current date: "+str);
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+		String str = formatter.format(date);
+		System.out.print("Current date: " + str);
 	}
-	
+
 	public void printShowTimeDTO() {
 
 		ShowTimeDTO showTimeDTO = new ShowTimeDTO();
@@ -79,7 +105,7 @@ class OnlinemoviebookingApplicationTests {
 		} catch (java.text.ParseException e) {
 		}
 		showTimeDTO.setShowTimeSlot(ShowTimeSlot.SHOW1);
-		
+
 		System.out.println(showTimeDTO.toJSONString());
 	}
 
@@ -178,7 +204,6 @@ class OnlinemoviebookingApplicationTests {
 //				+ result.getAddress().getStreet());
 	}
 
-	
 	public void mailservice() {
 
 		try {

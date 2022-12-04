@@ -67,7 +67,7 @@ public class AdminTestController {
 	}
 	
 	@PostMapping("/manage-shows/addshow")
-	public JSONObject addMovie(HttpServletRequest request, @RequestBody JSONObject payload) {
+	public JSONObject addShow(HttpServletRequest request, @RequestBody JSONObject payload) {
 		return AdminApiHandler.addShow(showTimeService, payload);
 	}
 	

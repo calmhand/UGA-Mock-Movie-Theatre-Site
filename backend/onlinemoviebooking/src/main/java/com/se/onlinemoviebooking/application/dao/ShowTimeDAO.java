@@ -37,16 +37,20 @@ public class ShowTimeDAO implements SimpleDAO{
 	@Column(name = "show_timeslot")
 	private Integer showTimeSlot;
 	
+	@Column(name = "ticket_prices")
+	private String ticketPrices;
+	
 	public ShowTimeDAO() {
 	}
 
-	public ShowTimeDAO(long showID, long movieID, Integer showRoom, Date showDate, Integer showTimeSlot) {
+	public ShowTimeDAO(long showID, long movieID, Integer showRoom, Date showDate, Integer showTimeSlot, String ticketPrices) {
 		super();
 		this.showID = showID;
 		this.movieID = movieID;
 		this.showRoom = showRoom;
 		this.showDate = showDate;
 		this.showTimeSlot = showTimeSlot;
+		this.ticketPrices = ticketPrices;
 	}
 
 	public long getShowID() {
@@ -89,6 +93,14 @@ public class ShowTimeDAO implements SimpleDAO{
 		this.showTimeSlot = showTimeSlot;
 	}
 	
+	public String getTicketPrices() {
+		return ticketPrices;
+	}
+
+	public void setTicketPrices(String ticketPrices) {
+		this.ticketPrices = ticketPrices;
+	}
+
 	public String toJSONString() {
 		try {
 			return daoMapper.writeValueAsString(this);

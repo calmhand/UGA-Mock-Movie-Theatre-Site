@@ -3,6 +3,7 @@ package com.se.onlinemoviebooking.application.api;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,6 +20,7 @@ import com.se.onlinemoviebooking.application.dto.PromotionDTO;
 import com.se.onlinemoviebooking.application.dto.ShowRoom;
 import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 import com.se.onlinemoviebooking.application.dto.ShowTimeSlot;
+import com.se.onlinemoviebooking.application.dto.TicketPriceDTO;
 import com.se.onlinemoviebooking.application.services.EmailServicehelper;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
@@ -91,6 +93,9 @@ public class AdminApiHandler {
 			return failureResponse(response);
 		}
 		showTimeDTO.setShowTimeSlot(ShowTimeSlot.getShowTimeSlotByName((String) payload.get("showTimeSlot")));
+		System.out.println(payload.get("ticketPrices"));
+		JSONObject priceObj =  new JSONObject((Map) payload.get("ticketPrices"));
+		showTimeDTO.setTicketPrices(TicketPriceDTO.getObject(priceObj.toJSONString()));
 		response = showTimeService.saveShowTime(showTimeDTO);
 		return successResponse(response);
 	}

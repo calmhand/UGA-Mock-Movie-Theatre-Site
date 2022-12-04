@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import com.se.onlinemoviebooking.application.database.repository.ShowTimeReposit
 import com.se.onlinemoviebooking.application.dto.ShowRoom;
 import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 import com.se.onlinemoviebooking.application.dto.ShowTimeSlot;
+import com.se.onlinemoviebooking.application.dto.TicketPriceDTO;
 
 @Service("showTimeService")
 public class DefaultShowTimeService implements ShowTimeService{
@@ -113,6 +116,7 @@ public class DefaultShowTimeService implements ShowTimeService{
 		showTimeDAO.setShowRoom(showTimeDTO.getShowRoom().getId());
 		showTimeDAO.setShowDate(showTimeDTO.getShowDate());
 		showTimeDAO.setShowTimeSlot(showTimeDTO.getShowTimeSlot().getId());
+		showTimeDAO.setTicketPrices(showTimeDTO.getTicketPrices().toJSONString());
 		return showTimeDAO;
 	}
 	
@@ -125,7 +129,7 @@ public class DefaultShowTimeService implements ShowTimeService{
 		showTimeDTO.setShowRoom(ShowRoom.getShowRoomByID(showTimeDAO.getShowRoom()));
 		showTimeDTO.setShowDate(showTimeDAO.getShowDate());
 		showTimeDTO.setShowTimeSlot(ShowTimeSlot.getShowTimeSlotByID(showTimeDAO.getShowTimeSlot()));
-		
+		showTimeDTO.setTicketPrices(TicketPriceDTO.getObject(showTimeDAO.getTicketPrices()));
 		return showTimeDTO;
 	}
 	
@@ -140,6 +144,14 @@ public class DefaultShowTimeService implements ShowTimeService{
 		showTimeJson.put("showRoom", ShowRoom.getShowRoomByID(showTimeDAO.getShowRoom()).getName());
 		showTimeJson.put("showDate", new SimpleDateFormat("yyyy-MM-dd").format(showTimeDAO.getShowDate()));
 		showTimeJson.put("showTimeSlot", ShowTimeSlot.getShowTimeSlotByID(showTimeDAO.getShowTimeSlot()).getName());
+		JSONParser parser = new JSONParser();
+		JSONObject ticketprices;
+		try {
+			ticketprices = (JSONObject) parser.parse(showTimeDAO.getTicketPrices());
+			showTimeJson.put("ticketPrices",ticketprices);
+		} catch (ParseException e) {
+			showTimeJson.put("ticketPrices",new JSONObject());
+		}
 		return showTimeJson;
 	}
 	
