@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.se.onlinemoviebooking.application.api.AdminApiHandler;
 import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.service.MovieService;
+import com.se.onlinemoviebooking.application.database.service.SeatBookingService;
 import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 
@@ -35,6 +36,9 @@ public class ApiController {
 	
 	@Resource(name = "showTimeService")
 	private ShowTimeService showTimeService;
+	
+	@Resource(name = "seatBookingService")
+	private SeatBookingService seatBookingService;
 
 	@GetMapping("/")
 	@ResponseBody
@@ -101,5 +105,10 @@ public class ApiController {
 	@GetMapping("/shows/{date}") //  shows/2022-11-21
 	public JSONObject getShows(HttpServletRequest request, @PathVariable String date) {
 		return AdminApiHandler.getShows(showTimeService, date);
+	}
+	
+	@GetMapping("/show-seat-details/{showid}") //  show-seat-details/202
+	public JSONObject getShowSeatDetails(HttpServletRequest request, @PathVariable Long showid) {
+		return ApplicationAPIHandler.getShowSeatDetails(seatBookingService, showid);
 	}
 }

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.se.onlinemoviebooking.application.cache.SimpleCache;
 import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
 import com.se.onlinemoviebooking.application.database.service.MovieService;
+import com.se.onlinemoviebooking.application.database.service.SeatBookingService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
@@ -207,6 +208,11 @@ public class ApplicationAPIHandler {
 	public static JSONObject getMatchedMoviesBynameAndGenre(MovieService movieService, String name, String genre) {
 		JSONObject json = new JSONObject();
 		json.put("movies", movieService.getMatchedMoviesByGenre(name, genre));
+		return successResponse(json);
+	}
+	
+	public static JSONObject getShowSeatDetails(SeatBookingService sbService, Long showid) {
+		JSONObject json = sbService.getShowSeatDetails(showid);
 		return successResponse(json);
 	}
 	

@@ -125,6 +125,17 @@ CREATE TABLE `showtime` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+DROP TABLE IF EXISTS `seatbooking`;
+
+CREATE TABLE `seatbooking`(
+`seatbookingid` int unsigned NOT NULL AUTO_INCREMENT,
+`showid` int unsigned NOT NULL,
+`booked_seats` varchar(500) NOT NULL,
+PRIMARY KEY (`seatbookingid`),
+FOREIGN KEY (`showid`) REFERENCES `showtime`(`showid`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 CREATE TABLE `booking` (
   `bookingid` int unsigned NOT NULL AUTO_INCREMENT,
   `userid` int unsigned NOT NULL,
@@ -142,7 +153,7 @@ CREATE TABLE `booking` (
   FOREIGN KEY (`movieid`) REFERENCES `movie`(`movieid`),
   FOREIGN KEY (`showid`) REFERENCES `showtime`(`showid`),
   FOREIGN KEY (`promoid`) REFERENCES `promotion`(`promoid`),
-  FOREIGN KEY (`transactionid`) REFERENCES `transaction`(`transactionid`),
+  FOREIGN KEY (`transactionid`) REFERENCES `transaction`(`transactionid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;sh
 
 CREATE TABLE `transaction`(

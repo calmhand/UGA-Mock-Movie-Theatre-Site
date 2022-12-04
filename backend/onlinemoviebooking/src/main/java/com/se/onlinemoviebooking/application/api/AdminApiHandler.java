@@ -93,7 +93,6 @@ public class AdminApiHandler {
 			return failureResponse(response);
 		}
 		showTimeDTO.setShowTimeSlot(ShowTimeSlot.getShowTimeSlotByName((String) payload.get("showTimeSlot")));
-		System.out.println(payload.get("ticketPrices"));
 		JSONObject priceObj =  new JSONObject((Map) payload.get("ticketPrices"));
 		showTimeDTO.setTicketPrices(TicketPriceDTO.getObject(priceObj.toJSONString()));
 		response = showTimeService.saveShowTime(showTimeDTO);
