@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.se.onlinemoviebooking.application.api.AdminApiHandler;
 import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.service.MovieService;
+import com.se.onlinemoviebooking.application.database.service.PromotionService;
 import com.se.onlinemoviebooking.application.database.service.SeatBookingService;
 import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
@@ -39,6 +40,9 @@ public class ApiController {
 	
 	@Resource(name = "seatBookingService")
 	private SeatBookingService seatBookingService;
+	
+	@Resource(name = "promotionService")
+	private PromotionService promotionService;
 
 	@GetMapping("/")
 	@ResponseBody
@@ -107,8 +111,19 @@ public class ApiController {
 		return AdminApiHandler.getShows(showTimeService, date);
 	}
 	
+	@GetMapping("/show-details/{showid}")
+	public JSONObject getShow(HttpServletRequest request, @PathVariable Long showid) {
+		return ApplicationAPIHandler.getShowByID(showTimeService, showid);
+	}
+	
+	
 	@GetMapping("/show-seat-details/{showid}") //  show-seat-details/202
 	public JSONObject getShowSeatDetails(HttpServletRequest request, @PathVariable Long showid) {
 		return ApplicationAPIHandler.getShowSeatDetails(seatBookingService, showid);
+	}
+	
+	@GetMapping("/promotion-details/{promocode}")
+	public JSONObject getPromotions(HttpServletRequest request, @PathVariable String promocode) {
+		return ApplicationAPIHandler.getPromotionByCode(promotionService, promocode);
 	}
 }

@@ -53,6 +53,12 @@ public class DefaultMovieService implements MovieService{
 	}
 	
 	@Override
+	public MovieDTO getMovieById(Long movieID) {
+		MovieDAO movie = movieRepository.findMoviedById(movieID);
+		return populateMovieData(movie);
+	}
+	
+	@Override
 	public JSONArray getMoviesByGenre(String genre) {
 		List<MovieDAO> movieList = new ArrayList<MovieDAO>();
 		movieList = movieRepository.findByGenre(genre);

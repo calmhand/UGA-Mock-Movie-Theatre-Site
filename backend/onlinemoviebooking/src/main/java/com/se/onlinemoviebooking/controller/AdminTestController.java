@@ -100,7 +100,7 @@ public class AdminTestController {
 	}
 	
 	@PostMapping("/manage-promotions/addpromotion")
-	public JSONObject addMovie(HttpServletRequest request, @RequestBody PromotionDTO payload) {
+	public JSONObject addPromotion(HttpServletRequest request, @RequestBody PromotionDTO payload) {
 		return AdminApiHandler.addPromotion(promotionService, payload);
 	}
 	

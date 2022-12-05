@@ -10,6 +10,7 @@ import com.se.onlinemoviebooking.application.dao.SeatBookingDAO;
 import com.se.onlinemoviebooking.application.database.repository.SeatBookingRepository;
 import com.se.onlinemoviebooking.application.dto.SeatBookingDTO;
 import com.se.onlinemoviebooking.application.dto.ShowRoom;
+import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
 @Service("seatBookingService")
@@ -17,9 +18,25 @@ public class DefaultSeatBookingService implements SeatBookingService{
 	
 	@Autowired
 	private SeatBookingRepository seatBookingRepository;
+	
+	@Autowired
+	private ShowTimeService showTimeService;
+	
+	@Override
+	public SeatBookingDAO getSeatBookingDAODetails(Long showid) {
+		SeatBookingDAO sb = seatBookingRepository.getSeatBookingDetailByShowId(showid);
+		return sb;
+	}
 
 	@Override
 	public JSONObject getShowSeatDetails(Long showid) {
+		
+		
+		ShowTimeDTO show = showTimeService.getShowTimeDTOById(showid);
+		if(show == null) {
+			return null;
+		}
+		
 		JSONObject details = new JSONObject();
 		SeatBookingDAO sbd = seatBookingRepository.getSeatBookingDetailByShowId(showid);
 		String layout = ApplicationStringConstants.SEATLAYOUT;
@@ -51,5 +68,24 @@ public class DefaultSeatBookingService implements SeatBookingService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public static SeatBookingDAO populateSeatBookingEntity(SeatBookingDTO seatBooking) {
+		SeatBookingDAO sbd = new SeatBookingDAO();
+		sbd.setSeatbookingID(seatBooking.getSeatbookingID());
+		sbd.setShowID(seatBooking.getShowID());
+		sbd.setBookedSeats(seatBooking.getBookedSeats());	
+		return sbd;
+	}
+	
+	public static SeatBookingDTO populateSeatBookingEntity(SeatBookingDAO seatBooking) {
+		SeatBookingDTO sbd = new SeatBookingDTO();
+		sbd.setSeatbookingID(seatBooking.getSeatbookingID());
+		sbd.setShowID(seatBooking.getShowID());
+		sbd.setBookedSeats(seatBooking.getBookedSeats());	
+		return sbd;
+	}
+	
+	
+	
 
 }

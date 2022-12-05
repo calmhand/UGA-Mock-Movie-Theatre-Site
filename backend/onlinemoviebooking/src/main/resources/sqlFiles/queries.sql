@@ -120,7 +120,7 @@ CREATE TABLE `showtime` (
   `ticket_prices` varchar(250) NOT NULL COMMENT 'example {"child":13.50, "adult":15.50, "senior":14.50}',
   PRIMARY KEY (`showid`),
   FOREIGN KEY (`movieid`) REFERENCES `movie`(`movieid`) ON DELETE CASCADE,
-  FOREIGN KEY (`showroomid`) REFERENCES `showroom`(`showroomid`) ON DELETE CASCADE,
+  FOREIGN KEY (`showroomid`) REFERENCES `showroom`(`showroomid`),
   CONSTRAINT uc_showroom_date_slot UNIQUE (showroomid,show_date,show_timeslot)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -135,6 +135,16 @@ PRIMARY KEY (`seatbookingid`),
 FOREIGN KEY (`showid`) REFERENCES `showtime`(`showid`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `transaction`(
+`transactionid` int unsigned NOT NULL AUTO_INCREMENT,
+`transaction_time` datetime NOT NULL,
+`transaction_type` varchar(100) NOT NULL COMMENT 'example for now we support card ex: CARD',
+`transaction_details` varchar(500) NOT NULL COMMENT 'based on transaction_type we parse/add this
+ for card it will be {"cardNumber": "xxx2536", bankTransactionID:"3468581237469324691" } we will store last four digits of card',
+`transaction_amount` float NOT NULL COMMENT 'amount debited/refund',
+`billing_address` varchar(500) NOT NULL,
+ PRIMARY KEY (`transactionid`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `booking` (
   `bookingid` int unsigned NOT NULL AUTO_INCREMENT,
@@ -146,7 +156,6 @@ CREATE TABLE `booking` (
   `promoid` int unsigned,
   `total` float NOT NULL COMMENT 'Total price of tickets',
   `transactionid` int unsigned NOT NULL,
-  `shipping_address` varchar(255) NOT NULL,
   `booking_time` datetime NOT NULL,
   PRIMARY KEY (`bookingid`),
   FOREIGN KEY (`userid`) REFERENCES user(`userid`) ON DELETE CASCADE,
@@ -154,17 +163,9 @@ CREATE TABLE `booking` (
   FOREIGN KEY (`showid`) REFERENCES `showtime`(`showid`),
   FOREIGN KEY (`promoid`) REFERENCES `promotion`(`promoid`),
   FOREIGN KEY (`transactionid`) REFERENCES `transaction`(`transactionid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;sh
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `transaction`(
-`transactionid` int unsigned NOT NULL AUTO_INCREMENT,
-`transaction_time` datetime NOT NULL,
-`transaction_type` varchar(100) NOT NULL COMMENT 'example for now we support card ex: CARD',
-`transaction_details` varchar(500) NOT NULL COMMENT 'based on transaction_type we parse/add this
- for card it will be {"cardNumber": "xxx2536", bankTransactionID:"3468581237469324691" } we will store last four digits of card',
-`billing_address` varchar(500) NOT NULL,
-PRIMARY KEY (`transactionid`),
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 
 

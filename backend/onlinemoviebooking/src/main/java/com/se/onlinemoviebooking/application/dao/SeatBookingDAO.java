@@ -23,10 +23,10 @@ public class SeatBookingDAO implements SimpleDAO {
 	@Id
 	@Column(name = "seatbookingid")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long seatbookingID;
+	private Long seatbookingID;
 	
 	@Column(name = "showid")
-	private long showID;
+	private Long showID;
 	
 	@Column(name = "booked_seats")
 	private ArrayList<String> bookedSeats;
@@ -35,11 +35,11 @@ public class SeatBookingDAO implements SimpleDAO {
 		
 	}
 
-	public long getSeatbookingID() {
+	public Long getSeatbookingID() {
 		return seatbookingID;
 	}
 
-	public long getShowID() {
+	public Long getShowID() {
 		return showID;
 	}
 
@@ -47,11 +47,11 @@ public class SeatBookingDAO implements SimpleDAO {
 		return bookedSeats;
 	}
 
-	public void setSeatbookingID(long seatbookingID) {
+	public void setSeatbookingID(Long seatbookingID) {
 		this.seatbookingID = seatbookingID;
 	}
 
-	public void setShowID(long showID) {
+	public void setShowID(Long showID) {
 		this.showID = showID;
 	}
 

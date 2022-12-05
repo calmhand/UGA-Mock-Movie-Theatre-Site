@@ -32,17 +32,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.se.onlinemoviebooking.application.dao.MovieDAO;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.AddressDTO;
+import com.se.onlinemoviebooking.application.dto.ConfirmBookingDTO;
 import com.se.onlinemoviebooking.application.dto.MovieCategory;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.MovieRating;
+import com.se.onlinemoviebooking.application.dto.PayingCardDTO;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.PromotionDTO;
 import com.se.onlinemoviebooking.application.dto.ShowRoom;
 import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 import com.se.onlinemoviebooking.application.dto.ShowTimeSlot;
 import com.se.onlinemoviebooking.application.dto.Status;
+import com.se.onlinemoviebooking.application.dto.TicketDTO;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.dto.UserType;
+import com.se.onlinemoviebooking.application.dto.ValidateBookingDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -64,7 +68,60 @@ class OnlinemoviebookingApplicationTests {
 		//printmovieDTO();
 		// whenSerializeAndDeserializeUsingJackson_thenCorrect()
 		// mailservice();
-		createseats();
+		//createseats();
+		//createValidateBooking();
+		createConfirmBookingDTO();
+	}
+	
+	public static void createValidateBooking() {
+		ValidateBookingDTO vd = new ValidateBookingDTO();
+		vd.setUserID(2l);
+		vd.setMovieID(3l);
+		vd.setShowID(3l);
+		TicketDTO td = new TicketDTO();
+		td.setChild(0);
+		td.setAdult(2);
+		td.setSenior(0);
+		vd.setTickets(td);
+		vd.getBookedSeats().add("A3");
+		vd.getBookedSeats().add("A4");
+		
+		System.out.println(vd.toJSONString());
+		
+	}
+	
+	public static void createConfirmBookingDTO() {
+		ConfirmBookingDTO vd = new ConfirmBookingDTO();
+		vd.setUserID(2l);
+		vd.setMovieID(3l);
+		vd.setShowID(3l);
+		TicketDTO td = new TicketDTO();
+		td.setChild(0);
+		td.setAdult(2);
+		td.setSenior(0);
+		vd.setTickets(td);
+		vd.getBookedSeats().add("A3");
+		vd.getBookedSeats().add("A4");
+		vd.setPromocode("THANKS15");
+		vd.setTotal(30.45f);
+		
+		PayingCardDTO pcd = new PayingCardDTO();
+		pcd.setCardNumber("123456789123");
+		pcd.setCardExpiry("12/28");
+		pcd.setCc("123");
+		
+		vd.setPayment(pcd);
+		
+		AddressDTO add = new AddressDTO();
+		add.setStreet("2838 barnett shoals dr");
+		add.setApt("505");
+		add.setCity("Athens");
+		add.setState("GA");
+		add.setZipcode("30605");
+		
+		pcd.setBillingAddress(add);
+		
+		System.out.println(vd.toJSONString());
 	}
 
 	public void createseats() {

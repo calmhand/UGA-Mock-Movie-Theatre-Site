@@ -14,6 +14,9 @@ public interface ShowTimeRepository extends JpaRepository<ShowTimeDAO, Long> {
 	@Query("select s from ShowTimeDAO s")
     public List<ShowTimeDAO> getAllShowTimes();
 	
+	@Query("select s from ShowTimeDAO s where s.showID = ?1")
+    public ShowTimeDAO getShowTimeById(Long showID);
+	
 	@Query("select s from ShowTimeDAO s where s.showDate = :date")
     public List<ShowTimeDAO> getShowTimesByDate(@Param("date") Date date);
 	

@@ -17,10 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
+import com.se.onlinemoviebooking.application.database.service.BookingService;
 import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
+import com.se.onlinemoviebooking.application.database.service.PromotionService;
+import com.se.onlinemoviebooking.application.database.service.SeatBookingService;
+import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
+import com.se.onlinemoviebooking.application.database.service.TransactionService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
+import com.se.onlinemoviebooking.application.dto.ConfirmBookingDTO;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
+import com.se.onlinemoviebooking.application.dto.ValidateBookingDTO;
 
 @RestController
 @RequestMapping("/api/test")
@@ -33,6 +40,21 @@ public class UserTestController {
 
 	@Resource(name = "paymentCardService")
 	private DefaultPaymentCardService paymentCardService;
+	
+	@Resource(name = "showTimeService")
+	private ShowTimeService showTimeService;
+	
+	@Resource(name = "seatBookingService")
+	private SeatBookingService seatBookingService;
+	
+	@Resource(name = "bookingService")
+	private BookingService bookingService;
+	
+	@Resource(name = "promotionService")
+	private PromotionService promotionService;
+	
+	@Resource(name = "transactionService")
+	private TransactionService transactionService;
 
 	@GetMapping(value = "/{userid}/getprofile")
 	public JSONObject getUserProfile(HttpServletRequest request,
@@ -87,5 +109,21 @@ public class UserTestController {
 			@PathVariable Integer userid) {
 		return ApplicationAPIHandler.deleteUserPayment(userid, paymentCardService, payload);
 	}
+	
+	
+	//Booking
+	@PostMapping(value = "/{userid}/validatebooking")
+	public JSONObject validateUserBooking(HttpServletRequest request, @RequestBody ValidateBookingDTO payload,
+			@PathVariable Integer userid) {
+		return ApplicationAPIHandler.validateBooking(showTimeService,seatBookingService,payload);
+	}
+	
+	@PostMapping(value = "/{userid}/confirmbooking")
+	public JSONObject confirmUserBooking(HttpServletRequest request, @RequestBody ConfirmBookingDTO payload,
+			@PathVariable Integer userid) {
+		return ApplicationAPIHandler.ConfirmBooking(bookingService, transactionService, 
+				showTimeService, seatBookingService, promotionService, payload);
+	}
+	
 
 }

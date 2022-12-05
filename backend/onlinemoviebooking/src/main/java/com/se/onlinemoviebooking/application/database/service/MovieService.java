@@ -9,6 +9,8 @@ public interface MovieService {
 
 	public MovieDTO saveMovie(MovieDTO movieDTO);
 	
+	public MovieDTO getMovieById(Long movieID);
+	
 	public MovieDTO updateMovieById(Long movieid, MovieDTO payload);
 	
 	public JSONArray getMovies();

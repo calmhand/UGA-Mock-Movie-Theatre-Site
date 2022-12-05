@@ -1,5 +1,8 @@
 package com.se.onlinemoviebooking.application.api;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -9,13 +12,29 @@ import org.json.simple.parser.ParseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.se.onlinemoviebooking.application.cache.SimpleCache;
+import com.se.onlinemoviebooking.application.dao.PromotionDAO;
+import com.se.onlinemoviebooking.application.dao.SeatBookingDAO;
+import com.se.onlinemoviebooking.application.database.service.BookingService;
 import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
+import com.se.onlinemoviebooking.application.database.service.DefaultShowTimeService;
 import com.se.onlinemoviebooking.application.database.service.MovieService;
+import com.se.onlinemoviebooking.application.database.service.PromotionService;
 import com.se.onlinemoviebooking.application.database.service.SeatBookingService;
+import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
+import com.se.onlinemoviebooking.application.database.service.TransactionService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
+import com.se.onlinemoviebooking.application.dto.BookingDTO;
+import com.se.onlinemoviebooking.application.dto.ConfirmBookingDTO;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
+import com.se.onlinemoviebooking.application.dto.SeatBookingDTO;
+import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 import com.se.onlinemoviebooking.application.dto.Status;
+import com.se.onlinemoviebooking.application.dto.TicketDTO;
+import com.se.onlinemoviebooking.application.dto.TransactionDTO;
+import com.se.onlinemoviebooking.application.dto.TransactionDetails;
+import com.se.onlinemoviebooking.application.dto.TransactionType;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
+import com.se.onlinemoviebooking.application.dto.ValidateBookingDTO;
 import com.se.onlinemoviebooking.application.services.EmailServicehelper;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
@@ -211,8 +230,179 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 	
+	public static JSONObject getShowByID(ShowTimeService showTimeService, Long showid) {
+		JSONObject response = showTimeService.getShowTimeById(showid);
+		return successResponse(response);
+	}
+	
 	public static JSONObject getShowSeatDetails(SeatBookingService sbService, Long showid) {
 		JSONObject json = sbService.getShowSeatDetails(showid);
+		if(json ==null) {
+			json = new JSONObject();
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
+			return failureResponse(json);
+		}
+		return successResponse(json);
+	}
+
+	public static JSONObject getPromotionByCode(PromotionService pService, String code) {
+		PromotionDAO promotion = pService.getPromotionByCode(code.toUpperCase());
+		
+		JSONParser parser = new JSONParser();
+		JSONObject json;
+		if(promotion==null) {
+			json = new JSONObject();
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.PROMOTIONNOTAVAILABLE);
+			return failureResponse(json);
+		}
+		try {
+			json = (JSONObject) parser.parse(promotion.toJSONString());
+		} catch (ParseException e) {
+			json = new JSONObject();
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.PROMOTIONNOTAVAILABLE);
+			return failureResponse(json);
+		}
+		return successResponse(json);
+	}
+	
+	public static JSONObject validateBooking(ShowTimeService sService,SeatBookingService sb, ValidateBookingDTO payload) {
+		JSONObject json = new JSONObject();
+		
+		ShowTimeDTO show = sService.getShowTimeDTOById(payload.getShowID());
+		if(show == null) {
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
+			return failureResponse(json);
+		}
+		
+		SeatBookingDAO sbDetails = sb.getSeatBookingDAODetails(payload.getShowID());
+		if(sbDetails!=null) {
+			for(String each:sbDetails.getBookedSeats()) {
+				if(sbDetails.getBookedSeats().contains(each)) {
+					json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SEATSBOOKED);
+					return failureResponse(json);
+				}
+			}
+		}
+		
+		
+		TicketDTO td = payload.getTickets();
+		float total = 0.0f;
+		total += td.getChild()*show.getTicketPrices().getChild() 
+			   + td.getAdult()*show.getTicketPrices().getAdult()
+			   + td.getSenior()*show.getTicketPrices().getSenior();
+		
+		json.put("show", DefaultShowTimeService.getJsonFromShowTimeDAO(DefaultShowTimeService.populateShowTimeEntity(show)));
+		json.put("tickets", td.toJSONString());
+		json.put("totalWithoutTax", total);
+		json.put("taxPercentage", 5);
+		float totalWithTax = total + total*0.05f;
+		json.put("total", totalWithTax);
+		return successResponse(json);
+		
+	}
+	
+	public static JSONObject ConfirmBooking(BookingService bookingService, TransactionService transactionService,
+			ShowTimeService sService,SeatBookingService sb,PromotionService promotionService, ConfirmBookingDTO payload) {
+		JSONObject json = new JSONObject();
+		
+		ShowTimeDTO show = sService.getShowTimeDTOById(payload.getShowID());
+		if(show == null) {
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
+			return failureResponse(json);
+		}
+		
+		SeatBookingDAO sbDetails = sb.getSeatBookingDAODetails(payload.getShowID());
+		if(sbDetails!=null) {
+			for(String each:sbDetails.getBookedSeats()) {
+				if(sbDetails.getBookedSeats().contains(each)) {
+					json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SEATSBOOKED);
+					return failureResponse(json);
+				}
+			}
+		}
+		
+		TicketDTO td = payload.getTickets();
+		int noTickets = td.getAdult()+td.getChild()+td.getSenior();
+		if(noTickets!=payload.getBookedSeats().size()) {
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
+			return failureResponse(json);
+		}
+		Float discount = 0.0f;
+		PromotionDAO promotion = promotionService.getPromotionByCode(payload.getPromocode());
+		
+		if(promotion!=null) {
+			discount = promotion.getDiscount();
+		}
+		
+		float total = 0.0f;
+		total += td.getChild()*show.getTicketPrices().getChild() 
+			   + td.getAdult()*show.getTicketPrices().getAdult()
+			   + td.getSenior()*show.getTicketPrices().getSenior();
+		float discountedTotal = total - ((discount/100)*total);
+		float totalwithTax = discountedTotal + discountedTotal*0.05f;
+		
+		json.put("show", DefaultShowTimeService.getJsonFromShowTimeDAO(DefaultShowTimeService.populateShowTimeEntity(show)));
+		json.put("tickets", td.toJSONString());
+		json.put("totalWithoutTax", total);
+		json.put("discountedTotalWithoutTax", discountedTotal);
+		json.put("taxPercentage", 5);
+		json.put("total", totalwithTax);
+		
+		
+		//transaction
+		TransactionDTO tr = new TransactionDTO();
+		tr.setTransactionType(TransactionType.CARD);
+		
+		String cardNum = payload.getPayment().getCardNumber();
+		TransactionDetails transactionDetails = TransactionDetails.generateTransaction();
+		transactionDetails.setCardNumber("XXXX"+cardNum.substring(cardNum.length()-4));
+		tr.setTransactionDetails(transactionDetails);
+		
+		tr.setTrasactionAmount(totalwithTax);
+		tr.setBillingAddress(payload.getPayment().getBillingAddress());
+		
+		LocalDateTime now = LocalDateTime.now();
+		tr.setTransactionTime(now);
+		
+		TransactionDTO savedTransaction = transactionService.saveTransaction(tr);
+		
+		//seatbooking
+		if(sbDetails==null) {
+			
+		}else {
+			
+		}
+		
+		
+		//booking
+		BookingDTO booking = new BookingDTO();
+		booking.setUserID(payload.getUserID());
+		booking.setMovieID(payload.getMovieID());
+		booking.setShowID(payload.getShowID());
+		booking.setTickets(td);
+		booking.setPromoid(promotion!=null?promotion.getPromoID():null);
+		booking.setBookedSeats(payload.getBookedSeats());
+		booking.setTotal(totalwithTax);
+		booking.setTransactionID(savedTransaction.getTransactionID());
+		booking.setBookingTime(now);
+		
+		BookingDTO savedBooking = bookingService.saveBooking(booking);
+		
+		if(savedBooking!=null) {
+			json.put("bookingID", savedBooking.getBookingID());
+		}
+		//emailsend
+		
+		return successResponse(json);
+	}
+	
+	public static JSONObject getUserBookings(BookingService bookingService, TransactionService transactionService,
+		ShowTimeService sService,SeatBookingService sb,PromotionService promotionService, Long userID) {
+		
+		JSONArray arr = bookingService.getBookingsOfuser(userID);
+		
+		JSONObject json = new JSONObject();
+		json.put("bookings", arr);
 		return successResponse(json);
 	}
 	

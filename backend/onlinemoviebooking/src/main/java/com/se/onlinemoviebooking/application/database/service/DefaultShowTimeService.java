@@ -14,6 +14,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.se.onlinemoviebooking.application.dao.MovieDAO;
 import com.se.onlinemoviebooking.application.dao.ShowTimeDAO;
 import com.se.onlinemoviebooking.application.database.repository.ShowTimeRepository;
 import com.se.onlinemoviebooking.application.dto.ShowRoom;
@@ -31,6 +32,18 @@ public class DefaultShowTimeService implements ShowTimeService{
 	public JSONObject saveShowTime(ShowTimeDTO showTimeDTO) {
 		ShowTimeDAO showTimeDAO = populateShowTimeEntity(showTimeDTO); 
 		return getJsonFromShowTimeDAO(showTimeRepository.save(showTimeDAO));
+	}
+	
+	@Override
+	public JSONObject getShowTimeById(Long showID) {
+		ShowTimeDAO show = showTimeRepository.getShowTimeById(showID);
+		return getJsonFromShowTimeDAO(show);
+	}
+	
+	@Override
+	public ShowTimeDTO getShowTimeDTOById(Long showID) {
+		ShowTimeDAO show = showTimeRepository.getShowTimeById(showID);
+		return populateShowTimeData(show);
 	}
 	
 	@Override
@@ -155,7 +168,4 @@ public class DefaultShowTimeService implements ShowTimeService{
 		return showTimeJson;
 	}
 	
-	
-
-
 }

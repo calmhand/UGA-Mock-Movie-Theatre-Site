@@ -31,6 +31,11 @@ public class DefaultPromotionService implements PromotionService{
 	public PromotionDAO getPromotionById(Long promoid) {
 		return promotionRepository.findPromotionById(promoid);
 	}
+	
+	@Override
+	public PromotionDAO getPromotionByCode(String promo) {
+		return promotionRepository.findPromotionByCode(promo);
+	}
 
 	@Override
 	public PromotionDTO savePromotion(PromotionDTO promotionDTO) {

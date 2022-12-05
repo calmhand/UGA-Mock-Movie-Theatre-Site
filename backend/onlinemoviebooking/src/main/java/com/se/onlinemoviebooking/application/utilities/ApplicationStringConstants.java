@@ -16,6 +16,9 @@ public class ApplicationStringConstants {
 	public static final String VERIFICATIONFAILED = "VERIFICATION FAILED TRY AGAIN";
 	public static final String INVALIDEMAIL = "email is invalid";
 	public static final String PASSWORDMISMATCH = "password and confirm password are not same";
+	public static final String PROMOTIONNOTAVAILABLE = "promotion not available";
+	public static final String SEATSBOOKED = "Seats not available try other";
+	
 	
 	
 	//seatlayout

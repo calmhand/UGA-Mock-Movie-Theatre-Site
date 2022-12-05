@@ -14,6 +14,8 @@ public interface PromotionService {
 	public JSONArray getPromotions();
 	
 	public PromotionDAO getPromotionById(Long promoid);
+	
+	public PromotionDAO getPromotionByCode(String promo);
 
 	boolean updatePromotionAfterSent(Long promotionID);
 

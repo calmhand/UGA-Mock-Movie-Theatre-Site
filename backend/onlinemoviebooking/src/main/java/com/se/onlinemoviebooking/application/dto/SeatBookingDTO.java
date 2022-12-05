@@ -9,14 +9,25 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public class SeatBookingDTO implements SimpleDTO{
 	
 	//private long seatbookingID;
-	private long showID;
+	private Long seatbookingID;
+	private Long showID;
 	private ArrayList<String> bookedSeats;
 	
 	public SeatBookingDTO() {
 		
 	}
 	
-	public long getShowid() {
+	
+	
+	public Long getSeatbookingID() {
+		return seatbookingID;
+	}
+
+	public void setSeatbookingID(Long seatBookingID) {
+		this.seatbookingID = seatBookingID;
+	}
+
+	public Long getShowID() {
 		return showID;
 	}
 
@@ -24,7 +35,7 @@ public class SeatBookingDTO implements SimpleDTO{
 		return bookedSeats;
 	}
 
-	public void setShowid(long showid) {
+	public void setShowID(Long showid) {
 		this.showID = showid;
 	}
 

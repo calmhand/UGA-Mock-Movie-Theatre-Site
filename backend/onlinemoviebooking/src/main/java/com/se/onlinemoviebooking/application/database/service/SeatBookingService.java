@@ -9,6 +9,8 @@ public interface SeatBookingService {
 	
 	public JSONObject getShowSeatDetails(Long showid);
 	
+	public SeatBookingDAO getSeatBookingDAODetails(Long showid);
+	
 	public SeatBookingDAO saveShowSeatDetails(SeatBookingDTO sbDTO);
 
 }

@@ -18,8 +18,8 @@ public interface PromotionRepository extends JpaRepository<PromotionDAO, Long>{
 	@Query("SELECT p from PromotionDAO p where p.promoID = ?1")
 	public PromotionDAO findPromotionById(Long promoid);
 	
-	@Query("SELECT p from PromotionDAO p where p.promotionName = ?1")
-	public PromotionDAO findPromotionByName(String pronmotionName);
+	@Query("SELECT p from PromotionDAO p where p.promocode = ?1")
+	public PromotionDAO findPromotionByCode(String promotionName);
 	
 	@Transactional
 	@Modifying
