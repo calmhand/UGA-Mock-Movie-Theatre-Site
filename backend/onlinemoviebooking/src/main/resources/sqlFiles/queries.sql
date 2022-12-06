@@ -87,7 +87,8 @@ CREATE TABLE `promotion` (
   `end_date` date NOT NULL,
   `is_sent` boolean,
   `discount` float NOT NULL COMMENT 'percent discount',
-  PRIMARY KEY (`promoid`)
+  PRIMARY KEY (`promoid`),
+  CONSTRAINT uc_promocode UNIQUE (`promocode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
