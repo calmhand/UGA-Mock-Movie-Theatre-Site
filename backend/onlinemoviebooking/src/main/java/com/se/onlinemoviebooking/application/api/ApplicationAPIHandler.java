@@ -185,7 +185,6 @@ public class ApplicationAPIHandler {
 
 	public static JSONObject editUserPayment(Integer userid, DefaultPaymentCardService paymentCardService,
 			PaymentcardDTO payload) {
-		
 
 		PaymentcardDTO pcd = paymentCardService.updatePaymentCard(payload, payload.getCardID());
 
@@ -204,40 +203,38 @@ public class ApplicationAPIHandler {
 		}
 		return successResponse(json);
 	}
-	
-	
-	
+
 	public static JSONObject getHomePageData(MovieService movieService) {
 		JSONObject json = movieService.getHomePageMovies();
 		return successResponse(json);
 	}
-	
+
 	public static JSONObject getMatchedMoviesByname(MovieService movieService, String name) {
 		JSONObject json = new JSONObject();
 		json.put("movies", movieService.getMatchedMovies(name));
 		return successResponse(json);
 	}
-	
+
 	public static JSONObject getMoviesByGenre(MovieService movieService, String genre) {
 		JSONObject json = new JSONObject();
 		json.put("movies", movieService.getMoviesByGenre(genre));
 		return successResponse(json);
 	}
-	
+
 	public static JSONObject getMatchedMoviesBynameAndGenre(MovieService movieService, String name, String genre) {
 		JSONObject json = new JSONObject();
 		json.put("movies", movieService.getMatchedMoviesByGenre(name, genre));
 		return successResponse(json);
 	}
-	
+
 	public static JSONObject getShowByID(ShowTimeService showTimeService, Long showid) {
 		JSONObject response = showTimeService.getShowTimeById(showid);
 		return successResponse(response);
 	}
-	
+
 	public static JSONObject getShowSeatDetails(SeatBookingService sbService, Long showid) {
 		JSONObject json = sbService.getShowSeatDetails(showid);
-		if(json ==null) {
+		if (json == null) {
 			json = new JSONObject();
 			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 			return failureResponse(json);
@@ -247,10 +244,10 @@ public class ApplicationAPIHandler {
 
 	public static JSONObject getPromotionByCode(PromotionService pService, String code) {
 		PromotionDAO promotion = pService.getPromotionByCode(code.toUpperCase());
-		
+
 		JSONParser parser = new JSONParser();
 		JSONObject json;
-		if(promotion==null) {
+		if (promotion == null) {
 			json = new JSONObject();
 			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.PROMOTIONNOTAVAILABLE);
 			return failureResponse(json);
@@ -264,150 +261,196 @@ public class ApplicationAPIHandler {
 		}
 		return successResponse(json);
 	}
-	
-	public static JSONObject validateBooking(ShowTimeService sService,SeatBookingService sb, ValidateBookingDTO payload) {
+
+	public static JSONObject validateBooking(ShowTimeService sService, SeatBookingService sb,
+			ValidateBookingDTO payload) {
 		JSONObject json = new JSONObject();
-		
+
 		ShowTimeDTO show = sService.getShowTimeDTOById(payload.getShowID());
-		if(show == null) {
+		if (show == null) {
 			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 			return failureResponse(json);
 		}
-		
+
 		SeatBookingDAO sbDetails = sb.getSeatBookingDAODetails(payload.getShowID());
-		if(sbDetails!=null) {
-			for(String each:sbDetails.getBookedSeats()) {
-				if(sbDetails.getBookedSeats().contains(each)) {
+		if (sbDetails != null) {
+			for (String each : payload.getBookedSeats()) {
+
+				JSONParser parser = new JSONParser();
+				JSONArray jsonarr;
+				try {
+					jsonarr = (JSONArray) parser.parse(sbDetails.getBookedSeats());
+				} catch (ParseException e) {
+					jsonarr = new JSONArray();
+				}
+
+				if (jsonarr.contains(each)) {
 					json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SEATSBOOKED);
 					return failureResponse(json);
 				}
 			}
 		}
-		
-		
+
 		TicketDTO td = payload.getTickets();
 		float total = 0.0f;
-		total += td.getChild()*show.getTicketPrices().getChild() 
-			   + td.getAdult()*show.getTicketPrices().getAdult()
-			   + td.getSenior()*show.getTicketPrices().getSenior();
-		
-		json.put("show", DefaultShowTimeService.getJsonFromShowTimeDAO(DefaultShowTimeService.populateShowTimeEntity(show)));
-		json.put("tickets", td.toJSONString());
+		total += td.getChild() * show.getTicketPrices().getChild() + td.getAdult() * show.getTicketPrices().getAdult()
+				+ td.getSenior() * show.getTicketPrices().getSenior();
+
+		json.put("show",
+				DefaultShowTimeService.getJsonFromShowTimeDAO(DefaultShowTimeService.populateShowTimeEntity(show)));
+		json.put("tickets", td);
+
+		JSONArray bSeats = new JSONArray();
+		bSeats.addAll(payload.getBookedSeats());
+
+		json.put("bookedSeats", bSeats);
 		json.put("totalWithoutTax", total);
 		json.put("taxPercentage", 5);
-		float totalWithTax = total + total*0.05f;
+		float totalWithTax = total + total * 0.05f;
 		json.put("total", totalWithTax);
 		return successResponse(json);
-		
+
 	}
-	
+
 	public static JSONObject ConfirmBooking(BookingService bookingService, TransactionService transactionService,
-			ShowTimeService sService,SeatBookingService sb,PromotionService promotionService, ConfirmBookingDTO payload) {
+			ShowTimeService sService, SeatBookingService sb, PromotionService promotionService,
+			ConfirmBookingDTO payload) {
 		JSONObject json = new JSONObject();
-		
+
 		ShowTimeDTO show = sService.getShowTimeDTOById(payload.getShowID());
-		if(show == null) {
+		if (show == null) {
 			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 			return failureResponse(json);
 		}
-		
+
 		SeatBookingDAO sbDetails = sb.getSeatBookingDAODetails(payload.getShowID());
-		if(sbDetails!=null) {
-			for(String each:sbDetails.getBookedSeats()) {
-				if(sbDetails.getBookedSeats().contains(each)) {
+		if (sbDetails != null) {
+			for (String each : payload.getBookedSeats()) {
+				if (sbDetails.getBookedSeats().contains(each)) {
 					json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SEATSBOOKED);
 					return failureResponse(json);
 				}
 			}
 		}
-		
+
 		TicketDTO td = payload.getTickets();
-		int noTickets = td.getAdult()+td.getChild()+td.getSenior();
-		if(noTickets!=payload.getBookedSeats().size()) {
+		int noTickets = td.getAdult() + td.getChild() + td.getSenior();
+		if (noTickets != payload.getBookedSeats().size()) {
 			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 			return failureResponse(json);
 		}
 		Float discount = 0.0f;
 		PromotionDAO promotion = promotionService.getPromotionByCode(payload.getPromocode());
-		
-		if(promotion!=null) {
+
+		if (promotion != null) {
 			discount = promotion.getDiscount();
 		}
-		
+
 		float total = 0.0f;
-		total += td.getChild()*show.getTicketPrices().getChild() 
-			   + td.getAdult()*show.getTicketPrices().getAdult()
-			   + td.getSenior()*show.getTicketPrices().getSenior();
-		float discountedTotal = total - ((discount/100)*total);
-		float totalwithTax = discountedTotal + discountedTotal*0.05f;
-		
-		json.put("show", DefaultShowTimeService.getJsonFromShowTimeDAO(DefaultShowTimeService.populateShowTimeEntity(show)));
-		json.put("tickets", td.toJSONString());
+		total += td.getChild() * show.getTicketPrices().getChild() + td.getAdult() * show.getTicketPrices().getAdult()
+				+ td.getSenior() * show.getTicketPrices().getSenior();
+		float discountedTotal = total - ((discount / 100) * total);
+		float totalwithTax = discountedTotal + discountedTotal * 0.05f;
+		JSONArray bSeats = new JSONArray();
+		bSeats.addAll(payload.getBookedSeats());
+
+		json.put("show",
+				DefaultShowTimeService.getJsonFromShowTimeDAO(DefaultShowTimeService.populateShowTimeEntity(show)));
+		json.put("tickets", td);
+		json.put("bookedSeats", bSeats);
 		json.put("totalWithoutTax", total);
 		json.put("discountedTotalWithoutTax", discountedTotal);
 		json.put("taxPercentage", 5);
 		json.put("total", totalwithTax);
-		
-		
-		//transaction
+
+		// seatbooking
+		if (sbDetails == null) {
+			SeatBookingDTO sbd = new SeatBookingDTO();
+			sbd.setShowID(payload.getShowID());
+			JSONArray payloadBookedSeats = new JSONArray();
+			payloadBookedSeats.addAll(payload.getBookedSeats());
+			sbd.setBookedSeats(payloadBookedSeats);
+			SeatBookingDTO savedsbd = sb.saveShowSeatDetails(sbd);
+			if (savedsbd == null) {
+				json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
+				return failureResponse(json);
+			}
+
+		} else {
+
+			JSONParser parser = new JSONParser();
+			JSONArray jsonarr;
+			try {
+				jsonarr = (JSONArray) parser.parse(sbDetails.getBookedSeats());
+			} catch (ParseException e) {
+				jsonarr = new JSONArray();
+			}
+			jsonarr.addAll(payload.getBookedSeats());
+			sbDetails.setBookedSeats(jsonarr.toJSONString());
+			SeatBookingDTO updatedsb = sb.updateSeatBookingById(sbDetails.getSeatbookingID(), sbDetails);
+			if (updatedsb == null || updatedsb.getSeatbookingID() == null) {
+				json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
+				return failureResponse(json);
+			}
+		}
+
+		// transaction
 		TransactionDTO tr = new TransactionDTO();
 		tr.setTransactionType(TransactionType.CARD);
-		
+
 		String cardNum = payload.getPayment().getCardNumber();
 		TransactionDetails transactionDetails = TransactionDetails.generateTransaction();
-		transactionDetails.setCardNumber("XXXX"+cardNum.substring(cardNum.length()-4));
+		transactionDetails.setCardNumber("XXXX" + cardNum.substring(cardNum.length() - 4));
 		tr.setTransactionDetails(transactionDetails);
-		
+
 		tr.setTrasactionAmount(totalwithTax);
 		tr.setBillingAddress(payload.getPayment().getBillingAddress());
-		
+
 		LocalDateTime now = LocalDateTime.now();
 		tr.setTransactionTime(now);
-		
+
 		TransactionDTO savedTransaction = transactionService.saveTransaction(tr);
+
+		System.out.println("ghere");
+		// booking
+		BookingDTO bookingdto = new BookingDTO();
+		bookingdto.setUserID(payload.getUserID());
 		
-		//seatbooking
-		if(sbDetails==null) {
-			
-		}else {
-			
-		}
+		System.out.println(bookingdto.getUserID());
 		
+		bookingdto.setMovieID(payload.getMovieID());
+		System.out.println(bookingdto.getMovieID());
 		
-		//booking
-		BookingDTO booking = new BookingDTO();
-		booking.setUserID(payload.getUserID());
-		booking.setMovieID(payload.getMovieID());
-		booking.setShowID(payload.getShowID());
-		booking.setTickets(td);
-		booking.setPromoid(promotion!=null?promotion.getPromoID():null);
-		booking.setBookedSeats(payload.getBookedSeats());
-		booking.setTotal(totalwithTax);
-		booking.setTransactionID(savedTransaction.getTransactionID());
-		booking.setBookingTime(now);
+		bookingdto.setShowID(payload.getShowID());
+		bookingdto.setTickets(td);
+		bookingdto.setPromoid(promotion != null ? promotion.getPromoID() : null);
+
+		bookingdto.setBookedSeats(bSeats);
+		bookingdto.setTotal(totalwithTax);
+		bookingdto.setTransactionID(savedTransaction.getTransactionID());
+		bookingdto.setBookingTime(now);
 		
-		BookingDTO savedBooking = bookingService.saveBooking(booking);
-		
-		if(savedBooking!=null) {
+		System.out.println(bookingdto.toJSONString());
+
+		BookingDTO savedBooking = bookingService.saveBooking(bookingdto);
+
+		if (savedBooking != null) {
 			json.put("bookingID", savedBooking.getBookingID());
 		}
-		//emailsend
-		
+		// emailsend
+
 		return successResponse(json);
 	}
-	
+
 	public static JSONObject getUserBookings(BookingService bookingService, TransactionService transactionService,
-		ShowTimeService sService,SeatBookingService sb,PromotionService promotionService, Long userID) {
-		
+			ShowTimeService sService, SeatBookingService sb, PromotionService promotionService, Long userID) {
+
 		JSONArray arr = bookingService.getBookingsOfuser(userID);
-		
+
 		JSONObject json = new JSONObject();
 		json.put("bookings", arr);
 		return successResponse(json);
 	}
-	
-	
-	
 
 	public static JSONObject successResponse(JSONObject resp) {
 		resp.put(ApplicationStringConstants.PROCESS, ApplicationStringConstants.SUCCESS);

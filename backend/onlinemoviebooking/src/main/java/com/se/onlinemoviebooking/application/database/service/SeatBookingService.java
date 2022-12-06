@@ -11,6 +11,8 @@ public interface SeatBookingService {
 	
 	public SeatBookingDAO getSeatBookingDAODetails(Long showid);
 	
-	public SeatBookingDAO saveShowSeatDetails(SeatBookingDTO sbDTO);
+	public SeatBookingDTO saveShowSeatDetails(SeatBookingDTO sbDTO);
+	
+	public SeatBookingDTO updateSeatBookingById(Long seatBookingID, SeatBookingDAO payload);
 
 }

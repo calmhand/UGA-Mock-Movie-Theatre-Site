@@ -120,10 +120,14 @@ public class UserTestController {
 	
 	@PostMapping(value = "/{userid}/confirmbooking")
 	public JSONObject confirmUserBooking(HttpServletRequest request, @RequestBody ConfirmBookingDTO payload,
-			@PathVariable Integer userid) {
+			@PathVariable Long userid) {
 		return ApplicationAPIHandler.ConfirmBooking(bookingService, transactionService, 
 				showTimeService, seatBookingService, promotionService, payload);
 	}
 	
+	@GetMapping(value = "/{userid}/getBookings")
+	public JSONObject getUserBookings(HttpServletRequest request, @PathVariable Long userid) {
+		return ApplicationAPIHandler.getUserBookings(bookingService, transactionService, showTimeService, seatBookingService, promotionService, userid);
+	}
 
 }

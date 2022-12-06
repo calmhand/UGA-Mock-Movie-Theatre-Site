@@ -1,5 +1,6 @@
 package com.se.onlinemoviebooking.application.database.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +24,23 @@ public class DefaultBookingService implements BookingService{
 	
 	@Autowired
 	private BookingRepository bookingRepository;
+	
+	@Autowired
+	private MovieService mService;
+	
+	@Autowired
+	private ShowTimeService sService;
+	
+	@Autowired
+	private PromotionService pService;
+	
+	@Autowired
+	private TransactionService tService;
 
 	@Override
 	public BookingDTO saveBooking(BookingDTO bookingDTO) {
 		BookingDAO bookingRow = populateBookingEntity(bookingDTO);
+		System.out.println(bookingRow.toJSONString());
 		return populateBookingData(bookingRepository.save(bookingRow));
 	}
 
@@ -34,10 +48,7 @@ public class DefaultBookingService implements BookingService{
 	public JSONArray getBookingsOfuser(Long userID) {
 		List<BookingDAO> bookings = new ArrayList<BookingDAO>();
 		bookings = bookingRepository.getBookingsByuser(userID);
-		DefaultMovieService mService = new DefaultMovieService();
-		DefaultShowTimeService sService = new DefaultShowTimeService();
-		DefaultPromotionService pService = new DefaultPromotionService();
-		DefaultTransactionService tService = new DefaultTransactionService();
+		
 		
 		JSONArray bookingArray = new JSONArray();
 		for(BookingDAO each:bookings) {
@@ -46,8 +57,8 @@ public class DefaultBookingService implements BookingService{
 		return bookingArray;
 	}
 	
-	public static JSONObject getRequiredJsonFromBooking(BookingDAO booking,DefaultMovieService mService,DefaultShowTimeService sService,
-			DefaultPromotionService pService, DefaultTransactionService tService) {
+	public static JSONObject getRequiredJsonFromBooking(BookingDAO booking,MovieService mService,ShowTimeService sService,
+			PromotionService pService, TransactionService tService) {
 		JSONObject obj = new JSONObject();
 		JSONParser parser = new JSONParser();
 		try {
@@ -55,6 +66,18 @@ public class DefaultBookingService implements BookingService{
 		} catch (ParseException e) {
 			
 		}
+		BookingDTO bdto = populateBookingData(booking);
+		
+		obj.put("total", bdto.getTotal());
+		obj.put("userID", bdto.getUserID());
+		obj.put("bookingID", booking.getBookingID());
+		obj.put("bookedSeats", bdto.getBookedSeats());
+		obj.put("tickets", bdto.getTickets());
+		
+		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		
+		obj.put("bookingTime", bdto.getBookingTime().format(myFormatObj));
+		
 		MovieDTO mDAO= mService.getMovieById(booking.getMovieID());
 		String movieName = mDAO.getTitle();
 		obj.remove("movieID");
@@ -68,15 +91,22 @@ public class DefaultBookingService implements BookingService{
 		obj.remove("promoID");
 		if(booking.getPromoID()!=null) {
 			PromotionDAO promo = pService.getPromotionById(booking.getPromoID());
-			obj.put("promotion", promo.toJSONString());
+			obj.put("promotion", promo);
 		}else {
 			obj.put("promotion", "");
 		}
 		
 		TransactionDTO tr = tService.getTransactionById(booking.getTransactionID());
-		obj.remove("transactionID");
-		obj.put("transaction", tr);
+		JSONObject trans = new JSONObject();
+		trans.put("transactionID", tr.getTransactionID());
+		trans.put("transactionTime", tr.getTransactionTime().format(myFormatObj));
+		trans.put("transactionType", tr.getTransactionType().getName());
+		trans.put("transactionDetails", tr.getTransactionDetails());
+		trans.put("transactionAmount", tr.getTrasactionAmount());
+		trans.put("billingAddress", tr.getBillingAddress());
 		
+		obj.remove("transactionID");
+		obj.put("transaction", trans);
 		
 		
 		return obj;
@@ -91,7 +121,17 @@ public class DefaultBookingService implements BookingService{
 		bookingDTO.setMovieID(booking.getMovieID());
 		bookingDTO.setShowID(booking.getShowID());
 		bookingDTO.setTickets(TicketDTO.getObject(booking.getTickets()));
-		bookingDTO.setBookedSeats(booking.getBookedSeats());
+		
+		JSONParser parser = new JSONParser();
+		JSONArray jsonarr;
+		try {
+			jsonarr = (JSONArray) parser.parse(booking.getBookedSeats());
+		} catch (ParseException e) {
+			jsonarr = new JSONArray();
+		}
+		
+		
+		bookingDTO.setBookedSeats(jsonarr);
 		bookingDTO.setPromoid(booking.getPromoID());
 		bookingDTO.setTotal(booking.getTotal());
 		bookingDTO.setTransactionID(booking.getTransactionID());
@@ -101,6 +141,8 @@ public class DefaultBookingService implements BookingService{
 	}
 	
 	public static BookingDAO populateBookingEntity(BookingDTO booking) {
+		
+		
 		BookingDAO bookingDAO = new BookingDAO();
 		
 		bookingDAO.setBookingID(booking.getBookingID());
@@ -108,7 +150,7 @@ public class DefaultBookingService implements BookingService{
 		bookingDAO.setMovieID(booking.getMovieID());
 		bookingDAO.setShowID(booking.getShowID());
 		bookingDAO.setTickets(booking.getTickets().toJSONString());
-		bookingDAO.setBookedSeats(booking.getBookedSeats());
+		bookingDAO.setBookedSeats(booking.getBookedSeats().toJSONString());
 		bookingDAO.setPromoID(booking.getPromoid());
 		bookingDAO.setTotal(booking.getTotal());
 		bookingDAO.setTransactionID(booking.getTransactionID());

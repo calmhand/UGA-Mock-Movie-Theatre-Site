@@ -44,11 +44,11 @@ public class DefaultPaymentCardService {
 		
 		EncryptionService es = EncryptionService.getInstance();
 		
-		System.out.println("updates"+cardID);
+		//System.out.println("updates"+cardID);
 		int up = paymentCardRepository.updateCard(es.convertToDatabaseColumn(card.getCardNumber()), 
 				es.convertToDatabaseColumn(card.getCardExpiry()), 
 				card.getBillingAddress().toJSONString(), cardID);
-		System.out.println("updates"+up);
+		//System.out.println("updates"+up);
 		if(up>0) {
 			return card;
 		}

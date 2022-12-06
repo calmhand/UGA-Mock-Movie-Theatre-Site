@@ -29,7 +29,7 @@ public class BookingDAO implements SimpleDAO {
 	@Column(name = "userid")
 	private Long userID;
 
-	@Column(name = "movieis")
+	@Column(name = "movieid")
 	private Long movieID;
 
 	@Column(name = "showid")
@@ -39,7 +39,7 @@ public class BookingDAO implements SimpleDAO {
 	private String tickets;
 
 	@Column(name = "booked_seats")
-	private ArrayList<String> bookedSeats;
+	private String bookedSeats;
 
 	@Column(name = "promoid")
 	private Long promoID;
@@ -54,7 +54,7 @@ public class BookingDAO implements SimpleDAO {
 	private LocalDateTime bookingTime;
 
 	public BookingDAO() {
-		this.bookedSeats = new ArrayList<String>();
+		
 	}
 
 	public Long getBookingID() {
@@ -77,7 +77,7 @@ public class BookingDAO implements SimpleDAO {
 		return tickets;
 	}
 
-	public ArrayList<String> getBookedSeats() {
+	public String getBookedSeats() {
 		return bookedSeats;
 	}
 
@@ -117,7 +117,7 @@ public class BookingDAO implements SimpleDAO {
 		this.tickets = tickets;
 	}
 
-	public void setBookedSeats(ArrayList<String> bookedSeats) {
+	public void setBookedSeats(String bookedSeats) {
 		this.bookedSeats = bookedSeats;
 	}
 

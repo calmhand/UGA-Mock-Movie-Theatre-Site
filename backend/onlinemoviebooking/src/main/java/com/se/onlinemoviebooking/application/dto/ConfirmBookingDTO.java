@@ -1,7 +1,6 @@
 package com.se.onlinemoviebooking.application.dto;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.simple.JSONObject;
 

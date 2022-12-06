@@ -29,7 +29,7 @@ public class SeatBookingDAO implements SimpleDAO {
 	private Long showID;
 	
 	@Column(name = "booked_seats")
-	private ArrayList<String> bookedSeats;
+	private String bookedSeats;
 	
 	public SeatBookingDAO() {
 		
@@ -43,7 +43,7 @@ public class SeatBookingDAO implements SimpleDAO {
 		return showID;
 	}
 
-	public ArrayList<String> getBookedSeats() {
+	public String getBookedSeats() {
 		return bookedSeats;
 	}
 
@@ -55,7 +55,7 @@ public class SeatBookingDAO implements SimpleDAO {
 		this.showID = showID;
 	}
 
-	public void setBookedSeats(ArrayList<String> bookedSeats) {
+	public void setBookedSeats(String bookedSeats) {
 		this.bookedSeats = bookedSeats;
 	}
 	

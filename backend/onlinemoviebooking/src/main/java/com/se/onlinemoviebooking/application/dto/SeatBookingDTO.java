@@ -1,7 +1,6 @@
 package com.se.onlinemoviebooking.application.dto;
 
-import java.util.ArrayList;
-
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,7 +10,7 @@ public class SeatBookingDTO implements SimpleDTO{
 	//private long seatbookingID;
 	private Long seatbookingID;
 	private Long showID;
-	private ArrayList<String> bookedSeats;
+	private JSONArray bookedSeats;
 	
 	public SeatBookingDTO() {
 		
@@ -31,7 +30,7 @@ public class SeatBookingDTO implements SimpleDTO{
 		return showID;
 	}
 
-	public ArrayList<String> getBookedSeats() {
+	public JSONArray getBookedSeats() {
 		return bookedSeats;
 	}
 
@@ -39,7 +38,7 @@ public class SeatBookingDTO implements SimpleDTO{
 		this.showID = showid;
 	}
 
-	public void setBookedSeats(ArrayList<String> bookedSeats) {
+	public void setBookedSeats(JSONArray bookedSeats) {
 		this.bookedSeats = bookedSeats;
 	}
 
