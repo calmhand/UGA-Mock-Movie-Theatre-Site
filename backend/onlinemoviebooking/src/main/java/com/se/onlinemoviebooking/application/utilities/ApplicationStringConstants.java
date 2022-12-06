@@ -18,7 +18,7 @@ public class ApplicationStringConstants {
 	public static final String PASSWORDMISMATCH = "password and confirm password are not same";
 	public static final String PROMOTIONNOTAVAILABLE = "promotion not available";
 	public static final String SEATSBOOKED = "Seats not available try other";
-	
+	public static final String SUSPENDEDUSER = "User not found or suspended";
 	
 	
 	//seatlayout

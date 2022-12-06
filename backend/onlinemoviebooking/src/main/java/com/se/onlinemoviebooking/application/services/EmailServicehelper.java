@@ -1,8 +1,13 @@
 package com.se.onlinemoviebooking.application.services;
 
+import java.text.SimpleDateFormat;
+
 import com.se.onlinemoviebooking.application.cache.SimpleCache;
 import com.se.onlinemoviebooking.application.dao.PromotionDAO;
 import com.se.onlinemoviebooking.application.dao.UserDAO;
+import com.se.onlinemoviebooking.application.dto.BookingDTO;
+import com.se.onlinemoviebooking.application.dto.MovieDTO;
+import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.utilities.ApplicationUtilities;
 
@@ -75,6 +80,26 @@ public class EmailServicehelper {
 		"Your Account has been updated \n"+ "Thank you,\n"+ "b3onlinemoviebooking";
 		
 		body = body.replace("[[name]]", user.getLastName());
+		
+		EmailService.getInstance().sendEmail(sub, body, user.getEmail());
+		
+		return true;
+	}
+	
+	public static boolean sendBookingConfirmation(UserDTO user, BookingDTO booking, ShowTimeDTO show, MovieDTO movie ) {
+		
+		String sub = "Booking Confirmation!";
+		
+		String body = "Dear [[name]] \n"+"Your bookingid is [[bookingID]] for the Movie [[moviename]] \n"+
+		"you show screening is in [[hall]] at [[time]] on [[date]] \n"+"your tickets are [[tickets]]";
+		
+		body = body.replace("[[name]]", user.getLastName());
+		body = body.replace("[[bookingID]]", String.valueOf(booking.getBookingID()));
+		body = body.replace("[[moviename]]", movie.getTitle());
+		body = body.replace("[[hall]]", show.getShowRoom().getName());
+		body = body.replace("[[time]]", show.getShowTimeSlot().getName());
+		body = body.replace("[[date]]",new SimpleDateFormat("yyyy-MM-dd").format(show.getShowDate()));
+		body = body.replace("[[tickets]]", booking.getBookedSeats().toJSONString());
 		
 		EmailService.getInstance().sendEmail(sub, body, user.getEmail());
 		

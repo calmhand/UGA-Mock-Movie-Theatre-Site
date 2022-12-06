@@ -18,6 +18,7 @@ import com.se.onlinemoviebooking.application.dto.BookingDTO;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.TicketDTO;
 import com.se.onlinemoviebooking.application.dto.TransactionDTO;
+import com.se.onlinemoviebooking.application.utilities.ApplicationUtilities;
 
 @Service("bookingService")
 public class DefaultBookingService implements BookingService{

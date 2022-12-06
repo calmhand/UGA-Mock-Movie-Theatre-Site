@@ -15,4 +15,7 @@ public class ApplicationUtilities {
 		
 	}
 
+	public static boolean isNullOrEmpty(String str) {
+		return str==null||str.isBlank();
+	}
 }

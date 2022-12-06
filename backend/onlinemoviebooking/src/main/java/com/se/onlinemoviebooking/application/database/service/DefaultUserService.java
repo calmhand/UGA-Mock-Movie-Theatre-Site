@@ -44,6 +44,9 @@ public class DefaultUserService implements UserService {
 	@Override
 	public UserDTO getUserDTObyId(Integer userid) {
 		UserDAO userRow = userRepository.findByuserid(userid);
+		if(userRow==null) {
+			return null;
+		}
 		return populateUserData(userRow);
 	}
 

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.service.BookingService;
 import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
+import com.se.onlinemoviebooking.application.database.service.MovieService;
 import com.se.onlinemoviebooking.application.database.service.PromotionService;
 import com.se.onlinemoviebooking.application.database.service.SeatBookingService;
 import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
@@ -55,6 +56,9 @@ public class UserTestController {
 	
 	@Resource(name = "transactionService")
 	private TransactionService transactionService;
+	
+	@Resource(name = "movieService")
+	private MovieService movieService;
 
 	@GetMapping(value = "/{userid}/getprofile")
 	public JSONObject getUserProfile(HttpServletRequest request,
@@ -122,12 +126,13 @@ public class UserTestController {
 	public JSONObject confirmUserBooking(HttpServletRequest request, @RequestBody ConfirmBookingDTO payload,
 			@PathVariable Long userid) {
 		return ApplicationAPIHandler.ConfirmBooking(bookingService, transactionService, 
-				showTimeService, seatBookingService, promotionService, payload);
+				showTimeService, seatBookingService, promotionService, userService,  movieService, payload);
 	}
 	
 	@GetMapping(value = "/{userid}/getBookings")
 	public JSONObject getUserBookings(HttpServletRequest request, @PathVariable Long userid) {
-		return ApplicationAPIHandler.getUserBookings(bookingService, transactionService, showTimeService, seatBookingService, promotionService, userid);
+		return ApplicationAPIHandler.getUserBookings(bookingService, transactionService, showTimeService, 
+				seatBookingService, promotionService, userid);
 	}
 
 }

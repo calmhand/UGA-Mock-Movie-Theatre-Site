@@ -23,6 +23,7 @@ import com.se.onlinemoviebooking.application.database.service.TransactionService
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.BookingDTO;
 import com.se.onlinemoviebooking.application.dto.ConfirmBookingDTO;
+import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.SeatBookingDTO;
 import com.se.onlinemoviebooking.application.dto.ShowTimeDTO;
@@ -35,6 +36,7 @@ import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.dto.ValidateBookingDTO;
 import com.se.onlinemoviebooking.application.services.EmailServicehelper;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
+import com.se.onlinemoviebooking.application.utilities.ApplicationUtilities;
 
 public class ApplicationAPIHandler {
 
@@ -311,9 +313,17 @@ public class ApplicationAPIHandler {
 	}
 
 	public static JSONObject ConfirmBooking(BookingService bookingService, TransactionService transactionService,
-			ShowTimeService sService, SeatBookingService sb, PromotionService promotionService,
-			ConfirmBookingDTO payload) {
+			ShowTimeService sService, SeatBookingService sb, PromotionService promotionService, UserService userService,
+			MovieService movieService, ConfirmBookingDTO payload) {
 		JSONObject json = new JSONObject();
+
+		UserDTO userdto = userService.getUserDTObyId(payload.getUserID().intValue());
+		if (userdto == null || userdto.getStatus().getID() > 1) {
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SUSPENDEDUSER);
+			return failureResponse(json);
+		}
+
+		MovieDTO mv = movieService.getMovieById(payload.getMovieID());
 
 		ShowTimeDTO show = sService.getShowTimeDTOById(payload.getShowID());
 		if (show == null) {
@@ -338,7 +348,8 @@ public class ApplicationAPIHandler {
 			return failureResponse(json);
 		}
 		Float discount = 0.0f;
-		PromotionDAO promotion = promotionService.getPromotionByCode(payload.getPromocode());
+		PromotionDAO promotion = ApplicationUtilities.isNullOrEmpty(payload.getPromocode()) ? null
+				: promotionService.getPromotionByCode(payload.getPromocode());
 
 		if (promotion != null) {
 			discount = promotion.getDiscount();
@@ -412,10 +423,9 @@ public class ApplicationAPIHandler {
 		// booking
 		BookingDTO bookingdto = new BookingDTO();
 		bookingdto.setUserID(payload.getUserID());
-		
-		
+
 		bookingdto.setMovieID(payload.getMovieID());
-		
+
 		bookingdto.setShowID(payload.getShowID());
 		bookingdto.setTickets(td);
 		bookingdto.setPromoid(promotion != null ? promotion.getPromoID() : null);
@@ -424,15 +434,18 @@ public class ApplicationAPIHandler {
 		bookingdto.setTotal(totalwithTax);
 		bookingdto.setTransactionID(savedTransaction.getTransactionID());
 		bookingdto.setBookingTime(now);
-		
 
 		BookingDTO savedBooking = bookingService.saveBooking(bookingdto);
 
 		if (savedBooking != null) {
 			json.put("bookingID", savedBooking.getBookingID());
 		}
-		// emailsend
 
+		try {
+			EmailServicehelper.sendBookingConfirmation(userdto, savedBooking, show, mv);
+		} catch (Exception e) {
+			//log
+		}
 		return successResponse(json);
 	}
 
