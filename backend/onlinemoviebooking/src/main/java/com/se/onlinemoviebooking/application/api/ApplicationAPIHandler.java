@@ -3,11 +3,15 @@ package com.se.onlinemoviebooking.application.api;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.se.onlinemoviebooking.application.cache.SimpleCache;
 import com.se.onlinemoviebooking.application.dao.PromotionDAO;
@@ -38,11 +42,36 @@ import com.se.onlinemoviebooking.application.services.EmailServicehelper;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 import com.se.onlinemoviebooking.application.utilities.ApplicationUtilities;
 
+@Service("applicationAPIHandler")
 public class ApplicationAPIHandler {
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private MovieService movieService;
+	
+	@Autowired
+	private ShowTimeService showTimeService;
+	
+	@Autowired
+	private SeatBookingService seatBookingService;
+	
+	@Autowired
+	private PromotionService promotionService;
+
+	@Autowired
+	private DefaultPaymentCardService paymentCardService;
+	
+	@Autowired
+	private BookingService bookingService;
+	
+	@Autowired
+	private TransactionService transactionService;
 
 	/* Registration */
 
-	public static JSONObject registerUser(UserService userService, JSONObject payload, PasswordEncoder encoder) {
+	public JSONObject registerUser(JSONObject payload, PasswordEncoder encoder) {
 		// to-do verify details and save
 		UserDTO userDTO = UserDTO.getObject(payload);
 		userDTO.setPassword(encoder.encode(userDTO.getPassword()));
@@ -63,7 +92,7 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 	
-	public static JSONObject sendEmailForVerification(Integer userID,UserService userService ) {
+	public JSONObject sendEmailForVerification(Integer userID) {
 		JSONObject json = new JSONObject();
 		UserDTO user = userService.getUserDTObyId(userID);
 		if(user==null || user.getStatus().getID()==3) {
@@ -80,7 +109,7 @@ public class ApplicationAPIHandler {
 	}
 	
 
-	public static JSONObject getUserProfile(Integer userID, UserService userService) {
+	public JSONObject getUserProfile(Integer userID) {
 
 		UserDTO user = userService.getUserDTObyId(userID);
 		user.setPassword("");
@@ -96,7 +125,7 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 
-	public static JSONObject updateUserProfile(Integer userID, UserService userService, UserDTO payload) {
+	public JSONObject updateUserProfile(Integer userID, UserDTO payload) {
 
 		UserDTO updated = userService.updateUserDTObyId(userID, payload);
 
@@ -116,7 +145,7 @@ public class ApplicationAPIHandler {
 		return failureResponse(json);
 	}
 
-	public static JSONObject updateUserPassword(Integer userID, UserService userService, JSONObject payload) {
+	public JSONObject updateUserPassword(Integer userID, JSONObject payload) {
 
 		int rec = userService.updateUserPassword(userID, payload);
 		if (rec > 0) {
@@ -126,7 +155,7 @@ public class ApplicationAPIHandler {
 		return failureResponse(new JSONObject());
 	}
 
-	public static JSONObject forgotPassword(UserService userService, JSONObject payload) {
+	public JSONObject forgotPassword( JSONObject payload) {
 
 		if (payload.get("email") == null || ((String) payload.get("email")).isEmpty()) {
 			return failureResponse(new JSONObject());
@@ -144,7 +173,7 @@ public class ApplicationAPIHandler {
 		return successResponse(resp);
 	}
 
-	public static JSONObject emailResetPassword(UserService userService, JSONObject payload) {
+	public JSONObject emailResetPassword( JSONObject payload) {
 		int up = userService.resetUserPassword(payload);
 		if (up > 0) {
 			return successResponse(new JSONObject());
@@ -152,7 +181,7 @@ public class ApplicationAPIHandler {
 		return failureResponse(new JSONObject());
 	}
 
-	public static JSONObject verifyEmail(Integer userID, UserService userService, String code) {
+	public JSONObject verifyEmail(Integer userID,String code) {
 		System.out.println(SimpleCache.getInstance().getCacheMap());
 		String key = "EMC_" + userID;
 		String val = SimpleCache.getInstance().get(key);
@@ -166,8 +195,7 @@ public class ApplicationAPIHandler {
 		return failureResponse(json);
 	}
 
-	public static JSONObject addUserPayment(Integer userID, DefaultPaymentCardService paymentCardService,
-			JSONObject payload) {
+	public JSONObject addUserPayment(Integer userID, JSONObject payload) {
 		PaymentcardDTO paymentcard = PaymentcardDTO.getObject(payload);
 
 		PaymentcardDTO savedCard = paymentCardService.savePaymentCard(paymentcard);
@@ -185,13 +213,12 @@ public class ApplicationAPIHandler {
 
 	}
 
-	public static List<PaymentcardDTO> getUserPayments(Integer userid, DefaultPaymentCardService paymentCardService) {
+	public List<PaymentcardDTO> getUserPayments(Integer userid) {
 
 		return paymentCardService.getPaymentCards(userid);
 	}
 
-	public static JSONObject deleteUserPayment(Integer userid, DefaultPaymentCardService paymentCardService,
-			PaymentcardDTO payload) {
+	public JSONObject deleteUserPayment(Integer userid, PaymentcardDTO payload) {
 
 		boolean del = paymentCardService.deletePaymentCard(payload.getCardID());
 		if (del) {
@@ -200,8 +227,7 @@ public class ApplicationAPIHandler {
 		return failureResponse(new JSONObject());
 	}
 
-	public static JSONObject editUserPayment(Integer userid, DefaultPaymentCardService paymentCardService,
-			PaymentcardDTO payload) {
+	public JSONObject editUserPayment(Integer userid, PaymentcardDTO payload) {
 
 		PaymentcardDTO pcd = paymentCardService.updatePaymentCard(payload, payload.getCardID());
 
@@ -221,36 +247,36 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 
-	public static JSONObject getHomePageData(MovieService movieService) {
+	public JSONObject getHomePageData() {
 		JSONObject json = movieService.getHomePageMovies();
 		return successResponse(json);
 	}
 
-	public static JSONObject getMatchedMoviesByname(MovieService movieService, String name) {
+	public JSONObject getMatchedMoviesByname(String name) {
 		JSONObject json = new JSONObject();
 		json.put("movies", movieService.getMatchedMovies(name));
 		return successResponse(json);
 	}
 
-	public static JSONObject getMoviesByGenre(MovieService movieService, String genre) {
+	public JSONObject getMoviesByGenre(String genre) {
 		JSONObject json = new JSONObject();
 		json.put("movies", movieService.getMoviesByGenre(genre));
 		return successResponse(json);
 	}
 
-	public static JSONObject getMatchedMoviesBynameAndGenre(MovieService movieService, String name, String genre) {
+	public JSONObject getMatchedMoviesBynameAndGenre(String name, String genre) {
 		JSONObject json = new JSONObject();
 		json.put("movies", movieService.getMatchedMoviesByGenre(name, genre));
 		return successResponse(json);
 	}
 
-	public static JSONObject getShowByID(ShowTimeService showTimeService, Long showid) {
+	public JSONObject getShowByID(Long showid) {
 		JSONObject response = showTimeService.getShowTimeById(showid);
 		return successResponse(response);
 	}
 
-	public static JSONObject getShowSeatDetails(SeatBookingService sbService, Long showid) {
-		JSONObject json = sbService.getShowSeatDetails(showid);
+	public JSONObject getShowSeatDetails(Long showid) {
+		JSONObject json = seatBookingService.getShowSeatDetails(showid);
 		if (json == null) {
 			json = new JSONObject();
 			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
@@ -259,8 +285,8 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 
-	public static JSONObject getPromotionByCode(PromotionService pService, String code) {
-		PromotionDAO promotion = pService.getPromotionByCode(code.toUpperCase());
+	public JSONObject getPromotionByCode(String code) {
+		PromotionDAO promotion = promotionService.getPromotionByCode(code.toUpperCase());
 
 		JSONParser parser = new JSONParser();
 		JSONObject json;
@@ -279,17 +305,16 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 
-	public static JSONObject validateBooking(ShowTimeService sService, SeatBookingService sb,
-			ValidateBookingDTO payload) {
+	public JSONObject validateBooking(ValidateBookingDTO payload) {
 		JSONObject json = new JSONObject();
 
-		ShowTimeDTO show = sService.getShowTimeDTOById(payload.getShowID());
+		ShowTimeDTO show = showTimeService.getShowTimeDTOById(payload.getShowID());
 		if (show == null) {
 			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 			return failureResponse(json);
 		}
 
-		SeatBookingDAO sbDetails = sb.getSeatBookingDAODetails(payload.getShowID());
+		SeatBookingDAO sbDetails = seatBookingService.getSeatBookingDAODetails(payload.getShowID());
 		if (sbDetails != null) {
 			for (String each : payload.getBookedSeats()) {
 
@@ -329,9 +354,7 @@ public class ApplicationAPIHandler {
 
 	}
 
-	public static JSONObject ConfirmBooking(BookingService bookingService, TransactionService transactionService,
-			ShowTimeService sService, SeatBookingService sb, PromotionService promotionService, UserService userService,
-			MovieService movieService, ConfirmBookingDTO payload) {
+	public JSONObject ConfirmBooking(ConfirmBookingDTO payload) {
 		JSONObject json = new JSONObject();
 
 		UserDTO userdto = userService.getUserDTObyId(payload.getUserID().intValue());
@@ -342,13 +365,13 @@ public class ApplicationAPIHandler {
 
 		MovieDTO mv = movieService.getMovieById(payload.getMovieID());
 
-		ShowTimeDTO show = sService.getShowTimeDTOById(payload.getShowID());
+		ShowTimeDTO show = showTimeService.getShowTimeDTOById(payload.getShowID());
 		if (show == null) {
 			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 			return failureResponse(json);
 		}
 
-		SeatBookingDAO sbDetails = sb.getSeatBookingDAODetails(payload.getShowID());
+		SeatBookingDAO sbDetails = seatBookingService.getSeatBookingDAODetails(payload.getShowID());
 		if (sbDetails != null) {
 			for (String each : payload.getBookedSeats()) {
 				if (sbDetails.getBookedSeats().contains(each)) {
@@ -396,7 +419,7 @@ public class ApplicationAPIHandler {
 			JSONArray payloadBookedSeats = new JSONArray();
 			payloadBookedSeats.addAll(payload.getBookedSeats());
 			sbd.setBookedSeats(payloadBookedSeats);
-			SeatBookingDTO savedsbd = sb.saveShowSeatDetails(sbd);
+			SeatBookingDTO savedsbd = seatBookingService.saveShowSeatDetails(sbd);
 			if (savedsbd == null) {
 				json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 				return failureResponse(json);
@@ -413,7 +436,7 @@ public class ApplicationAPIHandler {
 			}
 			jsonarr.addAll(payload.getBookedSeats());
 			sbDetails.setBookedSeats(jsonarr.toJSONString());
-			SeatBookingDTO updatedsb = sb.updateSeatBookingById(sbDetails.getSeatbookingID(), sbDetails);
+			SeatBookingDTO updatedsb = seatBookingService.updateSeatBookingById(sbDetails.getSeatbookingID(), sbDetails);
 			if (updatedsb == null || updatedsb.getSeatbookingID() == null) {
 				json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SOMETHINGWENTWRONG);
 				return failureResponse(json);
@@ -466,8 +489,7 @@ public class ApplicationAPIHandler {
 		return successResponse(json);
 	}
 
-	public static JSONObject getUserBookings(BookingService bookingService, TransactionService transactionService,
-			ShowTimeService sService, SeatBookingService sb, PromotionService promotionService, Long userID) {
+	public JSONObject getUserBookings(Long userID) {
 
 		JSONArray arr = bookingService.getBookingsOfuser(userID);
 

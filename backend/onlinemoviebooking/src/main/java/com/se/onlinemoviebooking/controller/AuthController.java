@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.database.repository.UserRepository;
-import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.JwtResponse;
 import com.se.onlinemoviebooking.application.dto.LoginRequest;
 import com.se.onlinemoviebooking.application.security.LoginDetails;
@@ -49,12 +48,12 @@ public class AuthController {
 	@Autowired
 	PasswordEncoder encoder;
 
-	@Resource(name = "userService")
-	private UserService userService;
+	@Resource(name = "applicationAPIHandler")
+	private ApplicationAPIHandler applicationAPIHandler;
 
 	@PostMapping(value = "/register")
 	public JSONObject registerUser(HttpServletRequest request, @RequestBody JSONObject payload) {
-		return ApplicationAPIHandler.registerUser(userService, payload, encoder);
+		return applicationAPIHandler.registerUser(payload, encoder);
 	}
 
 	@PostMapping(value ="/login")

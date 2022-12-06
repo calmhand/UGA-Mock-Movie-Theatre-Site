@@ -17,14 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
-import com.se.onlinemoviebooking.application.database.service.BookingService;
-import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
-import com.se.onlinemoviebooking.application.database.service.MovieService;
-import com.se.onlinemoviebooking.application.database.service.PromotionService;
-import com.se.onlinemoviebooking.application.database.service.SeatBookingService;
-import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
-import com.se.onlinemoviebooking.application.database.service.TransactionService;
-import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.ConfirmBookingDTO;
 import com.se.onlinemoviebooking.application.dto.PaymentcardDTO;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
@@ -36,82 +28,52 @@ import com.se.onlinemoviebooking.application.dto.ValidateBookingDTO;
 //@CrossOrigin(origins = "*")
 public class UserTestController {
 
-	@Resource(name = "userService")
-	private UserService userService;
+	@Resource(name = "applicationAPIHandler")
+	private ApplicationAPIHandler applicationAPIHandler;
 
-	@Resource(name = "paymentCardService")
-	private DefaultPaymentCardService paymentCardService;
 	
-	@Resource(name = "showTimeService")
-	private ShowTimeService showTimeService;
-	
-	@Resource(name = "seatBookingService")
-	private SeatBookingService seatBookingService;
-	
-	@Resource(name = "bookingService")
-	private BookingService bookingService;
-	
-	@Resource(name = "promotionService")
-	private PromotionService promotionService;
-	
-	@Resource(name = "transactionService")
-	private TransactionService transactionService;
-	
-	@Resource(name = "movieService")
-	private MovieService movieService;
-
+	//profile
 	@GetMapping(value = "/{userid}/getprofile")
 	public JSONObject getUserProfile(HttpServletRequest request,
 			@PathVariable Integer userid) {
-		return ApplicationAPIHandler.getUserProfile(userid, userService);
+		return applicationAPIHandler.getUserProfile(userid);
 	}
-
-	/*
-	 * same parameters as register except password,userid,email(field should be
-	 * blocked by frontend also ), even sent this wont update
-	 * 
-	 * response is UserDTO parameters with no password and "process": "success"
-	 */
 
 	@PutMapping(value = "/{userid}/updateprofile")
 	public JSONObject updateUserProfile(HttpServletRequest request, @RequestBody UserDTO payload,
 			@PathVariable Integer userid) {
-		return ApplicationAPIHandler.updateUserProfile(userid, userService, payload);
+		return applicationAPIHandler.updateUserProfile(userid, payload);
 	}
 
-	/* email,password,newPassword */
-	/* response is UserDTO parameters with no password and "process": "success" */
 	@PutMapping(value = "/{userid}/resetpassword")
 	public JSONObject updateUserPassword(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {
-		return ApplicationAPIHandler.updateUserPassword(userid, userService, payload);
+		return applicationAPIHandler.updateUserPassword(userid, payload);
 	}
 
-	/* paraments are same as in PaymentcardDTO except cardId */
-	/*
-	 * response is json with "process": "success", PaymentcardDTO fields, no cardId
-	 */
+	
+	//paymentcards
 	@PostMapping(value = "/{userid}/addpayment")
 	public JSONObject addUserPayment(HttpServletRequest request, @RequestBody JSONObject payload,
 			@PathVariable Integer userid) {
-		return ApplicationAPIHandler.addUserPayment(userid, paymentCardService, payload);
+		return applicationAPIHandler.addUserPayment(userid, payload);
 	}
 
 	@GetMapping(value = "/{userid}/getpaymentCards")
 	public List<PaymentcardDTO> getUserPayments(HttpServletRequest request, @PathVariable Integer userid) {
-		return ApplicationAPIHandler.getUserPayments(userid, paymentCardService);
+		return applicationAPIHandler.getUserPayments(userid);
 	}
 
 	@PutMapping(value = "/{userid}/editpaymentCard")
 	public JSONObject editUserPayment(HttpServletRequest request, @RequestBody PaymentcardDTO payload,
 			@PathVariable Integer userid) {
-		return ApplicationAPIHandler.editUserPayment(userid, paymentCardService, payload);
+		return applicationAPIHandler.editUserPayment(userid, payload);
 	}
 
 	@DeleteMapping(value = "/{userid}/deletepaymentCard")
 	public JSONObject deleteUserPayment(HttpServletRequest request, @RequestBody PaymentcardDTO payload,
 			@PathVariable Integer userid) {
-		return ApplicationAPIHandler.deleteUserPayment(userid, paymentCardService, payload);
+		return applicationAPIHandler.deleteUserPayment(userid, payload);
 	}
 	
 	
@@ -119,20 +81,18 @@ public class UserTestController {
 	@PostMapping(value = "/{userid}/validatebooking")
 	public JSONObject validateUserBooking(HttpServletRequest request, @RequestBody ValidateBookingDTO payload,
 			@PathVariable Integer userid) {
-		return ApplicationAPIHandler.validateBooking(showTimeService,seatBookingService,payload);
+		return applicationAPIHandler.validateBooking(payload);
 	}
 	
 	@PostMapping(value = "/{userid}/confirmbooking")
 	public JSONObject confirmUserBooking(HttpServletRequest request, @RequestBody ConfirmBookingDTO payload,
 			@PathVariable Long userid) {
-		return ApplicationAPIHandler.ConfirmBooking(bookingService, transactionService, 
-				showTimeService, seatBookingService, promotionService, userService,  movieService, payload);
+		return applicationAPIHandler.ConfirmBooking(payload);
 	}
 	
 	@GetMapping(value = "/{userid}/getBookings")
 	public JSONObject getUserBookings(HttpServletRequest request, @PathVariable Long userid) {
-		return ApplicationAPIHandler.getUserBookings(bookingService, transactionService, showTimeService, 
-				seatBookingService, promotionService, userid);
+		return applicationAPIHandler.getUserBookings(userid);
 	}
 
 }

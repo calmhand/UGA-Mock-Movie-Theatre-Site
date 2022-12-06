@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.se.onlinemoviebooking.application.api.AdminApiHandler;
-import com.se.onlinemoviebooking.application.database.service.MovieService;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 
 @RestController
@@ -24,9 +23,12 @@ import com.se.onlinemoviebooking.application.dto.MovieDTO;
 //@CrossOrigin(origins = "*")
 public class AdminController {
 
-	@Resource(name = "movieService")
-	private MovieService movieService;
+	
+	@Resource(name = "adminApiHandler")
+	private AdminApiHandler adminApiHandler;
 
+	
+	
 	@GetMapping("/home")
 	@PreAuthorize("hasRole('ADMIN')")
 	public String adminAccess() {
@@ -36,19 +38,19 @@ public class AdminController {
 	@GetMapping("/manage-movies")
 	@PreAuthorize("hasRole('ADMIN')")
 	public JSONObject getMovies(HttpServletRequest request) {
-		return AdminApiHandler.getMovies(movieService);
+		return adminApiHandler.getMovies();
 	}
 	
 	@PostMapping("/manage-movies/addmovie")
 	@PreAuthorize("hasRole('ADMIN')")
 	public JSONObject addMovie(HttpServletRequest request, @RequestBody MovieDTO paylaod) {
-		return AdminApiHandler.addMovie(movieService, paylaod);
+		return adminApiHandler.addMovie(paylaod);
 	}
 	
 	@PutMapping("/manage-movies/updatemovie/{movieid}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public JSONObject updateMovie(HttpServletRequest request, @RequestBody MovieDTO paylaod, @PathVariable Long userid) {
-		return AdminApiHandler.updateMovie(userid, movieService, paylaod);
+		return adminApiHandler.updateMovie(userid, paylaod);
 	}
 	
 	

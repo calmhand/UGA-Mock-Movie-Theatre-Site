@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.se.onlinemoviebooking.application.api.AdminApiHandler;
-import com.se.onlinemoviebooking.application.database.service.MovieService;
-import com.se.onlinemoviebooking.application.database.service.PromotionService;
-import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
-import com.se.onlinemoviebooking.application.database.service.UserService;
+import com.se.onlinemoviebooking.application.api.ApplicationAPIHandler;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.PromotionDTO;
 
@@ -27,35 +24,29 @@ import com.se.onlinemoviebooking.application.dto.PromotionDTO;
 //@CrossOrigin(origins = "*")
 public class AdminTestController {
 
-	@Resource(name = "movieService")
-	private MovieService movieService;
+	@Resource(name = "applicationAPIHandler")
+	private ApplicationAPIHandler applicationAPIHandler;
 	
-	@Resource(name = "showTimeService")
-	private ShowTimeService showTimeService;
-	
-	@Resource(name = "promotionService")
-	private PromotionService promotionService;
-	
-	@Resource(name = "userService")
-	private UserService userService;
+	@Resource(name = "adminApiHandler")
+	private AdminApiHandler adminApiHandler;
 
 	
 	//movies
 	
 	@GetMapping("/manage-movies")
 	public JSONObject getMovies(HttpServletRequest request) {
-		return AdminApiHandler.getMovies(movieService);
+		return adminApiHandler.getMovies();
 	}
 
 	@PostMapping("/manage-movies/addmovie")
 	public JSONObject addMovie(HttpServletRequest request, @RequestBody MovieDTO payload) {
-		return AdminApiHandler.addMovie(movieService, payload);
+		return adminApiHandler.addMovie(payload);
 	}
 
 	@PutMapping("/manage-movies/updatemovie/{movieid}")
 	public JSONObject updateMovie(HttpServletRequest request, @RequestBody MovieDTO payload,
 			@PathVariable Long movieid) {
-		return AdminApiHandler.updateMovie(movieid, movieService, payload);
+		return adminApiHandler.updateMovie(movieid, payload);
 	}
 	
 	
@@ -63,32 +54,32 @@ public class AdminTestController {
 	
 	@GetMapping("/manage-shows")
 	public JSONObject getAllShows(HttpServletRequest request) {
-		return AdminApiHandler.getAllShows(showTimeService);
+		return adminApiHandler.getAllShows();
 	}
 	
 	@PostMapping("/manage-shows/addshow")
 	public JSONObject addShow(HttpServletRequest request, @RequestBody JSONObject payload) {
-		return AdminApiHandler.addShow(showTimeService, payload);
+		return adminApiHandler.addShow(payload);
 	}
 	
 	@GetMapping("/manage-shows/{date}") //  manage-shows/2022-11-21
 	public JSONObject getShows(HttpServletRequest request, @PathVariable String date) {
-		return AdminApiHandler.getShows(showTimeService, date);
+		return adminApiHandler.getShows(date);
 	}
 	
 	@GetMapping("/manage-shows/{movieid}/{date}") //   manage-shows/282/2022-11-21
 	public JSONObject getShowsOfMovie(HttpServletRequest request,@PathVariable Long movieid, @PathVariable String date) {
-		return AdminApiHandler.getShowsByMovieDate(showTimeService, movieid, date);
+		return adminApiHandler.getShowsByMovieDate(movieid, date);
 	}
 	
 	@GetMapping("/manage-shows/available/{date}") //  manage-shows/available/2022-11-21
 	public JSONObject getAvailableShows(HttpServletRequest request, @PathVariable String date) {
-		return AdminApiHandler.getAvailableShows(showTimeService, date);
+		return adminApiHandler.getAvailableShows(date);
 	}
 	
 	@GetMapping("/manage-shows/movie/{movieid}")
 	public JSONObject getMovieShows(HttpServletRequest request, @PathVariable Long movieid) {
-		return AdminApiHandler.getShowsForMovie(showTimeService, movieid);
+		return adminApiHandler.getShowsForMovie(movieid);
 	}
 	
 	
@@ -96,40 +87,40 @@ public class AdminTestController {
 	
 	@GetMapping("/manage-promotions")
 	public JSONObject getPromotions(HttpServletRequest request) {
-		return AdminApiHandler.getPromotions(promotionService);
+		return adminApiHandler.getPromotions();
 	}
 	
 	@PostMapping("/manage-promotions/addpromotion")
 	public JSONObject addPromotion(HttpServletRequest request, @RequestBody PromotionDTO payload) {
-		return AdminApiHandler.addPromotion(promotionService, payload);
+		return adminApiHandler.addPromotion( payload);
 	}
 	
 	@PutMapping("/manage-promotions/updatepromotion/{promoid}")
 	public JSONObject updatePromotion(HttpServletRequest request, @RequestBody PromotionDTO payload,
 			@PathVariable Long promoid) {
-		return AdminApiHandler.updatePromotion(promoid, promotionService, payload);
+		return adminApiHandler.updatePromotion(promoid, payload);
 	}
 	
 	@GetMapping("/manage-promotions/sendpromotion/{promoid}")
 	public JSONObject sendPromotion(HttpServletRequest request,@PathVariable Long promoid) {
-		return AdminApiHandler.sendPromotions(userService, promotionService, promoid);
+		return adminApiHandler.sendPromotions(promoid);
 	}
 	
 	//users
 	
 	@GetMapping("/manage-users")
 	public JSONObject getUsers(HttpServletRequest request) {
-		return AdminApiHandler.getUsers(userService);
+		return adminApiHandler.getUsers();
 	}
 	
 	@PutMapping("/manage-users/suspenduser/{userid}")
 	public JSONObject suspendUser(HttpServletRequest request, @PathVariable Integer userid) {
-		return AdminApiHandler.suspendUser(userService, userid);
+		return adminApiHandler.suspendUser(userid);
 	}
 	
 	@PutMapping("/manage-users/activateuser/{userid}")
 	public JSONObject activateUser(HttpServletRequest request, @PathVariable Integer userid) {
-		return AdminApiHandler.activateUser(userService, userid);
+		return adminApiHandler.activateUser(userid);
 	}
 
 	

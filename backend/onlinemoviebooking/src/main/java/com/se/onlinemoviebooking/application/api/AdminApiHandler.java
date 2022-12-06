@@ -8,12 +8,18 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.se.onlinemoviebooking.application.dao.PromotionDAO;
 import com.se.onlinemoviebooking.application.dao.UserDAO;
+import com.se.onlinemoviebooking.application.database.service.BookingService;
+import com.se.onlinemoviebooking.application.database.service.DefaultPaymentCardService;
 import com.se.onlinemoviebooking.application.database.service.MovieService;
 import com.se.onlinemoviebooking.application.database.service.PromotionService;
+import com.se.onlinemoviebooking.application.database.service.SeatBookingService;
 import com.se.onlinemoviebooking.application.database.service.ShowTimeService;
+import com.se.onlinemoviebooking.application.database.service.TransactionService;
 import com.se.onlinemoviebooking.application.database.service.UserService;
 import com.se.onlinemoviebooking.application.dto.MovieDTO;
 import com.se.onlinemoviebooking.application.dto.PromotionDTO;
@@ -24,9 +30,22 @@ import com.se.onlinemoviebooking.application.dto.TicketPriceDTO;
 import com.se.onlinemoviebooking.application.services.EmailServicehelper;
 import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
+@Service("adminApiHandler")
 public class AdminApiHandler {
 	
-	public static JSONObject getAvailableShows(ShowTimeService showTimeService, String date) {
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private MovieService movieService;
+	
+	@Autowired
+	private ShowTimeService showTimeService;
+	
+	@Autowired
+	private PromotionService promotionService;
+	
+	public JSONObject getAvailableShows( String date) {
 		JSONObject response = new JSONObject();
 		Date dateParam;
 		try {
@@ -39,7 +58,7 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 	
-	public static JSONObject getShows(ShowTimeService showTimeService, String date) {
+	public JSONObject getShows(String date) {
 		JSONObject response = new JSONObject();
 		Date dateParam;
 		try {
@@ -52,19 +71,19 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 	
-	public static JSONObject getShowsForMovie(ShowTimeService showTimeService, Long movieid) {
+	public JSONObject getShowsForMovie(Long movieid) {
 		JSONObject response = new JSONObject();
 		response.put("shows", showTimeService.getShowTimesByMovie(movieid));
 		return successResponse(response);
 	}
 	
-	public static JSONObject getAllShows(ShowTimeService showTimeService) {
+	public JSONObject getAllShows() {
 		JSONObject response = new JSONObject();
 		response.put("shows", showTimeService.getShowTimes());
 		return successResponse(response);
 	}
 	
-	public static JSONObject getShowsByMovieDate(ShowTimeService showTimeService, Long movieid, String date) {
+	public JSONObject getShowsByMovieDate(Long movieid, String date) {
 		JSONObject response = new JSONObject();
 		Date dateParam;
 		try {
@@ -77,7 +96,7 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 	
-	public static JSONObject addShow(ShowTimeService showTimeService, JSONObject payload) {
+	public JSONObject addShow(JSONObject payload) {
 		JSONObject response = new JSONObject();
 		
 		//{"showID":1,"movieID":3,"showRoom":"MAX-RELAX","showDate":2022-11-12,"showTimeSlot":"09:00"}
@@ -99,13 +118,13 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 
-	public static JSONObject getMovies(MovieService movieService) {
+	public JSONObject getMovies() {
 		JSONObject response = new JSONObject();
 		response.put("movies", movieService.getMovies());
 		return successResponse(response);
 	}
 
-	public static JSONObject addMovie(MovieService movieService, MovieDTO payload) {
+	public JSONObject addMovie(MovieDTO payload) {
 		MovieDTO savedMovie = movieService.saveMovie(payload);
 
 		JSONParser parser = new JSONParser();
@@ -120,7 +139,7 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 
-	public static JSONObject updateMovie(Long movieID, MovieService movieService, MovieDTO payload) {
+	public JSONObject updateMovie(Long movieID,MovieDTO payload) {
 
 		MovieDTO updated = movieService.updateMovieById(movieID, payload);
 
@@ -136,13 +155,13 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 	
-	public static JSONObject getPromotions(PromotionService promotionService) {
+	public JSONObject getPromotions() {
 		JSONObject response = new JSONObject();
 		response.put("promotions", promotionService.getPromotions());
 		return successResponse(response);
 	}
 	
-	public static JSONObject addPromotion(PromotionService promotionService, PromotionDTO payload) {
+	public JSONObject addPromotion( PromotionDTO payload) {
 		PromotionDTO savedPromo = promotionService.savePromotion(payload);
 
 		JSONParser parser = new JSONParser();
@@ -157,7 +176,7 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 	
-	public static JSONObject updatePromotion(Long promoID, PromotionService promotionService, PromotionDTO payload) {
+	public JSONObject updatePromotion(Long promoID, PromotionDTO payload) {
 
 		PromotionDTO updated = promotionService.updatePromotionById(promoID, payload);
 
@@ -179,7 +198,7 @@ public class AdminApiHandler {
 		return successResponse(response);
 	}
 	
-	public static JSONObject sendPromotions(UserService userService,PromotionService promotionService, Long promoID) {
+	public JSONObject sendPromotions(Long promoID) {
 		PromotionDAO promotion = promotionService.getPromotionById(promoID);
 		JSONObject response = new JSONObject();
 		List<UserDAO> subscribedUsers = userService.getSubscribedUsers();
@@ -195,14 +214,14 @@ public class AdminApiHandler {
 		return failureResponse(response);
 	}
 	
-	public static JSONObject getUsers(UserService userService) {
+	public JSONObject getUsers() {
 		JSONObject response = new JSONObject();
 		response.put("users", userService.getUsers());
 		return successResponse(response);
 	}
 	
 	
-	public static JSONObject suspendUser(UserService userService, Integer userID) {
+	public JSONObject suspendUser(Integer userID) {
 		JSONObject response = new JSONObject();
 		
 		boolean updated = userService.suspendUser(userID);
@@ -212,7 +231,7 @@ public class AdminApiHandler {
 		return failureResponse(response);
 	}
 	
-	public static JSONObject activateUser(UserService userService, Integer userID) {
+	public JSONObject activateUser(Integer userID) {
 		JSONObject response = new JSONObject();
 		
 		boolean updated = userService.activateUser(userID);
