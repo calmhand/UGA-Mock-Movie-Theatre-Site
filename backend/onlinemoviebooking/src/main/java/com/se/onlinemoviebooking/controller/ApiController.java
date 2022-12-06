@@ -73,6 +73,12 @@ public class ApiController {
 		return ApplicationAPIHandler.verifyEmail(userid, userService, code);
 	}
 	
+	@GetMapping(value = "/{userid}/emailVerificationCode")
+	public JSONObject sendEmailVerificationCode(HttpServletRequest request, @PathVariable Integer userid) {
+		return ApplicationAPIHandler.sendEmailForVerification(userid, userService);
+	}
+	
+	
 	
 	@GetMapping("/home")
 	public JSONObject homepage(HttpServletRequest request) {

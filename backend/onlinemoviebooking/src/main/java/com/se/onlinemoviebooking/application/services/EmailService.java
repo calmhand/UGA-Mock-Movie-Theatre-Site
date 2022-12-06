@@ -35,7 +35,8 @@ public class EmailService {
 	}
 
 	public EmailService() {
-		appEmail = "b3onlinemoviebooking@outlook.com";
+		appEmail = "b3onlinecinemabooking@outlook.com";
+		//appEmail = "b3onlinemoviebooking@outlook.com";
 		appPassword = "Teamb3@uga";
 		props = new Properties();
 		props.put("mail.smtp.host", "smtp-mail.outlook.com");
@@ -53,7 +54,6 @@ public class EmailService {
 
 	public void sendEmail(String sub, String body, String emailTo) {
 		try {
-
 			Message msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(appEmail, "b3onlinemoviebooking"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTo, "User"));
@@ -62,11 +62,12 @@ public class EmailService {
 			Transport.send(msg);
 			System.out.println("Email sent successfully...");
 		} catch (AddressException e) {
-			System.out.println("exception");
+			System.out.println("exception in addresss");
 		} catch (MessagingException e) {
-			System.out.println("exception");
+			System.out.println("exception messaging");
+			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			System.out.println("exception");
+			System.out.println("exception  encoding");
 		}
 	}
 

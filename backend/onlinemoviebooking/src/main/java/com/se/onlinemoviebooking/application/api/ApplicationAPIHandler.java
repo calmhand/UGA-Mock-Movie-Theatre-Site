@@ -62,6 +62,23 @@ public class ApplicationAPIHandler {
 		}
 		return successResponse(json);
 	}
+	
+	public static JSONObject sendEmailForVerification(Integer userID,UserService userService ) {
+		JSONObject json = new JSONObject();
+		UserDTO user = userService.getUserDTObyId(userID);
+		if(user==null || user.getStatus().getID()==3) {
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.SUSPENDEDUSER);
+			return failureResponse(json);
+		}
+		if(user.getStatus().getID()==1) {
+			json.put(ApplicationStringConstants.ERROR, ApplicationStringConstants.ALREADYVERIFIED);
+			return failureResponse(json);
+		}
+		EmailServicehelper.sendRegisterEmailConfirmation(user);
+		
+		return successResponse(json);
+	}
+	
 
 	public static JSONObject getUserProfile(Integer userID, UserService userService) {
 
