@@ -47,6 +47,7 @@ import com.se.onlinemoviebooking.application.dto.TicketDTO;
 import com.se.onlinemoviebooking.application.dto.UserDTO;
 import com.se.onlinemoviebooking.application.dto.UserType;
 import com.se.onlinemoviebooking.application.dto.ValidateBookingDTO;
+import com.se.onlinemoviebooking.application.utilities.ApplicationStringConstants;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -70,6 +71,8 @@ class OnlinemoviebookingApplicationTests {
 		// mailservice();
 		//createseats();
 		//createValidateBooking();
+		System.out.println(ApplicationStringConstants.SEATLAYOUT);
+		
 		createConfirmBookingDTO();
 	}
 	

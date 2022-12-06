@@ -1,8 +1,6 @@
 package com.se.onlinemoviebooking.application.api;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -411,15 +409,12 @@ public class ApplicationAPIHandler {
 
 		TransactionDTO savedTransaction = transactionService.saveTransaction(tr);
 
-		System.out.println("ghere");
 		// booking
 		BookingDTO bookingdto = new BookingDTO();
 		bookingdto.setUserID(payload.getUserID());
 		
-		System.out.println(bookingdto.getUserID());
 		
 		bookingdto.setMovieID(payload.getMovieID());
-		System.out.println(bookingdto.getMovieID());
 		
 		bookingdto.setShowID(payload.getShowID());
 		bookingdto.setTickets(td);
@@ -430,7 +425,6 @@ public class ApplicationAPIHandler {
 		bookingdto.setTransactionID(savedTransaction.getTransactionID());
 		bookingdto.setBookingTime(now);
 		
-		System.out.println(bookingdto.toJSONString());
 
 		BookingDTO savedBooking = bookingService.saveBooking(bookingdto);
 
