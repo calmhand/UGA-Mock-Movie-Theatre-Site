@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="modal-body"> 
-                    <form id="add-movie-form">
+                    <form id="add-movie-form" autocomplete="off">
                         <div id="row">
                             <div id="col">
                                 <input id="movie-title" type="text">

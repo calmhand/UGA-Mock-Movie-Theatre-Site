@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="modal-body"> 
-                    <form>
+                    <form autocomplete="off">
                         <div id="row">
                             <div id="col">
                                 <input id="promo-name-input" type="text">

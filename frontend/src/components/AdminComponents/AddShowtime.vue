@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="modal-body"> 
-                    <form id="add-showtime-form">
+                    <form id="add-showtime-form" autocomplete="off">
                         <div id="row">
                             <div id="col">
                                 <select id="add-show-movie-dropdown" name="dropdownMovieName">

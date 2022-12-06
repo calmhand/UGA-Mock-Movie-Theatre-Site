@@ -4,7 +4,7 @@
     <router-view />
     <!-- <FooterInfo/> -->
   </div>
-  <AlertModal :id="`alert-site-state-modal`" :errorTitle="`State Error`" :message="`You must be logged in to view this page.`"/>
+  <AlertModal :id="`alert-site-state-modal`" :errorTitle="`State Error`" :message="`Inaccessible page. Please login as correct user.`"/>
   <button id="alert-site-state-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#alert-site-state-modal"></button>
 </template>
 
