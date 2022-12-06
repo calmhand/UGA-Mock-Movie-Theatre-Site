@@ -148,18 +148,28 @@
                 <div id="col">
                     <label for="isSubscribed"><input id="isSubscribed" type="checkbox" checked="checked"/>Sign-up for promotions?</label>
                 </div>
-                <!-- <router-link id="create-account-btn" to="/login/confirmation">Next Step</router-link> -->
-                <button @click="this.registerUser" id="create-account-btn" type="submit">Create Account</button>
+                <button @click="this.registerUser" id="create-account-btn" type="button">Create Account</button>
             </div>
         </form>
         <div id="movie-image"></div>
     </div>
   </div>
+  <AlertModal :id="`alert-create-acc-modal`" :errorTitle="title" :message="msg"/>
+  <button id="alert-create-acc-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#alert-create-acc-modal"></button>
 </template>
 
 <script>
+import AlertModal from '@/components/AlertModal.vue'
+
 export default {
     name: "CreateAccount",
+    components: {AlertModal},
+    data() {
+        return {
+            title : "",
+            msg : "",
+        }
+    },
     methods: {
         async sendPayload(payload) {
             await fetch("http://127.0.0.1:8084/api/auth/register", {
@@ -172,11 +182,18 @@ export default {
             })
             .then((res) => res.json())
             .then((result) => {
-                alert("Sucessfully registered: Please check email to verify account before logging in.")
+                this.title = "Successfully Registered"
+                this.msg = "Please check your email to verify email before logging in."
+                document.querySelector("#alert-create-acc-btn").click()
                 this.$router.push({path : "/login"})
                 console.log('success: ', result);
             })
-            .catch((err) => console.log('err: ', err))
+            .catch((err) => {
+                this.title = "Error Registering"
+                this.msg = "Email is in use. Please choose another email."
+                document.querySelector("#alert-create-acc-btn").click()
+                console.log('err: ', err)
+            })
         },
         registerUser() {
             let fname = document.querySelector('#regiFirst').value
@@ -184,18 +201,13 @@ export default {
             let phone = document.querySelector('#regiPhone').value
             let email = document.querySelector('#regiEmail').value
             let pass = document.querySelector('#regiPass').value
+            let confirmPass = document.querySelector("#confirmRegiPass").value
             let street = document.querySelector('#regiAddress').value
             let apt = document.querySelector('#regiApt').value
             let zip = document.querySelector('#regiZip').value
             let city = document.querySelector('#regiCity').value
             let state = document.querySelector('#regiState').value
             let isSubbed = document.querySelector('#isSubscribed').checked
-
-            let confirmPass = document.querySelector("#confirmRegiPass").value
-            if (!(pass === confirmPass)) {
-                alert("Registration Error: Passwords don't match.")
-                throw "Err: Password dont match."
-            }
 
             let payload = {
                 "firstName" : fname,
@@ -214,9 +226,28 @@ export default {
                 "status" : "ACTIVE",
                 "userType" : "CUSTOMER"
             }
-            this.sendPayload(payload)
-            
-            // change route to email confirmation.
+
+            let inputs = [fname, lname, phone, email, pass, street, zip, city, state]
+
+            if (!(pass === confirmPass)) {
+                this.title = "Error Registering"
+                this.msg = "Passwords are not matched. Please re-enter your password."
+                document.querySelector("#alert-create-acc-btn").click()
+            } else if (this.isEmpty(inputs)) {
+                this.sendPayload(payload)
+            } else {
+                this.title = "Error Registering"
+                this.msg = "Please fill in all form entries."
+                document.querySelector("#alert-create-acc-btn").click()
+            }
+        },
+        isEmpty(vals) {
+            for (let i = 0; i < vals.length; i++) {
+                if (vals[i].length === 0) {
+                    return false
+                }
+            }
+            return true
         }
     }
 }
@@ -224,17 +255,16 @@ export default {
 
 <style scoped>
     #movie-image {
-        margin: 10px;
-        height: 90%;
+        margin: 0 25px;
+        height: 75vh;
         width: 25%;
         background-image: url('@/assets/temp_assets/createAccountImg.jpg');
         background-repeat: no-repeat;
         background-size: cover;
-        background-position: -375px;
+        background-position: -200px;
     }
 
     .create_container {
-        height: 100%;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -247,7 +277,7 @@ export default {
         justify-content: center;
         align-items: center;
 
-        height: 90%;
+        margin: 15px;
         width: 90%;
 
         background-color: rgba(0, 0, 0, 0.5);

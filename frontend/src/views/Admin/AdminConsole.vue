@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO: Price inputs to showtimes. -->
     <div id="admin-console-container">
         <div id="console-display">
             <div id="admin-btns">
@@ -19,7 +18,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import AdminSummary from '@/components/AdminComponents/AdminSummary.vue';
 import ManageMovies from '@/components/AdminComponents/ManageMovies.vue';
@@ -68,7 +67,7 @@ export default {
     },
     beforeMount() {
         if (this.$store.state.site.currentState == 0 || this.$store.state.site.currentState == 1) {
-            alert("Must be logged in as admin.")
+            document.querySelector("#alert-site-state-btn").click()
             this.$router.push({path: "/login"})
         }
     },
@@ -78,11 +77,11 @@ export default {
 <style scoped>
 
 #admin-console-container {
-    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 100px;
 }
 
 #console-display {
@@ -90,10 +89,10 @@ export default {
     flex-direction: column;
     justify-content: center;
 
-    min-height: 100%;
+    height: 100%;
     width: 90%;
 
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 10px;
 }
 
@@ -121,6 +120,6 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    padding: 50px;
 }
 </style>

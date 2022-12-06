@@ -1,17 +1,17 @@
 <template>
-    <!-- TODO: Add orders tab -->
   <div class="profile_page_container">
     <div id="settings-container">
         <div id="settings-opt-container">
-            <a @click="changeDisplay('#user-info-container', 1)" id="opt-btn">Personal Info</a>
-            <a @click="changeDisplay('#address-info-container', 2)" id="opt-btn">Address</a>
-            <a @click="changeDisplay('#payment-info-container', 3)" id="opt-btn">Payment</a>
-            <a @click="changeDisplay('#promo-info-container', 4)" id="opt-btn">Manage Promotions</a>
-            <!--  -->
+            <a @click="changeDisplay('#user-info-container', 1)" id="opt-btn">Personal</a>
+            <a @click="changeDisplay('#order-info-container', 2)" id="opt-btn">Orders</a>
+            <a @click="changeDisplay('#address-info-container', 3)" id="opt-btn">Address</a>
+            <a @click="changeDisplay('#payment-info-container', 4)" id="opt-btn">Payment</a>
+            <a @click="changeDisplay('#promo-info-container', 5)" id="opt-btn">Promotions</a>
         </div>
         <div id="vertical-line"></div>
         <div id="settings-info-container">
             <PersonalInfo />
+            <OrderInfo />
             <AddressInfo />
             <PaymentInfo />
             <PromoInfo />
@@ -22,24 +22,25 @@
 
 <script>
 import PersonalInfo from '@/components/SettingsComponents/PersonalInfo.vue'
+import OrderInfo from '@/components/SettingsComponents/OrderInfo.vue'
 import AddressInfo from '@/components/SettingsComponents/AddressInfo.vue'
 import PaymentInfo from '@/components/SettingsComponents/PaymentInfo.vue'
-import PromoInfo from '../../components/SettingsComponents/PromoInfo.vue'
-
+import PromoInfo from '@/components/SettingsComponents/PromoInfo.vue'
 
 export default {
     name: "UserProfile",
-    components: { PersonalInfo, AddressInfo, PaymentInfo, PromoInfo},
+    components: { PersonalInfo, OrderInfo, AddressInfo, PaymentInfo, PromoInfo},
     methods: {
         displayOrders() {
             this.$router.push({name: 'UserOrders', params: {userId: this.userId}})
         },
         clearStyles() {
             document.querySelector('#user-info-container').style.display = 'none'
+            document.querySelector('#order-info-container').style.display = 'none'
             document.querySelector('#address-info-container').style.display = 'none'
             document.querySelector('#payment-info-container').style.display = 'none'
             document.querySelector('#promo-info-container').style.display = 'none'
-            for (let i = 1; i < 5; i++) {
+            for (let i = 1; i < 6; i++) {
                 var btn = document.querySelector('#settings-opt-container a:nth-child('+ i + ')')
                 btn.style.color = '#FBFFF1'
                 btn.style.textDecoration = 'none'
@@ -57,7 +58,7 @@ export default {
     },
     mounted() {
         if (this.$store.state.site.currentState == 0 || this.$store.state.site.currentState == 2) {
-            alert("Must be logged in as customer.")
+            document.querySelector("#alert-site-state-btn").click()
             this.$router.push({path: "/login"})
         }
     }
@@ -82,7 +83,7 @@ export default {
         height: 90%;
         width: 90%;
 
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.8);
         border-radius: 10px;
     }
 

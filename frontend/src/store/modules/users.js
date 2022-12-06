@@ -3,6 +3,7 @@ export default {
     state: () => ({ 
         firstName : "",
         lastName : "",
+        email : "",
         phone : "",
         subbed : false,
         street : "",
@@ -15,6 +16,7 @@ export default {
         SET_USER(state, payload) {
             state.firstName = payload["firstName"]
             state.lastName = payload["lastName"]
+            state.email = payload["email"]
             state.phone = payload["number"]
             state.subbed = payload["isSubscribed"]
             state.street = payload["address"]["street"]

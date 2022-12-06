@@ -92,7 +92,6 @@
 
                 <div class="modal-footer">
                     <button id="close-add-movie-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <!-- TODO: Implement AddMovie Button. -->
                     <button @click="addMovie()" type="button" class="btn btn-primary">Add Movie</button>
                 </div>
             </div>

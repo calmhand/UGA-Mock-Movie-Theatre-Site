@@ -35,13 +35,17 @@
         </div>
     </div>
   </div>
+  <AlertModal :id="`alert-login-modal`" :errorTitle="`Login Error`" :message="`Bad credentials. Please enter the correct information.`"/>
+  <button id="login-alert-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#alert-login-modal"></button>
 </template>
 
 <script>
 import ForgotPassword from '@/components/LoginComponents/ForgotPassword.vue'
+import AlertModal from '@/components/AlertModal.vue'
+
 export default {
   name: "LoginPage",
-  components: {ForgotPassword},
+  components: {ForgotPassword, AlertModal},
   methods: {
     parseLoginForm() {
       let email = document.querySelector("#loginEmail").value
@@ -79,7 +83,6 @@ export default {
         .then((res) => res.json())
         .then((s) => {
           if (s.status != 401) {
-            alert("Login successful!")
             console.log("Succesfully retrieved JWT Token (from LoginPage.vue): " + s);
             this.$store.commit("site/PARSE_TOKEN", s)
             this.$store.commit("site/UPDATE_STATE", "CUSTOMER")
@@ -87,7 +90,7 @@ export default {
             this.$router.push("/home")
           } else {
             console.log("Unsuccsesful login attempt (from LoginPage.vue): " + JSON.stringify(s));
-            alert("Wrong credentials. Try again.")
+            document.querySelector("#login-alert-btn").click()
           }
         })
         .catch((err) => {console.log("Err:" + err);})

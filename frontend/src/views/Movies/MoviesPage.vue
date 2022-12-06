@@ -1,10 +1,11 @@
 <template>
-  <div id="genres-container">
-    <GenresBar />
-  </div>
-  <hr>
-  <div id="movies-container">
-    <MoviePoster v-for="movie in currentFilms" :key="movie.movieID"
+  <div id="movies-page-container">
+    <div id="genres-container">
+      <GenresBar />
+    </div>
+    <hr>
+    <div id="movies-container">
+      <MoviePoster v-for="movie in currentFilms" :key="movie.movieID"
         :id="movie.movieID"
         :title="movie.title"
         :genre="movie.category"
@@ -15,7 +16,7 @@
         :movieObj="movie"
         :upcoming="false"
       />
-
+    </div>
   </div>
 </template>
 
@@ -58,6 +59,7 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
     padding: 50px;
   }
 

@@ -3,39 +3,55 @@
     <div id="promo-opts">
       <a data-bs-toggle="modal" data-bs-target="#add-promo-modal"><i class="fa-solid fa-plus"></i></a>
       <a @click="getPromos()"><i class="fa-solid fa-arrows-rotate"></i></a>
-      <!-- TODO: Implement search for promos? -->
-      <a><i class="fa-solid fa-magnifying-glass"></i></a>
     </div>
 
     <div id="promo-console">
-      <table id="manage-promos-table">
-        <tr>
-          <th>Promotion ID</th>
-          <th>Promotion name</th>
-          <th>Discount</th>
-          <th>Promotion Code</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Sent to Users</th>
-          <th>Options</th>
-        </tr>
+      <div id="manage-promos-table">
+        <div id="promo-obj" v-for="ad in promos" :key="ad.promoID">
+          <div id="row">
+            <div id="col">
+              <h4>{{ad.promoID}}</h4>
+              <label>Promotion ID</label>
+            </div>
 
-        <tr v-for="ad in promos" :key="ad.promoID">
-          <td>{{ad.promoID}}</td>
-          <td>{{ad.promotionName}}</td>
-          <td>{{ad.discount}}</td>
-          <td>{{ad.promocode}}</td>
-          <td>{{convertTime(ad.startDate)}}</td>
-          <td>{{convertTime(ad.endDate)}}</td>
-          <td>{{ad.isSent}}</td>
-          <td>
+            <div id="col">
+              <h4>{{ad.promotionName}}</h4>
+              <label>Promotion name</label>
+            </div>
+
+            <div id="col">
+              <h4>{{ad.discount}}%</h4>
+              <label>Discount</label>
+            </div>
+
+            <div id="col">
+              <h4>{{ad.promocode}}</h4>
+              <label>Promo Code</label>
+            </div>
+
+            <div id="col">
+              <h4>{{convertTime(ad.startDate)}}</h4>
+              <label>Start Date</label>
+            </div>
+
+            <div id="col">
+              <h4>{{convertTime(ad.endDate)}}</h4>
+              <label>End Date</label>
+            </div>
+
+            <div id="col">
+              <h4>{{ad.isSent}}</h4>
+              <label>Dispatched?</label>
+            </div>
+          </div>
+          <hr>
+          <div id="row">
+            Options: 
             <button @click="sendPromo(ad.promoID)">Dispatch</button>
             <button v-if="ad.isSent === false" @click="sendID(ad.promoID)" id="edit-promo-btn" type="button" data-bs-toggle="modal" data-bs-target="#edit-promo-modal">Edit</button>
-            <button>Remove</button>
-          </td>
-        </tr>
-
-      </table>
+          </div>
+        </div>
+      </div>
     </div>
 
     <AddPromo />
@@ -67,7 +83,7 @@ export default {
         })
         .then((res) => res.json())
         .then((s) => {
-          // console.log("Promos successfully retrieved." + JSON.stringify(s));
+          console.log("Promos successfully retrieved." + JSON.stringify(s));
           this.promos = s.promotions
         })
         .catch((err) => {console.log("Err:" + err);})
@@ -85,6 +101,7 @@ export default {
         })
         .then((res) => res.json())
         .then((s) => {
+          this.getPromos()
           console.log("PromoID:" + id + " successfully dispatched." + JSON.stringify(s));
         })
         .catch((err) => {console.log("Err:" + err);})
@@ -117,14 +134,30 @@ export default {
   text-align: right;
 }
 
-#promo-console {
-  width: 100%;
-}
-
 #manage-promos-table {
     background-color: #090b9b33;
-    border: 1px solid #FBFFF1;
-    margin: 10px;
+    border: 4px solid #FBFFF1;
+    border-radius: 10px;
+    height: 80vh;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+#promo-obj {
+  border-bottom: solid 2px #FBFFF1;
+  padding: 20px;
+}
+
+#row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#col {
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px;
 }
 
 i {

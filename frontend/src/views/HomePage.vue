@@ -12,7 +12,6 @@ import ShowsContainer from '@/components/HomeComponents/ShowsContainer.vue'
 export default {
   name: 'HomePage',
   components: {
-    // eslint-disable-next-line
     TrailerCarousel, ShowsContainer
   },
   methods: {

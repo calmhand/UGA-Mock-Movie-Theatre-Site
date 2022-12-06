@@ -1,67 +1,59 @@
 <template>
   <div id="movie-details-container">
-
     <div id="title-poster-container">
-      <h3>{{movieObj.title}}</h3>
+      <h1><strong>{{movieObj.title}}</strong></h1>
       <img :src="movieObj.posterURL">
     </div>
 
     <section id="movie-info">
-      <p>"{{movieObj.synopsis}}"</p>
-      <h2>Genre: {{movieObj.category}}</h2>
-      <h2>Rating: {{movieObj.rating}}</h2>
-      <h2>Director: {{movieObj.director}}</h2>
-      <h2>Actors: {{movieObj.cast}}</h2>
-      <iframe :src="movieObj.trailerURL"></iframe>
+      <div>
+        <p><em>"{{movieObj.synopsis}}"</em></p>
+        <button id="movie-details-trailer-btn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#movieDetailsTrailerModal">
+          <i class="fa-solid fa-play" style="font-size: 15px; opacity: 0.9;">&nbsp; Trailer</i>
+        </button>
+      </div>
+
+      <div style="margin-top: 15%;">
+        <h5>Genre: {{movieObj.category}}</h5>
+        <h5>Rating: {{movieObj.rating}}</h5>
+        <h5>Director: {{movieObj.director}}</h5>
+        <h5>Actors: {{movieObj.cast}}</h5>
+      </div>
     </section>
 
-    <div id="tickets-shows-container">
-      <div id="ticket-selectors">
-        <!-- TODO: Turn into component? -->
-        <form>
-          <h1 style="margin: 0;">Tickets</h1>
-          Child: $8.30<br>
-          Adult: $11.47<br>
-          Senior: $9.30
-          <div style="display: flex; flex-wrap:wrap; justify-content: center;">
-            <div style="margin: 10px">
-              <label>Child</label><br>
-              <input id="ticket-input" name="child-ticket" type="number" placeholder="0"><br>
-            </div>
-
-            <div style="margin: 10px">
-              <label>Adult</label><br>
-              <input id="ticket-input" name="adult-ticket" type="number" placeholder="3"><br>
-            </div>
-
-            <div style="margin: 10px">
-              <label>Senior</label><br>
-              <input id="ticket-input" name="senior-ticket" type="number" placeholder="0"><br>
-            </div>
-          </div>
-        </form>
-      </div>
+    <div id="shows-container" v-if="showtimes.length > 0">
       <h1>Showtimes</h1>
+      <hr style="margin: 0; color: white;">
       <div id="showtime-container">
-        <!-- <router-link to="/checkout/seating"><ShowtimeButton id="showtime-button" :time="`10:00`"/></router-link> -->
-
-        <ShowtimeButton v-for="show in showtimes" :key="show.showID" 
-          :timeSlot="show.showTimeSlot"
-          :showDate="show.showDate"
-          :showRoom="show.showRoom"
-        />
-
+        <div id="showtime-buttons-window">
+          <ShowtimeButton v-for="show in showtimes" :key="show.showID" 
+            :timeSlot="show.showTimeSlot"
+            :showDate="show.showDate"
+            :showRoom="show.showRoom"
+            :showID="show.showID"
+            :movieTitle="movieObj.title"
+          />
+        </div>
       </div>
     </div>
+    <div v-else>
+        <h1>No available shows.</h1>
+    </div>
+    <MovieDetailsTrailer :url="movieObj.trailerURL"/>
   </div>
+  <AlertModal :id="`alert-movie-login-modal`" :errorTitle="`Guest Error`" :message="`Please login or create an account to book a movie!`"/>
+  <button id="alert-movie-login-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#alert-movie-login-modal"></button>
 </template>
 
 <script>
+import MovieDetailsTrailer from '@/components/MovieComponents/MovieDetailsTrailer.vue'
 import ShowtimeButton from '@/components/MovieComponents/ShowtimeButton.vue';
+import AlertModal from '@/components/AlertModal.vue'
+
 export default {
     name: "MovieDetails",
     props: ["movieId", "movieTitle"],
-    components: {ShowtimeButton},
+    components: {MovieDetailsTrailer, ShowtimeButton, AlertModal},
     data() {
       return {
         movieObj : {},
@@ -114,15 +106,20 @@ export default {
 
 <style scoped>
   #movie-details-container {
-    padding: 25px;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
+    padding: 25px;
+    height: 100%;
   }
 
   #title-poster-container {
     display: flex;
     flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
   }
 
   #movie-info {
@@ -132,7 +129,6 @@ export default {
   }
 
   #ticket-selectors {
-    /* height: 550px; */
     width: 350px;
   }
 
@@ -140,13 +136,30 @@ export default {
     width: 45px;
   }
 
-  #tickets-shows-container {
+  #shows-container {
     display: flex;
     flex-direction: column;
-    border: solid 1px white;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 20%;
+    height: 500px;
   }
 
+  #showtime-buttons-window {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 
+  #movie-details-trailer-btn {
+    background-color: rgba(0, 0, 0, 1); 
+    border-color: rgba(0, 0, 0, 1);
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  #movie-details-trailer-btn:hover {
+    opacity: 0.7;
+  }
 
   p {
     font-size: 20px;
@@ -154,12 +167,7 @@ export default {
 
   img {
     border: solid 10px black;
-    height: 550px;
-    width: 350px;
-  }
-
-  iframe {
-    width: 100%;
-    height: 275px;
+    height: 650px;
+    width: 450px;
   }
 </style>

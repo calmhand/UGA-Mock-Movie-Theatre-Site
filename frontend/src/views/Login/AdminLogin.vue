@@ -5,29 +5,33 @@
         <h3><i class="fa-solid fa-user-gear"></i>Admin Login</h3>
         <hr>
         <form>
-        <div id="col">
-          <input name="adminUser" type="username" id="user-input" autofocus required>
-          <label for="adminUser"><i class="fa-solid fa-at"></i>Username</label>
-        </div>
+          <div id="col">
+            <input name="adminUser" type="username" id="user-input" autofocus required>
+            <label for="adminUser"><i class="fa-solid fa-at"></i>Username</label>
+          </div>
 
-        <div id="col">
-          <input name="adminPass" type="password" id="pass-input" required>
-          <label for="adminPass"><i class="fa-solid fa-key"></i>Password</label>
-        </div>
+          <div id="col">
+            <input name="adminPass" type="password" id="pass-input" required>
+            <label for="adminPass"><i class="fa-solid fa-key"></i>Password</label>
+          </div>
 
-          <button @click="loginAdmin()" type="button" id="login-button">
-            <i class="fa-solid fa-right-to-bracket"></i>
-          </button>
-      </form>
+            <button @click="loginAdmin()" type="button" id="login-button">
+              <i class="fa-solid fa-right-to-bracket"></i>
+            </button>
+        </form>
       </div>
     </div>
-    
   </div>
+  <AlertModal :id="`alert-admin-login-modal`" :errorTitle="`Admin Login Error`" :message="`Bad credentials. Please enter the correct information or contact IT department.`"/>
+  <button id="alert-admin-login-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#alert-admin-login-modal"></button>
 </template>
 
 <script>
+import AlertModal from '@/components/AlertModal.vue'
+
 export default {
     name: "AdminLogin",
+    components: {AlertModal},
     methods: {
       loginAdmin() {
         let username = document.querySelector("#user-input").value
@@ -48,16 +52,15 @@ export default {
             body: JSON.stringify(adminPayload)
           })
           .then((res) => res.json())
-          .then((result) => {
-            if (result.status != 401) {
-              alert("Admin Logged In.")
+          .then((s) => {
+            if (s.status != 401 && s.roles.length == 3) {
               this.$store.commit("site/UPDATE_STATE", "ADMIN")
-              this.$store.commit("site/PARSE_TOKEN", result)
-              this.$router.push({path : "/home"})
-              console.log('Admin Login Success: ', result);
+              this.$store.commit("site/PARSE_TOKEN", s)
+              this.$router.push({path : "/admin/console"})
+              console.log('Admin Login Success: ', s);
             } else {
-              console.log("Unsuccsesful login attempt (from LoginPage.vue): " + JSON.stringify(result));
-              alert("Wrong credentials. Try again.")
+              console.log("Unsuccsesful login attempt (from LoginPage.vue): " + JSON.stringify(s));
+              document.querySelector("#alert-admin-login-btn").click()
             }
           })
           .catch((err) => console.log('err: ', err))

@@ -10,48 +10,71 @@
             <form>
                 <div id="col">
                     <h3>Subscribe to our promotions</h3>
-                    <button @click="updateSubscription(true)">Subscribe</button>
+                    <button @click="updateSubscriptions(true)">Subscribe</button>
                 </div>
             </form>
 
             <form>
                 <div id="col">
                     <h3 style="color: red;">Unsubscribe from all current promotions</h3>
-                    <button @click="updateSubscription(false)">Unsubscribe</button>
+                    <button @click="updateSubscriptions(false)">Unsubscribe</button>
                 </div>
             </form>
         </div>
     </div>
+    <AlertModal :id="`alert-promoUpdate-modal`" :errorTitle="updatePromoTitle" :message="updatePromoMsg"/>
+    <button id="alert-promoUpdate-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#alert-promoUpdate-modal"></button>
 </template>
 
 <script>
-    export default {
-        name: 'PromoInfo',
-        methods: {
-            updateSubscriptions(choice) {
-                const update = async (promoPayload) => {
-                    await fetch("", {
-                        method: "PUT",
-                        headers: {
-                            "Accept" : "application/json",
-                            "Content-Type" : "application/json"
-                        },
-                        body: JSON.stringify(promoPayload)
-                    })
-                    .then((res) => res.json())
-                    .then((result) => {console.log(result);})
-                    .catch((err) => {console.log("Err: " + err);})
-                }
-                
-                let payload = {
-                    userid : this.$store.state.site.id,
-                    isSubscribed : choice
-                }
+import AlertModal from '@/components/AlertModal.vue'
 
-                update(payload)
+export default {
+    name: 'PromoInfo',
+    components: {AlertModal},
+    data() {
+        return {
+            updatePromoTitle : "",
+            updatePromoMsg : ""
+        }
+    },
+    methods: {
+        updateSubscriptions(choice) {
+            const update = async (promoPayload) => {
+                await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/updateprofile", {
+                    method: "PUT",
+                    headers: {
+                        "Accept" : "application/json",
+                        "Content-Type" : "application/json"
+                    },
+                    body: JSON.stringify(promoPayload)
+                })
+                .then((res) => res.json())
+                .then((s) => {
+                    if (choice) {
+                        this.updatePromoTitle = "Subscription Notice"
+                        this.updatePromoMsg = "You are now subscribed to promotions."
+                        document.querySelector("#alert-promoUpdate-btn").click()
+                    } else {
+                        this.updatePromoTitle = "Subscription Notice"
+                        this.updatePromoMsg = "You are now unsubscribed from all promotions."
+                        document.querySelector("#alert-promoUpdate-btn").click()
+                    }
+                    console.log(s);
+                })
+                .catch((err) => {console.log("Err: " + err);})
             }
+            
+            let payload = {
+                "firstName" : this.$store.state.users.firstName,
+                "lastName" : this.$store.state.users.lastName,
+                "isSubscribed" : choice,
+            }
+
+            update(payload)
         }
     }
+}
 </script>
 
 <style scoped>

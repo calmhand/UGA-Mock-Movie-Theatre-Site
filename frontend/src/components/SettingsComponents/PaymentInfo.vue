@@ -14,7 +14,6 @@
         <hr>
       </div>
       <form>
-
           <div id="row">
             <i class="fa-solid fa-credit-card"></i>
             <div id="col">
@@ -48,7 +47,7 @@
                 <option value='26'>2026</option>
                 <option value='27'>2027</option>
               </select>
-              <label for="expireMM">Exp. Year</label>
+              <label for="expireYY">Exp. Year</label>
             </div>
 
             <div id="col">

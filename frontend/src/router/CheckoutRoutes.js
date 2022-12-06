@@ -1,18 +1,27 @@
 const checkoutPaths = [
     {
-        path: '/checkout/seating',
+        path: '/checkout/:showId/tickets',
+        name: 'SelectTickets',
+        component: () => import('@/views/Checkout/SelectTickets.vue'),
+        props: true
+    },
+    {
+        path: '/checkout/:showId/seating',
         name: 'SelectSeats',
-        component: () => import('@/views/Checkout/SelectSeats.vue')
+        component: () => import('@/views/Checkout/SelectSeats.vue'),
+        props: true
     },
     {
-        path: '/checkout/billing',
+        path: '/checkout/:showId/payment',
         name: 'AddressBilling',
-        component: () => import('@/views/Checkout/AddressBilling.vue')  
+        component: () => import('@/views/Checkout/BillingPayment.vue'),
+        props: true
     },
     {
-        path: '/checkout/order-confirmed',
+        path: '/checkout/:showId/order-confirmed',
         name: 'OrderConfirmed',
-        component: () => import('@/views/Checkout/OrderConfirmed.vue')
+        component: () => import('@/views/Checkout/OrderConfirmed.vue'),
+        props: true
     },
 ]
 

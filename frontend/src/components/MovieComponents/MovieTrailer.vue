@@ -36,7 +36,6 @@ export default {
       }
     },
     methods: {
-      // TODO: Fetch from DB rather than straight from API.
       async getData() {
         // Get Movie Information
         await fetch('https://api.themoviedb.org/3/movie/upcoming?api_key=f3ac6beeff1af51dfca6c7f4e3d29fae')
@@ -48,8 +47,6 @@ export default {
           this.title = movieData.title
           this.imageURL += 'https://image.tmdb.org/t/p/w500' + movieData.poster_path
           this.show = true
-          // console.log(this.imageURL)
-          // console.log(movieData);
         }).catch((err)=>{console.log("Err: " + err);})
 
         // Create Trailer Link
@@ -101,13 +98,12 @@ export default {
 
   #poster-container {
     z-index: 1;
-    
   }
 
   #trailer-background {
     position: absolute;
     z-index: 0;
-    filter: blur(5px) opacity(50%);
+    filter: blur(5px) opacity(85%);
     background-color: #3C3744;
   }
 

@@ -10,14 +10,13 @@
                 <div class="modal-body">
                     <i class="fa-solid fa-triangle-exclamation"></i> &nbsp; Enter your email below to be sent a verification code.
                     <div id="col">
-                        <input id="emailReset" name="emailReset" type="email" required>
+                        <input id="emailReset" name="emailReset" type="email" required autocomplete="off">
                         <label for="emailReset">Email</label>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <!-- TODO: Check if email is in DB. Alert user if email doesn't exist. Else, continue -->
-                    <!-- data-bs-toggle = "modal" -->
-                    <button @click="verifyEmail" id="findEmailBtn" class="btn btn-primary" data-bs-target="#resetPasswordModal" data-bs-toggle="modal">Next</button>
+                    <button id="findEmailBtnHidden" style="display: none;" class="btn btn-primary" data-bs-target="#resetPasswordModal" data-bs-toggle="modal"></button>
+                    <button @click="verifyEmail()" id="findEmailBtn" class="btn btn-primary">Next</button>
                 </div>
             </div>
         </div>
@@ -29,10 +28,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="resetPasswordModalLabel">Set New Password</h1>
-                    <!-- <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form autocomplete="off">
                         <i class="fa-solid fa-triangle-exclamation"></i> &nbsp; Enter your code and create a new password.
                         
                         <div id="col">
@@ -51,8 +49,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <!-- TODO: Check if password meets security requirements. Continue if good. -->
-                    <button @click="setNewPassword()" class="btn btn-primary" data-bs-target="#resetSuccessModal" data-bs-toggle="modal">Reset Password</button>
+                    <button id="resetSuccessModalBtn" class="btn btn-primary" data-bs-target="#resetSuccessModal" data-bs-toggle="modal" style="display: none;"></button>
+                    <button @click="setNewPassword()" class="btn btn-primary">Reset Password</button>
                 </div>
             </div>
         </div>
@@ -62,11 +60,12 @@
     <div class="modal fade" id="resetSuccessModal" aria-hidden="true" aria-labelledby="resetSuccessModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="resetPasswordModalLabel">Successful Password Change</h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body">
                     Password successfully reset. Please log in.
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-target="#resetSuccessModal" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -102,25 +101,22 @@
                     .then((result) => {
                         console.log("searchEmail Sucess: " + result);
                         this.saveEmail = email
+                        document.querySelector("#findEmailBtnHidden").click()
                     })
                     .catch((err) => {console.log(err);})
-                    // if returns success, proceed (save code and pass as param?).
                 }
-                searchEmail(searchPayload)
+                if (email !== "") searchEmail(searchPayload)
             },
             setNewPassword() {
                 let pass = document.querySelector("#newPass-forgot").value
                 let confirmPass = document.querySelector("#confirmNewPass-forgot").value
                 let code = document.querySelector("#resetCode").value
-                if (!(pass === confirmPass)) {
-                    alert("Forgot Password System: Passwords don't match.")
-                    throw "Forgot Password System: Passwords don't match."
-                }
                 let newPassPayload = {
                     "newPassword" : pass,
                     "code" : code,
                     "email" : this.saveEmail
                 }
+
                 const setPass = async (payload) => {
                     await fetch("http://127.0.0.1:8084/api/onlinemoviebooking/emailresetpassword", {
                         method: "POST", 
@@ -131,11 +127,18 @@
                         body: JSON.stringify(payload)
                     })
                     .then((res) => res.json())
-                    .then(() => {console.log("Successful pass change");})
+                    .then(() => {
+                        console.log("Successful pass change");
+                        document.querySelector("#resetSuccessModalBtn").click()
+                    })
                     .catch((err) => {console.log(err);})
-                    // if returns success, proceed.
                 }
-                setPass(newPassPayload)
+
+                if (!(pass === confirmPass) || pass == "" | confirmPass == "") {
+                    alert("Forgot Password System: Passwords don't match.")
+                } else {
+                    setPass(newPassPayload)
+                }
             }
         }
     }

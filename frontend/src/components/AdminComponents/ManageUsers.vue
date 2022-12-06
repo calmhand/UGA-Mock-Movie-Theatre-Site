@@ -3,8 +3,6 @@
         <div id="user-opts">
             <a data-bs-toggle="modal" data-bs-target="#add-user-modal"><i class="fa-solid fa-plus"></i></a>
             <a @click="getUsers()"><i class="fa-solid fa-arrows-rotate"></i></a>
-            <!-- TODO: Implement search for movies? -->
-            <a><i class="fa-solid fa-magnifying-glass"></i></a>
         </div>
         <div id="users-container">
             <table>

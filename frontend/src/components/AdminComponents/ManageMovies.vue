@@ -3,43 +3,68 @@
     <div id="movie-opts">
       <a data-bs-toggle="modal" data-bs-target="#add-movie-modal"><i class="fa-solid fa-plus"></i></a>
       <a @click="getMovies()"><i class="fa-solid fa-arrows-rotate"></i></a>
-      <!-- TODO: Implement search for movies? -->
-      <a><i class="fa-solid fa-magnifying-glass"></i></a>
     </div>
 
     <div id="movie-console">
-      <table id="manage-movie-table">
-        <div id="movies-table-display">
-          <tr>
-            <th>ID</th>
-            <th>Movie Name</th>
-            <th>Rating</th>
-            <th>Director</th>
-            <th>Cast</th>
-            <th>Synopsis</th>
-            <th>Genre</th>
-            <th>Release Date</th>
-            <th>Options</th>
-          </tr>
+      <div id="manage-movie-table">
+        <div id="movie-obj" v-for="movie in movies" :key="movie.movieID">
 
-          <tr v-for="movie in movies" :key="movie.movieID">
-            <td>{{movie.movieID}}</td>
-            <td>{{movie.title}}</td>
-            <td>{{movie.rating}}</td>
-            <td>{{movie.director}}</td>
-            <td>{{movie.cast}}</td>
-            <td>{{movie.synopsis}}</td>
-            <td>{{movie.category}}</td>
-            <td>{{movie.releaseDate}}</td>
-            <td>
-              <button>Details</button>
-              <button @click="editMovie(movie.movieID)">Edit</button>
-              <button>Remove</button>
-            </td>
-          </tr>
+          <div id="row">
+            <div id="col">
+              <h4>{{movie.movieID}}</h4>
+              <label>Movie ID</label>
+            </div>
+
+            <div id="col">
+              <h4>{{movie.title}}</h4>
+              <label>Title</label>
+            </div>
+
+            <div id="col">
+              <h4>{{movie.category}}</h4>
+              <label>Genre</label>
+            </div>
+
+            <div id="col">
+              <h4>{{movie.rating}}</h4>
+              <label>Rating</label>
+            </div>
+
+            <div id="col">
+              <h4>{{movie.releaseDate}}</h4>
+              <label>Release Date</label>
+            </div>
+          </div>
+          <hr>
+          <div id="row">
+            <div id="col">
+              <h4>{{movie.director}}</h4>
+              <label>Director</label>
+            </div>
+          </div>
+          <hr>
+          <div id="row">
+            <div id="col">
+              <div id="col">
+                <h4>{{movie.cast}}</h4>
+                <label>Cast</label>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div id="row">
+            <div id="col">
+              <h4>Synopsis</h4>
+              <small>{{movie.synopsis}}</small>
+            </div>
+          </div>
+          <hr>
+          <div id="row">
+            Options:
+            <button @click="editMovie(movie.movieID)">Edit</button>
+          </div>
         </div>
-
-      </table>
+      </div>
     </div>
     <AddMovie />
   </div>
@@ -67,7 +92,6 @@ export default {
         })
         .then((res) => res.json())
         .then((s) => {
-          // console.log("Movies succesfully retrieved." + JSON.stringify(s));
           this.movies = s.movies
         })
         .catch((err) => {console.log("Err: " + err);})
@@ -95,21 +119,32 @@ export default {
   text-align: right;
 }
 
-#movie-console {
-  width: 100%;
-}
-
 #manage-movie-table {
   background-color: #090b9b33;
-  border: 1px solid #FBFFF1;
-  margin: 10px;
+  border: 4px solid #FBFFF1;
+  border-radius: 10px;
+  padding: 20px;
+  height: 80vh;
+  width: 100%;
+  overflow-y: scroll;
 }
 
-#movies-table-display {
-  display: block;
-  height: 400px;
-  width: 100%;
-  overflow-y:scroll;
+#movie-obj {
+  border-bottom: solid 2px #FBFFF1;
+  padding: 20px;
+}
+
+#row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#col {
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px;
 }
 
 i {

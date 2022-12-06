@@ -2,26 +2,30 @@
   <div id="main-window">
     <HeaderBar />
     <router-view />
-    <FooterInfo/>
+    <!-- <FooterInfo/> -->
   </div>
+  <AlertModal :id="`alert-site-state-modal`" :errorTitle="`State Error`" :message="`You must be logged in to view this page.`"/>
+  <button id="alert-site-state-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#alert-site-state-modal"></button>
 </template>
 
 <script>
-  import HeaderBar from "@/components/HeaderBar.vue"
-  import FooterInfo from "@/components/FooterInfo.vue"
+import HeaderBar from "@/components/HeaderBar.vue"
+import FooterInfo from "@/components/FooterInfo.vue"
+import AlertModal from '@/components/AlertModal.vue'
 
-  export default {
-    name: "App",
-    components: {FooterInfo, HeaderBar},
-    methods: {
+export default {
+  name: "App",
+  // eslint-disable-next-line
+  components: {FooterInfo, HeaderBar, AlertModal},
+  methods: {
 
-    },
-    data() {
-      return {
-        
-      }
-    },
-  }
+  },
+  data() {
+    return {
+      
+    }
+  },
+}
 </script>
 
 <style>
@@ -32,6 +36,10 @@
   LIGHT STEEL BLUE - #B4C5E4 - ETC
   IVORY - #FBFFF1 = REGULAR TEXT, BUTTONS
 */
+
+html {
+  height: 100%;
+}
 
 @font-face {
   font-family: robo;
@@ -66,6 +74,15 @@ a.router-link-exact-active {
 
 #main-window {
   min-height: 100vh;
-  background-image: linear-gradient(160deg, red, blue);
+  /* background-image: linear-gradient(160deg, black, red, blue); */
+  background: linear-gradient(139deg, #3C3744, #090C9B, #7376f3);
+  background-size: 700% 700%;
+  animation: animated-bg 120s ease infinite;
+}
+
+@keyframes animated-bg {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
 </style>

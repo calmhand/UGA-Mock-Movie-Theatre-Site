@@ -18,8 +18,7 @@
         </div>
       </div>
       
-        <!-- change name form -->
-        <form>
+        <form id="change-profile-name">
           <div id="row">
             <i class="fa-regular fa-user"></i>
             <div id="col">
@@ -35,41 +34,52 @@
           </div>
         </form>
 
-        <!-- change password form -->
-        <form>
+        <form id="change-profile-pass">
           <div id="row">
-                <i class="fa-solid fa-key"></i>
-                <div id="col">
-                    <input id="currentPass" type="password" required/>
-                    <label for="currentPass">Current Password</label>
-                </div>
+              <i class="fa-solid fa-key"></i>
+              <div id="col">
+                  <input id="currentPass" type="password" required/>
+                  <label for="currentPass">Current Password</label>
+              </div>
 
-                <div id="col">
-                    <input id="newPass" type="password" required/>
-                    <label for="newPass">New Password</label>
-                </div>
-                <button @click="updateProfile(`pass`)">Change Password</button>
-            </div>
+              <div id="col">
+                  <input id="newPass" type="password" required/>
+                  <label for="newPass">New Password</label>
+              </div>
+              <button @click="updateProfile(`pass`)">Change Password</button>
+          </div>
         </form>
     </div>
   </div>
+  <AlertModal :id="`alert-personal-modal`" :errorTitle="changeTitle" :message="changeMsg"/>
+  <button id="alert-personal-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#alert-personal-modal"></button>
 </template>
 
 <script>
+import AlertModal from '@/components/AlertModal.vue'
+
 export default {
     name: 'PersonalInfo',
+    components: {AlertModal},
+    data() {
+      return {
+        changeTitle : "",
+        changeMsg : ""
+      }
+    },
     methods: {
       updateProfile(select) {
+        let newFirst = document.querySelector("#newfName").value
+        let newLast = document.querySelector("#newlName").value
+        let names = [newFirst, newLast]
         const changeName = async () => {
-          let newFirst = document.querySelector("#newfName").value
-          let newLast = document.querySelector("#newlName").value
+          
           let newNamePayload = {
               "firstName" : newFirst,
               "lastName" : newLast,
-              "number" : this.$store.state.users.street,
+              "number" : this.$store.state.users.phone,
               "isSubscribed" : this.$store.state.users.subbed,
               "status" : "ACTIVE",
-              "userType" : "CUSTOMER"
           }
 
           await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/updateprofile", {
@@ -81,16 +91,22 @@ export default {
             body: JSON.stringify(newNamePayload)
           })
           .then((res) => res.json())
-          .then((result) => {
-            alert("Name succesfully changed!")
-            console.log("Name change result: " + JSON.stringify(result));
+          .then((s) => {
+            this.changeTitle = "Change Name"
+            this.changeMsg = "Name succesfully changed! Name changed to " + s.firstName + " " + s.lastName + "."
+            document.querySelector("#newfName").value = ""
+            document.querySelector("#newlName").value = ""
+            document.querySelector("#newfName").placeholder = s.firstName
+            document.querySelector("#newlName").placeholder = s.lastName
+            document.querySelector("#alert-personal-btn").click()
           })
           .catch((err) => {console.log("err: " + err);})
         }
 
+        let currentPass = document.querySelector("#currentPass").value
+        let newPass = document.querySelector("#newPass").value
+        let passes = [currentPass, newPass]
         const changePass = async () => {
-          let currentPass = document.querySelector("#currentPass").value
-          let newPass = document.querySelector("#newPass").value
           const newPassPayload = {
             "email" : this.$store.state.site.email,
             "password" : currentPass,
@@ -106,21 +122,41 @@ export default {
             body: JSON.stringify(newPassPayload)
           })
           .then((res) => res.json())
-          .then((result) => {
-            alert("Password succesfully changed!")
+          .then((s) => {
+            if (s.process == "failure") {
+              throw 'You entered the wrong password. Please try again.'
+            } else {
+              this.changeTitle = "Change Password"
+              this.changeMsg = "Password successfully changed."
+              document.querySelector("#currentPass").value = ""
+              document.querySelector("#newPass").value = ""
+              document.querySelector("#alert-personal-btn").click()
+              console.log("Changed pass (when logged in): " + JSON.stringify(s));
+            }
+          })
+          .catch((err) => {
+            this.changeTitle = "Change Password"
+            this.changeMsg = err
             document.querySelector("#currentPass").value = ""
             document.querySelector("#newPass").value = ""
-            console.log("Changed pass (when logged in): " + JSON.stringify(result));
+            document.querySelector("#alert-personal-btn").click()
           })
-          .catch((err) => {console.log("err: " + err);})
         }
         
-        if (select === "name") {
+        if (select === "name" && !this.isEmpty(names)) {
           changeName()
-        } else if (select === "pass") {
+        } else if (select === "pass" && !this.isEmpty(passes)) {
           changePass()
         }
       },
+      isEmpty(vals) {
+        for (let i = 0; i < vals.length; i++) {
+          if (vals[i] === "") {
+            return true
+          }
+        }
+        return false
+      }
     }
 }
 </script>
@@ -195,7 +231,7 @@ export default {
     }
     
     input::placeholder {
-      color: #FBFFF1;
+      color: #858585ab;
     }
 
     button {

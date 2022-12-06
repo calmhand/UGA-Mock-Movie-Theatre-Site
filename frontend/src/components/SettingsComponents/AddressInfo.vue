@@ -92,7 +92,6 @@
           </div>
         </div>
       </form>
-      <!-- TODO: Implement changeAddress Method -->
         <button @click="changeAddress()">Save Changes</button>
     </div>
   </div>
@@ -120,7 +119,6 @@ export default {
             "number" : this.$store.state.users.phone,
             "isSubscribed" : this.$store.state.users.subbed,
             "status" : "ACTIVE",
-            "userType" : "CUSTOMER"
         }
         
         await fetch("http://127.0.0.1:8084/api/test/" + this.$store.state.site.id + "/updateprofile", {

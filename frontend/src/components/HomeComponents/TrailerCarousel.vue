@@ -1,6 +1,4 @@
-<template>
-    <!-- TODO: Create an array of Trailer objects nested in 'active item' divs ?-->
-    
+<template>    
     <div id="home-trailer-carousel" class="carousel slide" data-bs-ride="true">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#home-trailer-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -8,7 +6,6 @@
             <button type="button" data-bs-target="#home-trailer-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
         <div class="carousel-inner">
-            
             <div class="carousel-item active">
                 <MovieTrailer :trailerNum="0" />
             </div>

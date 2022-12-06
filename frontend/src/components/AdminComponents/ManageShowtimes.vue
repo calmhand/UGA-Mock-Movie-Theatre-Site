@@ -1,41 +1,42 @@
 <template>
     <div id="manage-shows-container">
         <div id="show-opts">
-          <select id="select-movie-for-shows" name="" style="text-align: left;">
-              <option disabled value selected>Select a Movie</option>
-              <option v-for="movie in movies" :key="movie.movieID" :value="movie.movieID">
-                  {{movie.title}}
-              </option>
-          </select>
           <a @click="this.$store.commit(`movie/GET_ALL_MOVIES`)" data-bs-toggle="modal" data-bs-target="#add-show-modal"><i class="fa-solid fa-plus"></i></a>
           <a @click="getShowtimes()"><i class="fa-solid fa-arrows-rotate"></i></a>
-          <!-- TODO: Implement search for showtimes? -->
-          <a><i class="fa-solid fa-magnifying-glass"></i></a>
         </div>
         <div id="showtime-console">
-            <table id="manage-shows-table">
-                <tr>
-                    <th>Movie ID</th>
-                    <th>Show ID</th>
-                    <th>Room</th>
-                    <th>Show Date</th>
-                    <th>Show Time</th>
-                    <th>Options</th>
-                </tr>
+          <div id="manage-shows-table">
+            <div id="show-obj" v-for="show in shows" :key="show.showID">
+              <div id="row">
+                <div id="col">
+                  <h4>{{show.movieID}}</h4>
+                  <label>Movie ID</label>
+                </div>
 
-                <tr v-for="show in shows" :key="show.showID">
-                  <td>{{show.movieID}}</td>
-                  <td>{{show.showID}}</td>
-                  <td>{{show.showRoom}}</td>
-                  <td>{{show.showDate}}</td>
-                  <td>{{show.showTimeSlot}}</td>
-                  <td>
-                      <button>Edit</button>
-                      <button>Delete</button>
-                  </td>
-                </tr>
-                
-            </table>
+                <div id="col">
+                  <h4>{{show.showID}}</h4>
+                  <label>Show ID</label>
+                </div>
+
+                <div id="col">
+                  <h4>{{show.showRoom}}</h4>
+                  <label>Theatre</label>
+                </div>
+              </div>
+              <hr>
+              <div id="row">
+                <div id="col">
+                  <h4>{{show.showDate}}</h4>
+                  <label>Date</label>
+                </div>
+
+                <div id="col">
+                  <h4>{{show.showTimeSlot}}</h4>
+                  <label>Time</label>
+                </div>
+              </div>
+            </div>              
+          </div>
         </div>
         <AddShowtime />
     </div>
@@ -69,11 +70,12 @@ export default {
           })
           .catch((err) => {console.log("Err: " + err);})
         }
-        getShows(parseInt(document.querySelector("#select-movie-for-shows").value))
-      }
+        getShows()
+      },
     },
     mounted() {
-      // this.getShowtime()
+      this.$store.commit(`movie/GET_ALL_MOVIES`)
+      this.getShowtimes()
     }
 }
 </script>
@@ -84,10 +86,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-#showtime-console {
-    width: 100%;
+    height: 100%;
 }
 
 #show-opts {
@@ -96,13 +95,34 @@ export default {
 }
 
 #manage-shows-table {
-    background-color: #090b9b33;
-    border: 1px solid #FBFFF1;
-    margin: 10px;
-    display: block;
-    height: 400px;
-    width: 100%;
-    overflow-y:scroll;
+  background-color: #090b9b33;
+  border: 4px solid #FBFFF1;
+  border-radius: 10px;
+  height: 85vh;
+  width: 100%;
+  padding: 50px;
+  overflow-y: scroll;
+}
+
+#show-obj {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  border-bottom: solid 2px #FBFFF1;
+  padding: 25px;
+}
+
+#row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#col {
+  display: flex;
+  flex-direction: column;
+  margin: 0 15px;
 }
 
 td, th {

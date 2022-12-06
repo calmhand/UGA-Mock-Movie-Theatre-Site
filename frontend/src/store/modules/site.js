@@ -21,10 +21,9 @@ export default {
         PARSE_TOKEN(state, payload) {
             state.id = payload["id"]
             state.email = payload["email"]
-            state.roles = payload["roles"]
+            state.roles = payload["roles"][payload["roles"].length - 1]
             state.accessToken = payload["accessToken"]
             state.tokenType = payload["tokenType"]
-            // this.commit("site/UPDATE_STATE", "CUSTOMER")
             console.log("success (site.js): Login Successful");
         },
         CLEAR_TOKEN(state) {

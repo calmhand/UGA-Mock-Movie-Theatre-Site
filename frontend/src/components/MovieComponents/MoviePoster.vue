@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="movie-poster-container">
     <div @click="sendToMoviePage()" id="film-poster-container">
       <img id="poster-image" :src="poster"/>
     </div>
@@ -11,8 +11,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: "MoviePoster",
   props: ['title', `poster`, `genre`, `release`, `rating`, `id`, `trailer`, `movieObj`, `upcoming`],
@@ -27,9 +25,12 @@ export default {
 </script>
 
 <style scoped>
+  #movie-poster-container {
+    margin: 15px;
+  }
   #film-poster-container {
-    height: 275px;
-    width: 175px;
+    height: 250px;
+    width: 150px;
     margin: 5px 35px;
     color: black;
   }

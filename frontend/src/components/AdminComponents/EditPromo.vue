@@ -68,7 +68,6 @@ export default {
         }
     },
     methods: {
-        // TODO: Fix
         editPromo() {
             this.setID()
             let promoNameEdit = document.querySelector("#promo-name-edit").value
@@ -86,9 +85,9 @@ export default {
                 "isSent" : false
             }
 
-            let editPromo = async (id) => {
-                await fetch("http://127.0.0.1:8084/api/test/admin/manage-promotions/updatepromotion/" + id, {
-                    method: "POST",
+            let editPromo = async () => {
+                await fetch("http://127.0.0.1:8084/api/test/admin/manage-promotions/updatepromotion/" + this.promoID, {
+                    method: "PUT",
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -101,7 +100,7 @@ export default {
                 })
                 .catch((err) => {console.log("err: " + err);})
             }
-            editPromo(this.promoID)
+            editPromo()
 
         },
         setID() {

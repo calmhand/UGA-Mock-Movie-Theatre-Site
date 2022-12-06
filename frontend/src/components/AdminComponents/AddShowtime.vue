@@ -18,7 +18,9 @@
                                 </select>
                                 <label>Movie Name</label>
                             </div>
+                        </div>
 
+                        <div id="row">
                             <div id="col">
                                 <select id="showroom-dropdown">
                                     <option disabled value selected>Select Room</option>
@@ -29,14 +31,14 @@
                                 </select>
                                 <label>Show Room</label>
                             </div>
-                        </div>
 
-                        <div id="row">
                             <div id="col">
                                 <input id="add-showtime-date" type="date">
                                 <label>Show Date</label>
                             </div>
+                        </div>
 
+                        <div id="row">
                             <div id="col">
                                 <select id="showtime-dropdown">
                                     <option disabled value selected>Select Showtime</option>
@@ -48,12 +50,28 @@
                                 <label>Show Time</label>
                             </div>
                         </div>
+
+                        <div id="row">
+                            <div id="col">
+                                <input id="add-showtime-child-price" type="number" min="0" max="20">
+                                <label>Child Price ($)</label>
+                            </div>
+
+                            <div id="col">
+                                <input id="add-showtime-adult-price" type="number" min="0" max="20">
+                                <label>Adult Price ($)</label>
+                            </div>
+
+                            <div id="col">
+                                <input id="add-showtime-senior-price" type="number" min="0" max="20">
+                                <label>Senior Price ($)</label>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
                 <div class="modal-footer">
                     <button id="close-add-shows-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <!-- TODO: Implement AddShowtime Button. -->
                     <button @click="addShowTime()" type="button" class="btn btn-primary">Add Showtime</button>
                 </div>
             </div>
@@ -75,12 +93,20 @@ export default {
             let showtime = document.querySelector("#showtime-dropdown").value
             let showDate = document.querySelector("#add-showtime-date").value
             let room = document.querySelector("#showroom-dropdown").value
+            let childPrice = document.querySelector("#add-showtime-child-price").value
+            let adultPrice = document.querySelector("#add-showtime-adult-price").value
+            let seniorPrice = document.querySelector("#add-showtime-senior-price").value
 
             let showPayload = {
                 "movieID" : movID,
                 "showRoom" : room,
                 "showDate" : showDate,
-                "showTimeSlot" : showtime
+                "showTimeSlot" : showtime,
+                "ticketPrices" : {
+                    "child" : childPrice,
+                    "adult" : adultPrice,
+                    "senior" : seniorPrice
+                }
             }
             console.log(JSON.stringify(showPayload));
             let addShow = async () => {
