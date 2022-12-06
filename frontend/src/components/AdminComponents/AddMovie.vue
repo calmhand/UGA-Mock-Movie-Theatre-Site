@@ -115,6 +115,8 @@ export default {
             let posterURL = document.querySelector("#movie-poster-url-input").value
             let trailerURL = document.querySelector("#movie-trailer-url-input").value
 
+            console.log(release);
+
             let moviePayload = {
                 "title" : title,
                 "category" : category,
@@ -139,6 +141,7 @@ export default {
                 })
                 .then((res) => res.json())
                 .then((s) => {
+                    console.log("OK: " + JSON.stringify(moviePayload));
                     console.log("movie added: " + JSON.stringify(s));
                     document.getElementById("close-add-movie-modal").click()
                     document.getElementById("add-movie-form").reset();

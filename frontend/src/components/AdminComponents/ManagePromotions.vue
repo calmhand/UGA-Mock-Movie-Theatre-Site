@@ -6,7 +6,7 @@
     </div>
 
     <div id="promo-console">
-      <div id="manage-promos-table">
+      <div v-if="!promos.length == 0" id="manage-promos-table">
         <div id="promo-obj" v-for="ad in promos" :key="ad.promoID">
           <div id="row">
             <div id="col">

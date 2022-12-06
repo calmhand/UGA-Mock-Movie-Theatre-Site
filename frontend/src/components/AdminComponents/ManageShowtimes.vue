@@ -4,7 +4,7 @@
           <a @click="this.$store.commit(`movie/GET_ALL_MOVIES`)" data-bs-toggle="modal" data-bs-target="#add-show-modal"><i class="fa-solid fa-plus"></i></a>
           <a @click="getShowtimes()"><i class="fa-solid fa-arrows-rotate"></i></a>
         </div>
-        <div id="showtime-console">
+        <div v-if="!shows.length == 0" id="showtime-console">
           <div id="manage-shows-table">
             <div id="show-obj" v-for="show in shows" :key="show.showID">
               <div id="row">

@@ -2,10 +2,11 @@
   <div id="manage-movies-container">
     <div id="movie-opts">
       <a data-bs-toggle="modal" data-bs-target="#add-movie-modal"><i class="fa-solid fa-plus"></i></a>
+      <a v-if="movies.length == 0" @click="loadMovies()"><i class="fa-solid fa-cloud-arrow-down"></i></a>
       <a @click="getMovies()"><i class="fa-solid fa-arrows-rotate"></i></a>
     </div>
 
-    <div id="movie-console">
+    <div v-if="!movies.length == 0" id="movie-console">
       <div id="manage-movie-table">
         <div id="movie-obj" v-for="movie in movies" :key="movie.movieID">
 
@@ -72,6 +73,8 @@
 
 <script>
 import AddMovie from '@/components/AdminComponents/AddMovie.vue'
+import premade from '@/assets/movies.js'
+
 export default {
   name: "ManageMovies",
   components: {AddMovie},
@@ -98,6 +101,25 @@ export default {
       }
       getFilms()
     },
+    loadMovies() {
+      console.log(premade);
+      for (let i = 0; i < premade.length; i++) {
+        fetch("http://127.0.0.1:8084/api/test/admin/manage-movies/addmovie", {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(premade[i])
+        })
+        .then((res) => res.json())
+        .then((s) => {
+            console.log("movie added: " + JSON.stringify(s));
+            this.getMovies()
+        })
+        .catch((err) => {console.log("err: " + err);})
+      }
+    }
   },
   mounted() {
     this.getMovies()
