@@ -77,7 +77,7 @@ a.router-link-exact-active {
   /* background-image: linear-gradient(160deg, black, red, blue); */
   background: linear-gradient(139deg, #3C3744, #090C9B, #7376f3);
   background-size: 700% 700%;
-  animation: animated-bg 120s ease infinite;
+  animation: animated-bg 60s ease infinite;
 }
 
 @keyframes animated-bg {

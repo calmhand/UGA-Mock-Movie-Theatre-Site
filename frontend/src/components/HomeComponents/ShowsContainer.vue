@@ -61,7 +61,7 @@ export default {
         align-content: center;
         align-items: center;
         justify-content: center;
-        background-image: linear-gradient(180deg, black 45%, transparent 100%);
+        background-image: linear-gradient(180deg, black 25%, transparent 100%);
         padding: 50px;
     }
 
